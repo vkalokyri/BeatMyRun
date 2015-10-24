@@ -22,7 +22,7 @@ import org.w3c.dom.Text;
 
 //Beat My Run
 //Something else
-
+///Nirali says HI
 //Nirali
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
