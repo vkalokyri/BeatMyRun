@@ -21,6 +21,7 @@ import org.w3c.dom.Text;
 
 
 //Beat My Run
+//Something else
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
     private TextView timer_label, bpm_label, num_steps_label;
