@@ -57,4 +57,15 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/winnerresult" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Statistics"
+        android:textColor="#fff"
+        android:id="@+id/statButton"
+        android:layout_below="@+id/winnerresult"
+        android:layout_alignParentEnd="true"
+        android:background="#ffbb0c0c" />
+
 </RelativeLayout>
