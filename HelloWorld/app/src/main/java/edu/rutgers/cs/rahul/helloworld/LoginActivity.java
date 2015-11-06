@@ -540,7 +540,6 @@ public class LoginActivity extends Activity implements
                 playlistItemRequest.setPlaylistId(likesId);
                 playlistItemRequest.setKey(browser_API_KEY);
                 playlistItemRequest.setOauthToken(oauth_token);
-                playlistItemRequest.setFields("items(contentDetails/videoId,snippet/title,snippet/publishedAt),nextPageToken,pageInfo");
                 PlaylistItemListResponse playlistListItemResponse = null;
 
                 try {
@@ -574,7 +573,7 @@ public class LoginActivity extends Activity implements
 
                 while (it.hasNext()) {
                     PlaylistItem playlistItem = (PlaylistItem)it.next();
-                    System.out.println(" video name  = " + playlistItem.getSnippet().getTitle());
+                    System.out.println(" video name  = " + playlistItem.getSnippet().getResourceId().getVideoId());
                     System.out.println("\n-------------------------------------------------------------\n");
                 }
 
