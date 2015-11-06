@@ -8,7 +8,6 @@
     <TextView
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="Miles"
         android:id="@+id/miles"
         android:layout_gravity="center"
         android:layout_marginTop="70dp"
@@ -17,7 +16,6 @@
     <TextView
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:text="Time"
         android:layout_gravity="center_horizontal"
         android:id="@+id/time"
         />
@@ -32,7 +30,9 @@
             android:id="@+id/button1"
             android:layout_marginTop="0dp"
             android:layout_centerHorizontal="true"
-            android:onClick="onButtonClick" />
+            android:onClick="onButtonClick"
+            android:background="#ffbb0c0c"
+            android:textColor="#fff"/>
 
         <Button
             android:layout_width="200dp"
@@ -40,8 +40,9 @@
             android:text="Month Progress"
             android:id="@+id/button2"
             android:layout_centerHorizontal="true"
-
-            android:layout_marginTop="75dp"
+            android:background="#ffbb0c0c"
+            android:textColor="#fff"
+            android:layout_marginTop="80dp"
             android:onClick="onButtonClick" />
 
 
