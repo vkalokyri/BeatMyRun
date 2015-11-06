@@ -32,6 +32,21 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ChallengeActivity"
+            android:label="Beat.My.Run"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".StudentDetail"
+            android:label="Beat.My.Run"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".Winner"
+            android:label="Beat.My.Run"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
