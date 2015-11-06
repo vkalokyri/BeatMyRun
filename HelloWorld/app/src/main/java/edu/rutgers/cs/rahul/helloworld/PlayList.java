@@ -33,10 +33,9 @@ public class PlayList {
 
 
     };
-    private static ArrayList<PlayListElement> list;
+    private static ArrayList<PlayListElement> list = new ArrayList<PlayListElement>();
     public PlayList()
     {
-        list = new ArrayList<PlayListElement>();
     }
     public void add(String video_id, int bpm)
     {
