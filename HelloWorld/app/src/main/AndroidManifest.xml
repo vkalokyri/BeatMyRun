@@ -44,6 +44,16 @@
         </activity>
         <activity
             android:name=".Winner"
+            android:label="Winner"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".StatActivity"
+            android:label="Beat.My.Run"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".StatGraphActivity"
             android:label="Beat.My.Run"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
