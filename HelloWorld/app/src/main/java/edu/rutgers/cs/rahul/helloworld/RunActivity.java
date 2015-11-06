@@ -118,6 +118,16 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
         });
 
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Intent intent =new Intent(getApplicationContext(), ChallengeActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
         num_steps_label = (TextView) findViewById(R.id.num_steps);
         next_song = (Button) findViewById(R.id.next_song);
 
