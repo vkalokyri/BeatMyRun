@@ -91,6 +91,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                 {
                     timer_handler.removeCallbacks(update_timer);
                     message = "Stopped the run.";
+                    System.out.println("Stopped the run");
 //                    fab.setImageResource(android.R.drawable.ic_media_play);
 //                    fab.setText("Stop");
                     g_player.pause();
@@ -103,6 +104,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                     reset_counters();
                     timer_handler.postDelayed(update_timer, 0);
                     message = "Started the run";
+                    System.out.println("Started the run");
 //                    number_of_steps_offset = number_of_steps;
 //                    fab.setImageResource(android.R.drawable.ic_media_pause);
 //                    fab.setText("Stop");
@@ -267,7 +269,9 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
             player.setManageAudioFocus(false);
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
             player.setPlaybackEventListener(this_obj);
-            player.loadVideo(VIDEO_ID);
+            player.cueVideo(VIDEO_ID);
+//            player.loadVideo(VIDEO_ID);
+//            player.pause();
         }
     }
 

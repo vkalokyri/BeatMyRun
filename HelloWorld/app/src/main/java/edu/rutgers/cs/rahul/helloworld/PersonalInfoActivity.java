@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,6 +30,8 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
     private EditText emailField;
     private EditText usernameField;
     private Button submitBtnField;
+    private ImageButton logoutId ;
+
 
     GoogleApiClient mGoogleApiClient;
     boolean mSignInClicked;
@@ -38,9 +41,12 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_info);
+
+        mGoogleApiClient=LoginActivity.mGoogleApiClient;
         emailField = (EditText) findViewById(R.id.emailField);
         usernameField = (EditText) findViewById(R.id.usernameField);
         submitBtnField = (Button) findViewById(R.id.submit);
+        logoutId = (ImageButton) findViewById(R.id.logoutId);
 
         Intent i = getIntent();
         // Receiving the Data
@@ -53,27 +59,38 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
         emailField.setText(email);
 
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
-
         // Binding Click event to Button
         submitBtnField.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
 
-//                if (mGoogleApiClient.isConnected()) {
-//                    Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-//                    mGoogleApiClient.disconnect();
-//                    System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
-//                }
-//                Intent nextScreen = new Intent(getApplicationContext(), LoginActivity.class);
+               /* if (mGoogleApiClient.isConnected()) {
+                    Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                    mGoogleApiClient.disconnect();
+                   System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
+                }*/
+                //Intent nextScreen = new Intent(getApplicationContext(), LoginActivity.class);
 
                 Intent nextScreen = new Intent(getApplicationContext(), RunActivity.class);
 
                 //Sending data to another Activity
                 startActivity(nextScreen);
+
+            }
+        });
+
+        logoutId.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                if (mGoogleApiClient.isConnected()) {
+                    Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                    mGoogleApiClient.disconnect();
+                    System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
+                }
+                Intent nextScreen = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(nextScreen);
+
+
 
             }
         });

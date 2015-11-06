@@ -112,7 +112,7 @@ public class LoginActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_main);
         ImageView image = (ImageView) findViewById(R.id.logoImage);
-
+        System.out.println("Login On Create");
         // Restore from saved instance state
         // [START restore_saved_instance_state]
         if (savedInstanceState != null) {
@@ -130,13 +130,22 @@ public class LoginActivity extends Activity implements
         ((SignInButton) findViewById(R.id.sign_in_button)).setSize(SignInButton.SIZE_WIDE);
 
         // Start with sign-in button disabled until sign-in either succeeds or fails
-        findViewById(R.id.sign_in_button).setEnabled(false);
+        findViewById(R.id.sign_in_button).setEnabled(true);
 
         // Set up view instances
        // mStatus = (TextView) findViewById(R.id.status);
 
         // [START create_google_api_client]
         // Build GoogleApiClient with access to basic profile
+        if(mGoogleApiClient != null)
+        {
+            System.out.println("Not NULL Object");
+            if(mGoogleApiClient.isConnected())
+            {
+                System.out.println("disconnect");
+            }
+
+        }
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -145,6 +154,8 @@ public class LoginActivity extends Activity implements
                 .addScope(new Scope(Scopes.EMAIL))
                 .addScope(new Scope(YouTubeScopes.YOUTUBE))
                 .build();
+
+
         // [END create_google_api_client]
     }
 
@@ -202,19 +213,6 @@ public class LoginActivity extends Activity implements
     }
 
 
-    private static void prettyPrint(int size, Iterator<PlaylistItem> playlistEntries) {
-        System.out.println("=============================================================");
-        System.out.println("\t\tTotal Videos Uploaded: " + size);
-        System.out.println("=============================================================\n");
-
-        while (playlistEntries.hasNext()) {
-            PlaylistItem playlistItem = playlistEntries.next();
-            System.out.println(" video name  = " + playlistItem.getSnippet().getTitle());
-            System.out.println(" video id    = " + playlistItem.getContentDetails().getVideoId());
-            System.out.println(" upload date = " + playlistItem.getSnippet().getPublishedAt());
-            System.out.println("\n-------------------------------------------------------------\n");
-        }
-    }
 
     /**
      * Check if we have the GET_ACCOUNTS permission and request it if we do not.
@@ -264,13 +262,15 @@ public class LoginActivity extends Activity implements
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        System.out.println("ON START CONNECT");
+//        mGoogleApiClient.connect();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mGoogleApiClient.disconnect();
+        System.out.println("ON STOP DISCONNECT");
+//        mGoogleApiClient.disconnect();
     }
     // [END on_start_on_stop]
 
@@ -296,6 +296,7 @@ public class LoginActivity extends Activity implements
             }
 
             mIsResolving = false;
+            System.out.println("ON onActivityResult CONNECT");
             mGoogleApiClient.connect();
         }
     }
@@ -401,6 +402,7 @@ public class LoginActivity extends Activity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
+                System.out.println("ON sign in click");
                 onSignInClicked();
                 break;
             /*case R.id.sign_out_button:
@@ -418,6 +420,7 @@ public class LoginActivity extends Activity implements
         // User clicked the sign-in button, so begin the sign-in process and automatically
         // attempt to resolve any errors that occur.
         mShouldResolve = true;
+        System.out.println("onSignInClicked CONNECT");
         mGoogleApiClient.connect();
 
         // Show a message to the user that we are signing in.
@@ -576,8 +579,8 @@ public class LoginActivity extends Activity implements
 
                 while (it.hasNext()) {
                     PlaylistItem playlistItem = (PlaylistItem)it.next();
-                    System.out.println(" video name  = " + playlistItem.getSnippet().getResourceId().getVideoId());
-                    System.out.println("\n-------------------------------------------------------------\n");
+                    //System.out.println(" video name  = " + playlistItem.getSnippet().getResourceId().getVideoId());
+                    //System.out.println("\n-------------------------------------------------------------\n");
                     //Updating the playlist item
                     staticProjectPlayList.add(playlistItem.getSnippet().getResourceId().getVideoId(), 0, playlistItem);
 
