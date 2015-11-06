@@ -1,22 +1,33 @@
 package edu.rutgers.cs.rahul.helloworld;
 
 import android.Manifest;
+import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.common.AccountPicker;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.Scopes;
@@ -25,6 +36,24 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.YouTubeScopes;
+import com.google.api.services.youtube.model.Channel;
+import com.google.api.services.youtube.model.ChannelListResponse;
+import com.google.api.services.youtube.model.Playlist;
+import com.google.api.services.youtube.model.PlaylistItem;
+import com.google.api.services.youtube.model.PlaylistItemListResponse;
+import com.google.api.services.youtube.model.PlaylistListResponse;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 
 /**
  * Created by valia on 10/30/15.
@@ -36,18 +65,32 @@ public class LoginActivity extends Activity implements
 
     private static final String TAG = "LoginActivity";
 
+    public static final String API_KEY = "AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
+    public static final String browser_API_KEY = "AIzaSyAKt7_kz7pK42CQs74WUD5dmpCSiVE94cQ";
+    public static final String oauth_key = "661591512723-bm18diefo4qeltgsbp1j84qubvv17glt.apps.googleusercontent.com";
+    public static String oauth_token;
+
     /* RequestCode for resolutions involving sign-in */
     private static final int RC_SIGN_IN = 1;
 
     /* RequestCode for resolutions to get GET_ACCOUNTS permission on M */
     private static final int RC_PERM_GET_ACCOUNTS = 2;
+    static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
+    static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1001;
+
+
 
     /* Keys for persisting instance variables in savedInstanceState */
     private static final String KEY_IS_RESOLVING = "is_resolving";
     private static final String KEY_SHOULD_RESOLVE = "should_resolve";
 
     /* Client for accessing Google APIs */
-    private GoogleApiClient mGoogleApiClient;
+    public static GoogleApiClient mGoogleApiClient;
+    String mEmail; // Received from newChooseAccountIntent(); passed to getToken()
+    String SCOPE = "oauth2:https://www.googleapis.com/auth/youtube.force-ssl";
+
+    private static YouTube youtube;
+
 
     /* View to display current status (signed-in, signed-out, disconnected, etc) */
     private TextView mStatus;
@@ -59,6 +102,7 @@ public class LoginActivity extends Activity implements
     /* Should we automatically resolve ConnectionResults when possible? */
     private boolean mShouldResolve = false;
     // [END resolution_variables]
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +140,7 @@ public class LoginActivity extends Activity implements
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
                 .addScope(new Scope(Scopes.EMAIL))
+                .addScope(new Scope(YouTubeScopes.YOUTUBE))
                 .build();
         // [END create_google_api_client]
     }
@@ -104,19 +149,29 @@ public class LoginActivity extends Activity implements
         if (isSignedIn) {
             System.out.println("user is signed In");
             Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+
+            Intent nextScreen = new Intent(getApplicationContext(), PersonalInfoActivity.class);
+
             if (currentPerson != null) {
                 // Show signed-in user's name
                 String name = currentPerson.getDisplayName();
-                System.out.println("USERNAME = "+ name);
-
+                System.out.println("USERNAME = " + name);
+                nextScreen.putExtra("username", name);
                 //mStatus.setText(getString(R.string.signed_in_fmt, name));
 
                 // Show users' email address (which requires GET_ACCOUNTS permission)
                 if (checkAccountsPermission()) {
                     String currentAccount = Plus.AccountApi.getAccountName(mGoogleApiClient);
-                    System.out.println("email = "+ currentAccount);
-                    //((TextView) findViewById(R.id.email)).setText(currentAccount);
+                    System.out.println("email = " + currentAccount);
+                    this.mEmail = currentAccount;
+                    //Sending data to another Activity
+                    nextScreen.putExtra("email", currentAccount);
+                    startActivity(nextScreen);
+                    AsyncTask<String, Void, String>  authTask = new RetrieveTokenTask().execute(currentAccount);
+
                 }
+
+
             } else {
                 System.out.println("THE USER IS NULL!!!!");
                 // If getCurrentPerson returns null there is generally some error with the
@@ -126,7 +181,8 @@ public class LoginActivity extends Activity implements
             }
 
             // Set button visibility
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            //findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+
            // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
             System.out.println("user is not signed In");
@@ -139,6 +195,21 @@ public class LoginActivity extends Activity implements
             findViewById(R.id.sign_in_button).setEnabled(true);
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
            // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+        }
+    }
+
+
+    private static void prettyPrint(int size, Iterator<PlaylistItem> playlistEntries) {
+        System.out.println("=============================================================");
+        System.out.println("\t\tTotal Videos Uploaded: " + size);
+        System.out.println("=============================================================\n");
+
+        while (playlistEntries.hasNext()) {
+            PlaylistItem playlistItem = playlistEntries.next();
+            System.out.println(" video name  = " + playlistItem.getSnippet().getTitle());
+            System.out.println(" video id    = " + playlistItem.getContentDetails().getVideoId());
+            System.out.println(" upload date = " + playlistItem.getSnippet().getPublishedAt());
+            System.out.println("\n-------------------------------------------------------------\n");
         }
     }
 
@@ -210,7 +281,7 @@ public class LoginActivity extends Activity implements
     // [END on_save_instance_state]
 
     // [START on_activity_result]
-    @Override
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
@@ -225,6 +296,7 @@ public class LoginActivity extends Activity implements
             mGoogleApiClient.connect();
         }
     }
+
     // [END on_activity_result]
 
     @Override
@@ -234,6 +306,7 @@ public class LoginActivity extends Activity implements
         Log.d(TAG, "onRequestPermissionsResult:" + requestCode);
         if (requestCode == RC_PERM_GET_ACCOUNTS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                System.out.println("IM INSIDE  onRequestPermissionsResult");
                 showSignedInUI();
             } else {
                 Log.d(TAG, "GET_ACCOUNTS Permission Denied.");
@@ -249,7 +322,7 @@ public class LoginActivity extends Activity implements
         // establish a service connection to Google Play services.
         Log.d(TAG, "onConnected:" + bundle);
         mShouldResolve = false;
-
+        System.out.println("IM INSIDE  onRequestPermissionsResult");
 
 
         // Show the signed-in UI
@@ -350,7 +423,7 @@ public class LoginActivity extends Activity implements
     // [END on_sign_in_clicked]
 
     // [START on_sign_out_clicked]
-    private void onSignOutClicked() {
+    public static void onSignOutClicked() {
         // Clear the default account so that GoogleApiClient will not automatically
         // connect in the future.
         if (mGoogleApiClient.isConnected()) {
@@ -358,7 +431,7 @@ public class LoginActivity extends Activity implements
             mGoogleApiClient.disconnect();
         }
 
-        showSignedOutUI();
+       // showSignedOutUI();
     }
     // [END on_sign_out_clicked]
 
@@ -374,4 +447,185 @@ public class LoginActivity extends Activity implements
 
         showSignedOutUI();
     }
+
+
+    private class GetYoutubeList extends AsyncTask {
+
+        private void onPostExecute(List<PlaylistItem> playlistItemList) {
+           System.out.println("I finished with getting the liked videos");
+        }
+
+
+        @Override
+        protected List<PlaylistItem> doInBackground(Object[] params) {
+            youtube = new YouTube.Builder(new NetHttpTransport(),
+                    new JacksonFactory(), new HttpRequestInitializer() {
+                @Override
+                public void initialize(HttpRequest hr) throws IOException {
+                }
+            }).setApplicationName("BeatMyRun").build();
+
+            YouTube.Channels.List channelRequest = null;
+            try {
+                channelRequest = youtube.channels().list("contentDetails");
+                System.out.println("oauth_token in getYoutubeList!!!!!!!!!!!!!!!!!!!!!!!!!" + oauth_token);
+                channelRequest.setOauthToken(oauth_token);
+                channelRequest.setMine(true);
+                channelRequest.setKey(browser_API_KEY);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            // In the API response, only include channel information needed
+            // for this use case.
+            ChannelListResponse channelResult = null;
+            try {
+                channelResult = channelRequest.execute();
+                System.out.println("channelResult"+channelResult);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            List<Channel> channelsList = channelResult.getItems();
+
+            String channelId = null;
+            if (channelsList != null) {
+                // The user's default channel is the first item in the list.
+                Channel channel = channelsList.get(0);
+                channelId = channel.getId();
+
+                System.out.println("CHANNEL ID" + channelId);
+                String likesId = channel.getContentDetails().getRelatedPlaylists().getLikes();
+                String historyId = channel.getContentDetails().getRelatedPlaylists().getWatchHistory();
+                System.out.println("Likes ID" + likesId);
+                System.out.println("history ID" + historyId);
+
+
+                // Define the API request for retrieving search results.
+                /*YouTube.Playlists.List getPlaylistRequest = null;
+                try {
+                    getPlaylistRequest = youtube.playlists().list("id,status,snippet");
+                    getPlaylistRequest.setOauthToken(oauth_token);
+                    System.out.println("IN GET PLAYLISTS" + oauth_token);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                getPlaylistRequest.setMine(true);
+                getPlaylistRequest.setKey(browser_API_KEY);
+                PlaylistListResponse playlistListResponse = null;
+                System.out.println("IN GET PLAYLISTS request" + getPlaylistRequest);
+                try {
+                    playlistListResponse = getPlaylistRequest.execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                List<Playlist> playLists = playlistListResponse.getItems();
+
+
+
+                if (playLists != null) {
+
+                    for (Playlist playList : playLists) {
+                        String playlistId = playList.getId();
+                        System.out.println("PlaylistId = " + playlistId);*/
+                List<PlaylistItem> playlistItemList = new ArrayList<PlaylistItem>();
+                YouTube.PlaylistItems.List playlistItemRequest = null;
+                try {
+                    playlistItemRequest = youtube.playlistItems().list("snippet");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                playlistItemRequest.setPlaylistId(likesId);
+                playlistItemRequest.setKey(browser_API_KEY);
+                playlistItemRequest.setOauthToken(oauth_token);
+                PlaylistItemListResponse playlistListItemResponse = null;
+
+                try {
+                    playlistListItemResponse = playlistItemRequest.execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                playlistItemList.addAll(playlistListItemResponse.getItems());
+
+                String nextToken = playlistListItemResponse.getNextPageToken();
+
+                // Call the API one or more times to retrieve all items in the
+                // list. As long as the API response returns a nextPageToken,
+                // there are still more items to retrieve.
+                do {
+                    playlistItemRequest.setPageToken(nextToken);
+                    PlaylistItemListResponse playlistItemResult = null;
+                    try {
+                        playlistItemResult = playlistItemRequest.execute();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    playlistItemList.addAll(playlistItemResult.getItems());
+
+                    nextToken = playlistItemResult.getNextPageToken();
+                } while (nextToken != null);
+
+                Iterator it = playlistItemList.iterator();
+
+                while (it.hasNext()) {
+                    PlaylistItem playlistItem = (PlaylistItem)it.next();
+                    System.out.println(" video name  = " + playlistItem.getSnippet().getResourceId().getVideoId());
+                    System.out.println("\n-------------------------------------------------------------\n");
+                }
+
+                // Prints information about the results.
+                return playlistItemList;
+            }
+
+            return null;
+
+        }
+    }
+
+
+    /**
+     * This method is a hook for background threads and async tasks that need to
+     * provide the user a response UI when an exception occurs.
+     */
+
+    private static final int REQ_SIGN_IN_REQUIRED = 55664;
+
+
+    private class RetrieveTokenTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String accountName = params[0];
+            String scopes = "oauth2:https://www.googleapis.com/auth/youtube.force-ssl";
+            String token = null;
+            try {
+                token = GoogleAuthUtil.getToken(getApplicationContext(), accountName, scopes);
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
+            } catch (UserRecoverableAuthException e) {
+                startActivityForResult(e.getIntent(), REQ_SIGN_IN_REQUIRED);
+            } catch (GoogleAuthException e) {
+                Log.e(TAG, e.getMessage());
+            }
+            return token;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            oauth_token=s;
+            System.out.println("token in RetrieveTokenTask= "+s);
+            new GetYoutubeList().execute();
+
+            super.onPostExecute(s);
+
+        }
+    }
+
+
+
 }

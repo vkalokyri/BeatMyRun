@@ -20,7 +20,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
     public static final String API_KEY = "AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
 
     //http://youtu.be/<VIDEO_ID>
-    public static final String VIDEO_ID = "dKLftgvYsVU";
+    public static final String VIDEO_ID = "pY9b6jgbNyc";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
 
     @Override
     public void onInitializationFailure(Provider provider, YouTubeInitializationResult result) {
-        Toast.makeText(this, "Failured to Initialize!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Failure to Initialize!", Toast.LENGTH_LONG).show();
     }
 
     @Override
