@@ -67,10 +67,10 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.run_main);
 
-        playlist.add("bHstrfWB-V0");
-        playlist.add("oFUYnR90c3s");
-        playlist.add("pY9b6jgbNyc");
-        playlist.add("GemKqzILV4w");
+//        playlist.add("bHstrfWB-V0");
+//        playlist.add("oFUYnR90c3s");
+//        playlist.add("pY9b6jgbNyc");
+//        playlist.add("GemKqzILV4w");
         VIDEO_ID = playlist.get(0);
 
 
