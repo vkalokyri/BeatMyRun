@@ -1,100 +1,94 @@
-\begin{sideways} GUIGenerator \end{sideways} & \begin{sideways} SelectionDetector \end{sideways} & \begin{sideways} GoogleAuthenticator \end{sideways} & \begin{sideways} GoogleDataDownloader \end{sideways} & \begin{sideways} GoogleAccountKeeper \end{sideways} & \begin{sideways} Disconnector \end{sideways} & \begin{sideways} PersonalDetailsKeeper \end{sideways} & \begin{sideways} ProfilePictureUploader \end{sideways} & \begin{sideways} AccountController \end{sideways} & \begin{sideways} DatabaseManager \end{sideways} & \begin{sideways} EchonestAPIConnector \end{sideways} & \begin{sideways} Controller \end{sideways} & \begin{sideways} SongInfoKeeper \end{sideways} & \begin{sideways} RunController \end{sideways} & \begin{sideways} AccelerometerController \end{sideways} & \begin{sideways} RunInfoKeeper \end{sideways} & package edu.rutgers.cs.rahul.helloworld;
+package edu.rutgers.cs.rahul.helloworld;
 
-        import android.content.Context;
-        import android.hardware.Sensor;
-        import android.hardware.SensorEvent;
-        import android.hardware.SensorEventListener;
-        import android.hardware.SensorManager;
-        import android.os.Bundle;
-        import android.os.SystemClock;
-        import android.support.design.widget.FloatingActionButton;
-        import android.support.design.widget.Snackbar;
-        import android.support.v7.app.AppCompatActivity;
-        import android.support.v7.widget.Toolbar;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.TextView;
-        import android.os.Handler;
-        import com.google.android.youtube.player.YouTubeBaseActivity;
-        import com.google.android.youtube.player.YouTubeInitializationResult;
-        import com.google.android.youtube.player.YouTubePlayer;
-        import com.google.android.youtube.player.YouTubePlayerFragment;
-        import com.google.android.youtube.player.YouTubePlayerView;
-        import com.google.android.youtube.player.YouTubePlayer.Provider;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.os.Handler;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
 
-        import android.os.Bundle;
-        import android.widget.Toast;
-        import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
+import android.content.Intent;
 
-        import org.w3c.dom.Text;
+import org.w3c.dom.Text;
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
 
-        <<<<<<< HEAD
 public class MainActivity extends YouTubeBaseActivity implements SensorEventListener,YouTubePlayer.OnInitializedListener, YouTubePlayer.PlaybackEventListener{
-    =======
-    //Beat My Run
-//Something else
-    public class MainActivity extends AppCompatActivity implements SensorEventListener{
-        >>>>>>> 696c46e92f242de514acd2b1c310a0351c85ed35
 
-        private TextView timer_label, bpm_label, num_steps_label;
-        private Button next_song;
-        private SensorManager sensor_manager;
-        private Sensor step_counter;
-        private Sensor step_detector;
-        private long start_time = 0L;
-        private long number_of_steps = -1L;
-        private long number_of_steps_offset = 0L;
-        private boolean is_running = false;
-        private Handler timer_handler = new Handler();
+    private TextView timer_label, bpm_label, num_steps_label;
+    private Button next_song;
+    private SensorManager sensor_manager;
+    private Sensor step_counter;
+    private Sensor step_detector;
+    private long start_time = 0L;
+    private long number_of_steps = -1L;
+    private long number_of_steps_offset = 0L;
+    private boolean is_running = false;
+    private Handler timer_handler = new Handler();
 
-        private boolean run_start = true;
+    private boolean run_start = true;
 
-        YouTubePlayer g_player;
-        long last_stopped_time = 0;
+    YouTubePlayer g_player;
+    long last_stopped_time = 0;
 
-        TextView fab;
+    TextView fab;
 
-        //###################################################
+    //###################################################
 
-        public static final String DEVELOPER_KEY = "AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
-        private static final int RECOVERY_DIALOG_REQUEST = 1;
-        private String VIDEO_ID ;//= "pY9b6jgbNyc";
-        private ArrayList<String> playlist = new ArrayList<String>();
+    public static final String DEVELOPER_KEY = "AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
+    private String VIDEO_ID ;//= "pY9b6jgbNyc";
+    private ArrayList<String> playlist = new ArrayList<String>();
 
 
-        YouTubePlayerFragment myYouTubePlayerFragment;
-        MainActivity this_obj;
+    YouTubePlayerFragment myYouTubePlayerFragment;
+    MainActivity this_obj;
 
 
-        private void reset_counters()
-        {
-            start_time = SystemClock.uptimeMillis();
-            number_of_steps = 0L;
-        }
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+    private void reset_counters()
+    {
+        start_time = SystemClock.uptimeMillis();
+        number_of_steps = 0L;
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-            playlist.add("bHstrfWB-V0");
-            playlist.add("oFUYnR90c3s");
-            playlist.add("pY9b6jgbNyc");
-            playlist.add("GemKqzILV4w");
-            VIDEO_ID = playlist.get(0);
+        playlist.add("bHstrfWB-V0");
+        playlist.add("oFUYnR90c3s");
+        playlist.add("pY9b6jgbNyc");
+        playlist.add("GemKqzILV4w");
+        VIDEO_ID = playlist.get(0);
 
 
-            myYouTubePlayerFragment = (YouTubePlayerFragment)getFragmentManager()
-                    .findFragmentById(R.id.youtubeplayerfragment);
-            myYouTubePlayerFragment.initialize(DEVELOPER_KEY, this);
-            this_obj = this;
+        myYouTubePlayerFragment = (YouTubePlayerFragment)getFragmentManager()
+                .findFragmentById(R.id.youtubeplayerfragment);
+        myYouTubePlayerFragment.initialize(DEVELOPER_KEY, this);
+        this_obj = this;
 
-            fab = (TextView) findViewById(R.id.fab);
+        fab = (TextView) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -127,248 +121,248 @@ public class MainActivity extends YouTubeBaseActivity implements SensorEventList
 //        });
 
 
-            bpm_label = (TextView) findViewById(R.id.BPM);
-            timer_label = (TextView) findViewById(R.id.timer);
+        bpm_label = (TextView) findViewById(R.id.BPM);
+        timer_label = (TextView) findViewById(R.id.timer);
 
-            timer_label.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String message;
-                    if (is_running)
-                    {
-                        timer_handler.removeCallbacks(update_timer);
-                        message = "Stopped the run.";
+        timer_label.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String message;
+                if (is_running)
+                {
+                    timer_handler.removeCallbacks(update_timer);
+                    message = "Stopped the run.";
 //                    fab.setImageResource(android.R.drawable.ic_media_play);
 //                    fab.setText("Stop");
-                        g_player.pause();
-                        is_running = false;
-                        run_start = true;
+                    g_player.pause();
+                    is_running = false;
+                    run_start = true;
 
-                    }
-                    else
-                    {
-                        reset_counters();
-                        timer_handler.postDelayed(update_timer, 0);
-                        message = "Started the run";
+                }
+                else
+                {
+                    reset_counters();
+                    timer_handler.postDelayed(update_timer, 0);
+                    message = "Started the run";
 //                    number_of_steps_offset = number_of_steps;
 //                    fab.setImageResource(android.R.drawable.ic_media_pause);
 //                    fab.setText("Stop");
-                        g_player.play();
-                        is_running = true;
-                    }
+                    g_player.play();
+                    is_running = true;
+                }
 //                Snackbar.make(view, message, Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 
 
-                }
-            });
+            }
+        });
 
 
-            num_steps_label = (TextView) findViewById(R.id.num_steps);
-            next_song = (Button) findViewById(R.id.next_song);
+        num_steps_label = (TextView) findViewById(R.id.num_steps);
+        next_song = (Button) findViewById(R.id.next_song);
 
-            next_song.setOnClickListener(new Button.OnClickListener()
-            {
-                @Override
-                public void onClick(View v) {
-                    loadNextSong();
-                }
-            });
-            sensor_manager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-            step_counter = sensor_manager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-            step_detector = sensor_manager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-
-
-
-
-        }
-
-
-        public void loadNextSong()
+        next_song.setOnClickListener(new Button.OnClickListener()
         {
-            int index = (playlist.indexOf(VIDEO_ID)+1)%playlist.size();
-            VIDEO_ID = playlist.get(index);
-            System.out.println("Playing video "+index+" : "+VIDEO_ID);
+            @Override
+            public void onClick(View v) {
+                loadNextSong();
+            }
+        });
+        sensor_manager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        step_counter = sensor_manager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        step_detector = sensor_manager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+
+
+
+
+    }
+
+
+    public void loadNextSong()
+    {
+        int index = (playlist.indexOf(VIDEO_ID)+1)%playlist.size();
+        VIDEO_ID = playlist.get(index);
+        System.out.println("Playing video "+index+" : "+VIDEO_ID);
 //        g_player.cueVideo(VIDEO_ID);
 //        g_player.play();
-            last_stopped_time = SystemClock.uptimeMillis();
-            g_player.loadVideo(VIDEO_ID);
-        }
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.menu_main, menu);
+        last_stopped_time = SystemClock.uptimeMillis();
+        g_player.loadVideo(VIDEO_ID);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
             return true;
         }
 
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
+        return super.onOptionsItemSelected(item);
+    }
 
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {
-                return true;
-            }
 
-            return super.onOptionsItemSelected(item);
+    @Override
+    public void onSensorChanged(SensorEvent event)
+    {
+        Sensor sensor = event.sensor;
+        float[] values = event.values;
+        int value = -1;
+
+        if (values.length > 0) {
+            value = (int) values[0];
         }
 
-
-        @Override
-        public void onSensorChanged(SensorEvent event)
-        {
-            Sensor sensor = event.sensor;
-            float[] values = event.values;
-            int value = -1;
-
-            if (values.length > 0) {
-                value = (int) values[0];
-            }
-
-            if (sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-                if(run_start && value>0)
-                {
-                    number_of_steps_offset = value;
-                    run_start = false;
-                }
-                number_of_steps = value;
-            } else if (sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
-                // For test only. Only allowed value is 1.0 i.e. for step taken
-//            detector_label.setText("Step Detector : " + value);
-            }
-        }
-
-        @Override
-        protected void onResume() {
-
-            super.onResume();
-
-            sensor_manager.registerListener(this, step_counter,
-
-                    SensorManager.SENSOR_DELAY_FASTEST);
-            sensor_manager.registerListener(this, step_detector,
-
-                    SensorManager.SENSOR_DELAY_FASTEST);
-
-        }
-
-        @Override
-        protected void onStop() {
-            super.onStop();
-            sensor_manager.unregisterListener(this, step_counter);
-            sensor_manager.unregisterListener(this, step_detector);
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // TODO Auto-generated method stub
-
-        }
-
-        private Runnable update_timer = new Runnable() {
-            @Override
-            public void run() {
-                long time_in_ms = SystemClock.uptimeMillis() - start_time;
-                int secs = (int) (time_in_ms / 1000);
-                int mins = secs / 60;
-                secs = secs % 60;
-                int milliseconds = (int) (time_in_ms % 1000);
-//            timer_label.setPadding(timer_label.getPaddingLeft(),50, timer_label.getPaddingRight(), timer_label.getPaddingBottom());
-                timer_label.setText("" + mins + ":"  + String.format("%02d", secs) + ":" + String.format("%02d", milliseconds/10));
-
-                long steps = (number_of_steps - number_of_steps_offset);
-                if (steps<0) {
-                    steps = 0;
-                }
-                double bpm = ( steps/ (double)time_in_ms) * 1000 * 60;
-                bpm_label.setText(String.format( "%.02f", bpm));
-//            bpm_label.setText(number_of_steps_offset + " : " + number_of_steps);
-                num_steps_label.setText(steps + "");
-
-                timer_handler.postDelayed(this, 0);
-
-            }
-        };
-
-        //###################################################################################
-
-
-        @Override
-        public void onInitializationFailure(YouTubePlayer.Provider provider,
-                                            YouTubeInitializationResult errorReason) {
-            if (errorReason.isUserRecoverableError()) {
-                errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
-            } else {
-                String errorMessage = String.format(
-                        "There was an error initializing the YouTubePlayer (%1$s)",
-                        errorReason.toString());
-                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
-            }
-        }
-
-        @Override
-        public void onInitializationSuccess(Provider provider, YouTubePlayer player,
-                                            boolean wasRestored) {
-            if (!wasRestored) {
-                g_player = player;
-                player.setManageAudioFocus(false);
-                player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
-                player.setPlaybackEventListener(this_obj);
-                player.loadVideo(VIDEO_ID);
-            }
-        }
-
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-            if (requestCode == RECOVERY_DIALOG_REQUEST) {
-                // Retry initialization if user performed a recovery action
-                getYouTubePlayerProvider().initialize(DEVELOPER_KEY, this);
-            }
-        }
-
-        protected YouTubePlayer.Provider getYouTubePlayerProvider() {
-            return (YouTubePlayerView)findViewById(R.id.youtubeplayerfragment);
-        }
-
-
-        @Override
-        public void onPlaying() {
-            System.out.println("Playing");
-//        g_player.play();
-        }
-
-        @Override
-        public void onPaused() {
-            System.out.println("Paused");
-//        g_player.pause();
-        }
-
-        @Override
-        public void onStopped() {
-            long current_time = SystemClock.uptimeMillis();
-            if((current_time - last_stopped_time)/1000<3)
+        if (sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+            if(run_start && value>0)
             {
-                last_stopped_time = current_time;
-                return;
+                number_of_steps_offset = value;
+                run_start = false;
             }
-            last_stopped_time = current_time;
-            System.out.println("Stopped");
-            if(is_running) {
-                loadNextSong();
-            }
-        }
-
-        @Override
-        public void onBuffering(boolean b) {
-
-        }
-
-        @Override
-        public void onSeekTo(int i) {
-
+            number_of_steps = value;
+        } else if (sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            // For test only. Only allowed value is 1.0 i.e. for step taken
+//            detector_label.setText("Step Detector : " + value);
         }
     }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        sensor_manager.registerListener(this, step_counter,
+
+                SensorManager.SENSOR_DELAY_FASTEST);
+        sensor_manager.registerListener(this, step_detector,
+
+                SensorManager.SENSOR_DELAY_FASTEST);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        sensor_manager.unregisterListener(this, step_counter);
+        sensor_manager.unregisterListener(this, step_detector);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // TODO Auto-generated method stub
+
+    }
+
+    private Runnable update_timer = new Runnable() {
+        @Override
+        public void run() {
+            long time_in_ms = SystemClock.uptimeMillis() - start_time;
+            int secs = (int) (time_in_ms / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            int milliseconds = (int) (time_in_ms % 1000);
+            timer_label.setPadding(timer_label.getPaddingLeft(),25, timer_label.getPaddingRight(), timer_label.getPaddingBottom());
+            timer_label.setText("" + mins + ":"  + String.format("%02d", secs) + "\n" + String.format("%02d", milliseconds/10));
+
+            long steps = (number_of_steps - number_of_steps_offset);
+            if (steps<0) {
+                steps = 0;
+            }
+            double bpm = ( steps/ (double)time_in_ms) * 1000 * 60;
+            bpm_label.setText(String.format( "%.02f", bpm));
+//            bpm_label.setText(number_of_steps_offset + " : " + number_of_steps);
+            num_steps_label.setText(steps + "");
+
+            timer_handler.postDelayed(this, 0);
+
+        }
+    };
+
+    //###################################################################################
+
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                        YouTubeInitializationResult errorReason) {
+        if (errorReason.isUserRecoverableError()) {
+            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
+        } else {
+            String errorMessage = String.format(
+                    "There was an error initializing the YouTubePlayer (%1$s)",
+                    errorReason.toString());
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onInitializationSuccess(Provider provider, YouTubePlayer player,
+                                        boolean wasRestored) {
+        if (!wasRestored) {
+            g_player = player;
+            player.setManageAudioFocus(false);
+            player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+            player.setPlaybackEventListener(this_obj);
+            player.loadVideo(VIDEO_ID);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == RECOVERY_DIALOG_REQUEST) {
+            // Retry initialization if user performed a recovery action
+            getYouTubePlayerProvider().initialize(DEVELOPER_KEY, this);
+        }
+    }
+
+    protected YouTubePlayer.Provider getYouTubePlayerProvider() {
+        return (YouTubePlayerView)findViewById(R.id.youtubeplayerfragment);
+    }
+
+
+    @Override
+    public void onPlaying() {
+        System.out.println("Playing");
+//        g_player.play();
+    }
+
+    @Override
+    public void onPaused() {
+        System.out.println("Paused");
+//        g_player.pause();
+    }
+
+    @Override
+    public void onStopped() {
+        long current_time = SystemClock.uptimeMillis();
+        if((current_time - last_stopped_time)/1000<3)
+        {
+            last_stopped_time = current_time;
+            return;
+        }
+        last_stopped_time = current_time;
+        System.out.println("Stopped");
+        if(is_running) {
+            loadNextSong();
+        }
+    }
+
+    @Override
+    public void onBuffering(boolean b) {
+
+    }
+
+    @Override
+    public void onSeekTo(int i) {
+
+    }
+}
