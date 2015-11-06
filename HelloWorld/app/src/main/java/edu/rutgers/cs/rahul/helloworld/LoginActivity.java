@@ -54,6 +54,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import edu.rutgers.cs.rahul.helloworld.PlayList;
+
 
 /**
  * Created by valia on 10/30/15.
@@ -103,6 +105,7 @@ public class LoginActivity extends Activity implements
     private boolean mShouldResolve = false;
     // [END resolution_variables]
 
+    private PlayList staticProjectPlayList = new PlayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -575,6 +578,9 @@ public class LoginActivity extends Activity implements
                     PlaylistItem playlistItem = (PlaylistItem)it.next();
                     System.out.println(" video name  = " + playlistItem.getSnippet().getResourceId().getVideoId());
                     System.out.println("\n-------------------------------------------------------------\n");
+                    //Updating the playlist item
+                    staticProjectPlayList.add(playlistItem.getSnippet().getResourceId().getVideoId(), 0, playlistItem);
+
                 }
 
                 // Prints information about the results.

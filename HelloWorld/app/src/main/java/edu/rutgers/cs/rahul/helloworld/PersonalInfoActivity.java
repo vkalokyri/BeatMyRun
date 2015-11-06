@@ -63,12 +63,14 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
 
             public void onClick(View arg0) {
 
-                if (mGoogleApiClient.isConnected()) {
-                    Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-                    mGoogleApiClient.disconnect();
-                    System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
-                }
-                Intent nextScreen = new Intent(getApplicationContext(), LoginActivity.class);
+//                if (mGoogleApiClient.isConnected()) {
+//                    Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+//                    mGoogleApiClient.disconnect();
+//                    System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
+//                }
+//                Intent nextScreen = new Intent(getApplicationContext(), LoginActivity.class);
+
+                Intent nextScreen = new Intent(getApplicationContext(), RunActivity.class);
 
                 //Sending data to another Activity
                 startActivity(nextScreen);
