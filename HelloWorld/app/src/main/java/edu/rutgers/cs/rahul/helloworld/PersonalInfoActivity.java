@@ -72,7 +72,7 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
                 //Intent nextScreen = new Intent(getApplicationContext(), LoginActivity.class);
 
                 Intent nextScreen = new Intent(getApplicationContext(), RunActivity.class);
-
+                RunActivity.start_run();
                 //Sending data to another Activity
                 startActivity(nextScreen);
 

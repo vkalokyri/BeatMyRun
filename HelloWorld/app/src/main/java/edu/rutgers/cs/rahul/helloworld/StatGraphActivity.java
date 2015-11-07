@@ -96,7 +96,7 @@ public class StatGraphActivity extends Activity {
 
         int[] x = { 0,1,2,3,4,5,6 };
 
-        int[] mile = { 2000,2500,2700,3000,2800,3500,3700};
+        float[] mile = { 2f,2.5f,2.8f,3,1.5f,0,0.5f};
 
 
 
@@ -219,7 +219,7 @@ public class StatGraphActivity extends Activity {
         // setting y axis max value, Since i'm using static values inside the graph so i'm setting y max value to 4000.
 
         // if you use dynamic values then get the max y value and set here
-        multiRenderer.setYAxisMax(4000);
+        multiRenderer.setYAxisMax(5);
         //setting used to move the graph on xaxiz to .5 to the right
         multiRenderer.setXAxisMin(-0.5);
 //setting max values to be display in x axis
@@ -264,7 +264,7 @@ public class StatGraphActivity extends Activity {
 
         int[] x = { 0,1,2,3,4,5,6};
 
-        int[] calorie = { 2000,2500,2700,3000,2800,3500,3700};
+        int[] calorie = { 210,300,100,547,375,0,370};
 
         //int[] expense = {2200, 2700, 2900, 2800, 2600, 3000, 3300, 3400, 0, 0, 0, 0 };
 // Creating an XYSeries for Income
@@ -384,7 +384,7 @@ public class StatGraphActivity extends Activity {
         // setting y axis max value, Since i'm using static values inside the graph so i'm setting y max value to 4000.
 
         // if you use dynamic values then get the max y value and set here
-        multiRenderer.setYAxisMax(4000);
+        multiRenderer.setYAxisMax(1000);
         //setting used to move the graph on xaxiz to .5 to the right
         multiRenderer.setXAxisMin(-1);
 //setting max values to be display in x axis
@@ -436,7 +436,7 @@ public class StatGraphActivity extends Activity {
 
         int[] x = { 0,1,2,3,4,5,6};
 
-        int[] time = { 2000,2500,2700,3000,2800,3500,3700};
+        int[] time = { 55,75,27,30,28,0,37};
 
         //int[] expense = {2200, 2700, 2900, 2800, 2600, 3000, 3300, 3400, 0, 0, 0, 0 };
 // Creating an XYSeries for Income
@@ -508,7 +508,7 @@ public class StatGraphActivity extends Activity {
 
         multiRenderer.setXTitle("Period");
 
-        multiRenderer.setYTitle("Time");
+        multiRenderer.setYTitle("Minutes");
 
         /***
 
@@ -590,7 +590,7 @@ public class StatGraphActivity extends Activity {
         // setting y axis max value, Since i'm using static values inside the graph so i'm setting y max value to 4000.
 
         // if you use dynamic values then get the max y value and set here
-        multiRenderer.setYAxisMax(4000);
+        multiRenderer.setYAxisMax(100);
         //setting used to move the graph on xaxiz to .5 to the right
         multiRenderer.setXAxisMin(-1);
 //setting max values to be display in x axis
@@ -642,7 +642,7 @@ public class StatGraphActivity extends Activity {
     {
         int[] x = { 0,1,2,3,4,5,6,7,8,9,10,11};
 
-        int[] mile = { 2000,2500,2700,3000,2800,3500,3700,3800,3900,4000,4100,4200};
+        int[] mile = { 23, 31, 49, 66, 13, 31, 28, 33, 61, 10, 84, 62};
 
         // int[] expense = {2200, 2700, 2900, 2800, 2600, 3000, 3300, 3400, 0, 0, 0, 0 };
 // Creating an XYSeries for Income
@@ -796,7 +796,7 @@ public class StatGraphActivity extends Activity {
         // setting y axis max value, Since i'm using static values inside the graph so i'm setting y max value to 4000.
 
         // if you use dynamic values then get the max y value and set here
-        multiRenderer.setYAxisMax(4000);
+        multiRenderer.setYAxisMax(100);
         //setting used to move the graph on xaxiz to .5 to the right
         multiRenderer.setXAxisMin(-0.5);
 //setting max values to be display in x axis
@@ -848,7 +848,7 @@ public class StatGraphActivity extends Activity {
 
         int[] x = { 0,1,2,3,4,5,6,7,8,9,10,11};
 
-        int[] calorie = { 2000,2500,2700,3000,2800,3500,3700,3800,3900,4000,4100,4200};
+        int[] calorie = { 2000,2500,2070,3000,2080,3500,3700,3800,3900,4000,4010,4200};
 
         //int[] expense = {2200, 2700, 2900, 2800, 2600, 3000, 3300, 3400, 0, 0, 0, 0 };
 // Creating an XYSeries for Income
@@ -1002,7 +1002,7 @@ public class StatGraphActivity extends Activity {
         // setting y axis max value, Since i'm using static values inside the graph so i'm setting y max value to 4000.
 
         // if you use dynamic values then get the max y value and set here
-        multiRenderer.setYAxisMax(4000);
+        multiRenderer.setYAxisMax(5000);
         //setting used to move the graph on xaxiz to .5 to the right
         multiRenderer.setXAxisMin(-1);
 //setting max values to be display in x axis
@@ -1054,7 +1054,7 @@ public class StatGraphActivity extends Activity {
 
         int[] x = { 0,1,2,3,4,5,6,7,8,9,10,11};
 
-        int[] time = { 2000,2500,2700,3000,2800,3500,3700,3800,3900,4000,4100,4200};
+        int[] time = { 201,235,217,331,228,355,371,382,304,420,411,642};
 
         //int[] expense = {2200, 2700, 2900, 2800, 2600, 3000, 3300, 3400, 0, 0, 0, 0 };
 // Creating an XYSeries for Income
@@ -1208,7 +1208,7 @@ public class StatGraphActivity extends Activity {
         // setting y axis max value, Since i'm using static values inside the graph so i'm setting y max value to 4000.
 
         // if you use dynamic values then get the max y value and set here
-        multiRenderer.setYAxisMax(4000);
+        multiRenderer.setYAxisMax(500);
         //setting used to move the graph on xaxiz to .5 to the right
         multiRenderer.setXAxisMin(-1);
 //setting max values to be display in x axis

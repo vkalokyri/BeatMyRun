@@ -33,12 +33,13 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
     private SensorManager sensor_manager;
     private Sensor step_counter;
     private Sensor step_detector;
-    private long start_time = 0L;
-    private long number_of_steps = -1L;
+    private static long start_time = 0L;
+    private static long number_of_steps = -1L;
     private long number_of_steps_offset = 0L;
-    private boolean is_running = false;
+    private static boolean is_running = false;
     private Handler timer_handler = new Handler();
-    private boolean run_start = true;
+    private static boolean run_start = true;
+    private static boolean run_start_reset_flag = true;
     YouTubePlayer g_player;
     long last_stopped_time = 0;
     TextView fab;
@@ -54,11 +55,19 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
     RunActivity this_obj;
 
 
-
-
-
-    private void reset_counters()
+    public static void start_run()
     {
+        run_start = true;
+        run_start_reset_flag = true;
+        is_running = false;
+
+        System.out.println("Starting the run");
+    }
+
+
+    public static void reset_counters()
+    {
+        System.out.println("Resetting counters");
         start_time = SystemClock.uptimeMillis();
         number_of_steps = 0L;
     }
@@ -67,10 +76,6 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.run_main);
 
-//        playlist.add("bHstrfWB-V0");
-//        playlist.add("oFUYnR90c3s");
-//        playlist.add("pY9b6jgbNyc");
-//        playlist.add("GemKqzILV4w");
         VIDEO_ID = playlist.get(0);
 
 
@@ -89,19 +94,22 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                 String message;
                 if (is_running)
                 {
-                    timer_handler.removeCallbacks(update_timer);
+                    timer_handler.removeCallbacks(update_timer);timer_handler.removeCallbacks(update_timer);
                     message = "Stopped the run.";
                     System.out.println("Stopped the run");
 //                    fab.setImageResource(android.R.drawable.ic_media_play);
 //                    fab.setText("Stop");
                     g_player.pause();
                     is_running = false;
-                    run_start = true;
+//                    run_start = true;
 
                 }
                 else
                 {
-                    reset_counters();
+                    if(run_start_reset_flag) {
+                        reset_counters();
+                        run_start_reset_flag = false;
+                    }
                     timer_handler.postDelayed(update_timer, 0);
                     message = "Started the run";
                     System.out.println("Started the run");
@@ -121,6 +129,9 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+               timer_handler.removeCallbacks(update_timer);
+                reset_counters();
+                start_run();
                Intent intent =new Intent(getApplicationContext(), ChallengeActivity.class);
                 startActivity(intent);
 
@@ -195,6 +206,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
         if (sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
             if(run_start && value>0)
             {
+                System.out.println("Calculating steps offset");
                 number_of_steps_offset = value;
                 run_start = false;
             }
@@ -259,7 +271,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
 
     @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider,
+    public void onInitializationFailure(Provider provider,
                                         YouTubeInitializationResult errorReason) {
         if (errorReason.isUserRecoverableError()) {
             errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
@@ -294,7 +306,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
         }
     }
 
-    protected YouTubePlayer.Provider getYouTubePlayerProvider() {
+    protected Provider getYouTubePlayerProvider() {
         return (YouTubePlayerView)findViewById(R.id.youtubeplayerfragment);
     }
 

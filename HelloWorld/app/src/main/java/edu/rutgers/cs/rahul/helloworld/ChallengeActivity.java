@@ -67,7 +67,7 @@ public class ChallengeActivity extends ListActivity  implements android.view.Vie
                 ListAdapter adapter = new SimpleAdapter( ChallengeActivity.this,studentList, R.layout.view_student_entry, new String[] { "id","name"}, new int[] {R.id.student_Id, R.id.student_name});
                 setListAdapter(adapter);
             }else{
-                Toast.makeText(this,"No student!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"No challenges!",Toast.LENGTH_SHORT).show();
             }
 
         }
