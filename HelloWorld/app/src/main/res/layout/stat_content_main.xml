@@ -56,8 +56,10 @@
         android:layout_height="wrap_content"
         android:text="Back"
         android:id="@+id/button3"
-        android:layout_below="@+id/chart2"
-        android:layout_alignStart="@+id/chart2"
-        android:onClick="onClick" />
+        android:onClick="onClick"
+        android:layout_below="@+id/chart1"
+        android:layout_centerHorizontal="true"
+        android:background="#ffbb0c0c"
+        android:textColor="#fff" />
 
 </RelativeLayout>
