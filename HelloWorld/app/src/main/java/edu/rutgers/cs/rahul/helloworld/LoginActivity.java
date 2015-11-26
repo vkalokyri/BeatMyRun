@@ -1,9 +1,7 @@
 package edu.rutgers.cs.rahul.helloworld;
 
 import android.Manifest;
-import android.accounts.AccountManager;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -15,19 +13,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.echonest.api.v4.EchoNestAPI;
+import com.echonest.api.v4.EchoNestException;
+import com.echonest.api.v4.Params;
+import com.echonest.api.v4.Song;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
 import com.google.android.gms.auth.UserRecoverableAuthException;
-import com.google.android.gms.common.AccountPicker;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.Scopes;
@@ -38,23 +34,22 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
+import org.apache.http.HttpResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTubeScopes;
 import com.google.api.services.youtube.model.Channel;
 import com.google.api.services.youtube.model.ChannelListResponse;
-import com.google.api.services.youtube.model.Playlist;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemListResponse;
-import com.google.api.services.youtube.model.PlaylistListResponse;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import edu.rutgers.cs.rahul.helloworld.PlayList;
 
 
 /**
@@ -71,6 +66,7 @@ public class LoginActivity extends Activity implements
     public static final String browser_API_KEY = "AIzaSyAKt7_kz7pK42CQs74WUD5dmpCSiVE94cQ";
     public static final String oauth_key = "661591512723-bm18diefo4qeltgsbp1j84qubvv17glt.apps.googleusercontent.com";
     public static String oauth_token;
+    public static final String echonest_API_key = "TBFADK1MYMBWRRNHV";
 
     /* RequestCode for resolutions involving sign-in */
     private static final int RC_SIGN_IN = 1;
@@ -90,6 +86,8 @@ public class LoginActivity extends Activity implements
     public static GoogleApiClient mGoogleApiClient;
     String mEmail; // Received from newChooseAccountIntent(); passed to getToken()
     String SCOPE = "oauth2:https://www.googleapis.com/auth/youtube.force-ssl";
+
+    private static HttpConnector connector=new HttpConnector();
 
     private static YouTube youtube;
 
@@ -179,6 +177,9 @@ public class LoginActivity extends Activity implements
                     System.out.println("email = " + currentAccount);
                     this.mEmail = currentAccount;
                     //Sending data to another Activity
+
+                    new insertUser().execute(name, currentAccount, currentPerson.getId());
+
                     nextScreen.putExtra("email", currentAccount);
                     startActivity(nextScreen);
                     AsyncTask<String, Void, String>  authTask = new RetrieveTokenTask().execute(currentAccount);
@@ -576,12 +577,38 @@ public class LoginActivity extends Activity implements
                 } while (nextToken != null);
 
                 Iterator it = playlistItemList.iterator();
+                EchoNestAPI en = new  EchoNestAPI(echonest_API_key);
+
 
                 while (it.hasNext()) {
                     PlaylistItem playlistItem = (PlaylistItem)it.next();
                     //System.out.println(" video name  = " + playlistItem.getSnippet().getResourceId().getVideoId());
                     //System.out.println("\n-------------------------------------------------------------\n");
                     //Updating the playlist item
+                    //System.out.println(playlistItem.getSnippet().getDescription());
+                    String title = playlistItem.getSnippet().getTitle();
+                    System.out.println("Search for =" +title);
+                    try {
+                        Params p = new Params();
+                        p.add("combined", title);
+                        List<Song> songs = null;
+                        songs = en.searchSongs(p);
+                        if (songs.size()!=0) {
+                            Song resultSong = songs.get(0);
+                            System.out.println("Title=" + resultSong.getTitle());
+                            System.out.println("Artist=" + resultSong.getArtistName());
+                            System.out.println("BPM=" + resultSong.getTempo());
+                            System.out.println("Duration=" + resultSong.getDuration());
+                            System.out.println("Liveness=" + resultSong.getLoudness());
+                            System.out.println("Energy=" + resultSong.getEnergy());
+                            System.out.println("Danceability=" + resultSong.getDanceability());
+
+
+                            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                        }
+                    } catch (EchoNestException e) {
+                        e.printStackTrace();
+                    }
                     staticProjectPlayList.add(playlistItem.getSnippet().getResourceId().getVideoId(), 0, playlistItem);
 
                 }
@@ -592,6 +619,35 @@ public class LoginActivity extends Activity implements
 
             return null;
 
+        }
+    }
+
+
+    private class insertUser extends AsyncTask<String, Void, HttpResponse> {
+
+        @Override
+        protected void onPostExecute(HttpResponse response) {
+
+        }
+
+
+        @Override
+        protected HttpResponse doInBackground(String... args) {
+            String name = null;
+            String email=null;
+            String id=null;
+            try {
+                name = URLEncoder.encode(args[0], "UTF-8");
+                email = URLEncoder.encode(args[1],"UTF-8");
+                id = URLEncoder.encode(args[2],"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            System.out.println("NAMEEEEEEEEEEEEE="+name);
+            System.out.println("EMAILLLLL="+email);
+            System.out.println("ID"+id);
+            String link = "http://10.0.2.2/insertUser.php?name=%27"+name+"%27&email=%27"+email+"%27&id=%27"+id+"%27";
+            return connector.request(link);
         }
     }
 

@@ -1,1 +1,0 @@
-The code of the project exists under the github repository https://github.com/vkalokyri/BeatMyRun. We are not copying it again here so we don't have a duplicate of the whole code in the same repository.
