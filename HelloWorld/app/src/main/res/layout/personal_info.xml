@@ -65,7 +65,7 @@
 
          <TextView android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Height"></TextView>
+        android:text="Height(cm)"></TextView>
 
         <EditText
             android:id="@+id/heightField"
@@ -75,7 +75,7 @@
 
     <TextView android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Weight"></TextView>
+        android:text="Weight(kg)"></TextView>
         <EditText
             android:id="@+id/weightField"
             android:layout_width="fill_parent"

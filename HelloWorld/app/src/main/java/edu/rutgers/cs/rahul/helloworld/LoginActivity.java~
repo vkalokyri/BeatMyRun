@@ -34,8 +34,6 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
-
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -46,9 +44,7 @@ import com.google.api.services.youtube.model.ChannelListResponse;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemListResponse;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -94,7 +90,6 @@ public class LoginActivity extends Activity implements
     private static HttpConnector connector=new HttpConnector();
 
     private static YouTube youtube;
-    Person currentPerson=null;
 
 
     /* View to display current status (signed-in, signed-out, disconnected, etc) */
@@ -165,12 +160,15 @@ public class LoginActivity extends Activity implements
     private void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
             System.out.println("user is signed In");
-            currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+
+            Intent nextScreen = new Intent(getApplicationContext(), PersonalInfoActivity.class);
 
             if (currentPerson != null) {
                 // Show signed-in user's name
                 String name = currentPerson.getDisplayName();
                 System.out.println("USERNAME = " + name);
+                nextScreen.putExtra("username", name);
                 //mStatus.setText(getString(R.string.signed_in_fmt, name));
 
                 // Show users' email address (which requires GET_ACCOUNTS permission)
@@ -180,7 +178,10 @@ public class LoginActivity extends Activity implements
                     this.mEmail = currentAccount;
                     //Sending data to another Activity
 
-                   new insertUser().execute(name, currentAccount, currentPerson.getId());
+                    new insertUser().execute(name, currentAccount, currentPerson.getId());
+
+                    nextScreen.putExtra("email", currentAccount);
+                    startActivity(nextScreen);
                     AsyncTask<String, Void, String>  authTask = new RetrieveTokenTask().execute(currentAccount);
 
                 }
@@ -455,36 +456,15 @@ public class LoginActivity extends Activity implements
     }
 
 
-    private class GetYoutubeList extends AsyncTask<Void, Void, ArrayList<SongInfo>> {
+    private class GetYoutubeList extends AsyncTask {
 
-        protected void onPostExecute(ArrayList<SongInfo> SongsFromEchonestList) {
+        private void onPostExecute(List<PlaylistItem> playlistItemList) {
            System.out.println("I finished with getting the liked videos");
-           for (SongInfo resultSong: SongsFromEchonestList){
-               String youtube_id = resultSong.getYoutube_id();
-               String song_title = resultSong.getTitle();
-               String artist = resultSong.getArtist();
-               double tempo = resultSong.getTempo();
-               double duration = resultSong.getDuration();
-               double liveness = resultSong.getLiveness();
-               double energy = resultSong.getEnergy();
-               double danceability = resultSong.getDanceability();
-               System.out.println("Title=" + resultSong.getTitle());
-               System.out.println("Artist=" + resultSong.getArtist());
-               System.out.println("BPM=" + resultSong.getTempo());
-               System.out.println("Duration=" + resultSong.getDuration());
-               System.out.println("Liveness=" + resultSong.getLiveness());
-               System.out.println("Energy=" + resultSong.getEnergy());
-               System.out.println("Danceability=" + resultSong.getDanceability());
-               System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-
-               new insertSong().execute(youtube_id, song_title, artist, Double.toString(tempo), Double.toString(duration), Double.toString(liveness), Double.toString(energy), Double.toString(danceability));
-
-           }
         }
 
 
         @Override
-        protected ArrayList<SongInfo> doInBackground(Void... params) {
+        protected List<PlaylistItem> doInBackground(Object[] params) {
             youtube = new YouTube.Builder(new NetHttpTransport(),
                     new JacksonFactory(), new HttpRequestInitializer() {
                 @Override
@@ -598,7 +578,7 @@ public class LoginActivity extends Activity implements
 
                 Iterator it = playlistItemList.iterator();
                 EchoNestAPI en = new  EchoNestAPI(echonest_API_key);
-                ArrayList<SongInfo> SongsFromEchonestList = new ArrayList<SongInfo>();
+
 
                 while (it.hasNext()) {
                     PlaylistItem playlistItem = (PlaylistItem)it.next();
@@ -606,7 +586,6 @@ public class LoginActivity extends Activity implements
                     //System.out.println("\n-------------------------------------------------------------\n");
                     //Updating the playlist item
                     //System.out.println(playlistItem.getSnippet().getDescription());
-                    String youtube_id = playlistItem.getSnippet().getResourceId().getVideoId();
                     String title = playlistItem.getSnippet().getTitle();
                     System.out.println("Search for =" +title);
                     try {
@@ -616,15 +595,16 @@ public class LoginActivity extends Activity implements
                         songs = en.searchSongs(p);
                         if (songs.size()!=0) {
                             Song resultSong = songs.get(0);
-                            String song_title = resultSong.getTitle();
-                            String artist = resultSong.getArtistName();
-                            double tempo = resultSong.getTempo();
-                            double duration = resultSong.getDuration();
-                            double liveness = resultSong.getLoudness();
-                            double energy = resultSong.getEnergy();
-                            double danceability = resultSong.getDanceability();
-                            SongInfo song = new SongInfo(youtube_id,song_title, artist, tempo, duration, liveness, energy, danceability);
-                            SongsFromEchonestList.add(song);
+                            System.out.println("Title=" + resultSong.getTitle());
+                            System.out.println("Artist=" + resultSong.getArtistName());
+                            System.out.println("BPM=" + resultSong.getTempo());
+                            System.out.println("Duration=" + resultSong.getDuration());
+                            System.out.println("Liveness=" + resultSong.getLoudness());
+                            System.out.println("Energy=" + resultSong.getEnergy());
+                            System.out.println("Danceability=" + resultSong.getDanceability());
+
+
+                            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                         }
                     } catch (EchoNestException e) {
                         e.printStackTrace();
@@ -634,7 +614,7 @@ public class LoginActivity extends Activity implements
                 }
 
                 // Prints information about the results.
-                return SongsFromEchonestList;
+                return playlistItemList;
             }
 
             return null;
@@ -643,80 +623,11 @@ public class LoginActivity extends Activity implements
     }
 
 
-    private class insertSong extends AsyncTask<String, Void, HttpResponse> {
-
-        @Override
-        protected void onPostExecute(HttpResponse response) {
-
-        }
-
-
-        @Override
-        protected HttpResponse doInBackground(String... args) {
-            String youtube_id = null;
-            String title=null;
-            String artist=null;
-            double tempo = Double.valueOf(args[3]);
-            double duration=Double.valueOf(args[4]);
-            double liveness=Double.valueOf(args[5]);
-            double energy=Double.valueOf(args[6]);
-            double danceability=Double.valueOf(args[7]);
-
-            try {
-                youtube_id = URLEncoder.encode(args[0], "UTF-8");
-                title = URLEncoder.encode(args[1],"UTF-8");
-                artist = URLEncoder.encode(args[2],"UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            String link = "http://10.0.2.2/insertSong.php?id=%27"+youtube_id+"%27&title=%27"+title+"%27&artist=%27"+artist+"%27&tempo=%27"+Double.toString(tempo)+"%27&duration=%27"+Double.toString(duration)+"%27&liveness=%27"+Double.toString(liveness)+"%27&energy=%27"+Double.toString(energy)+"%27&danceability=%27"+Double.toString(danceability)+"%27";
-            return connector.request(link);
-        }
-
-    }
-
-
     private class insertUser extends AsyncTask<String, Void, HttpResponse> {
 
         @Override
         protected void onPostExecute(HttpResponse response) {
-            if (response!=null) {
-                HttpEntity entity = response.getEntity();
 
-                StringBuilder sb = new StringBuilder();
-                try {
-                    BufferedReader reader =
-                            new BufferedReader(new InputStreamReader(entity.getContent()), 65728);
-                    String line = null;
-
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                String res = sb.toString();
-                if (res.equalsIgnoreCase("success")) {
-                    Intent nextScreen = new Intent(getApplicationContext(), PersonalInfoActivity.class);
-                    nextScreen.putExtra("username", currentPerson.getDisplayName());
-                    nextScreen.putExtra("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
-                    startActivity(nextScreen);
-                } else if (res.startsWith("Error:")) {
-                    Intent nextScreen = new Intent(getApplicationContext(), RunActivity.class);
-                    RunActivity.start_run();
-                    //Sending data to another Activity
-                    startActivity(nextScreen);
-                }
-            }else{
-                //user exists in the db
-                Intent nextScreen = new Intent(getApplicationContext(), RunActivity.class);
-                RunActivity.start_run();
-                //Sending data to another Activity
-                startActivity(nextScreen);
-            }
         }
 
 
@@ -735,33 +646,8 @@ public class LoginActivity extends Activity implements
             System.out.println("NAMEEEEEEEEEEEEE="+name);
             System.out.println("EMAILLLLL="+email);
             System.out.println("ID"+id);
-
-            //check if the userAlreadyExists
-            String link = "http://10.0.2.2/getUser.php?id=%27"+id+"%27";
-            HttpEntity entity = connector.request(link).getEntity();
-
-            StringBuilder sb = new StringBuilder();
-            try {
-                BufferedReader reader =
-                        new BufferedReader(new InputStreamReader(entity.getContent()), 65728);
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-            }
-            catch (IOException e) { e.printStackTrace(); }
-            catch (Exception e) { e.printStackTrace(); }
-
-            String response=sb.toString();
-            if (response.equalsIgnoreCase("0_Results")){
-                System.err.println("The user doesn't exist in the database");
-                link = "http://10.0.2.2/insertUser.php?name=%27"+name+"%27&email=%27"+email+"%27&id=%27"+id+"%27";
-                return connector.request(link);
-            }else{
-                System.err.println("The user exists in the db!");
-            }
-            return null;
+            String link = "http://10.0.2.2/insertUser.php?name=%27"+name+"%27&email=%27"+email+"%27&id=%27"+id+"%27";
+            return connector.request(link);
         }
     }
 
