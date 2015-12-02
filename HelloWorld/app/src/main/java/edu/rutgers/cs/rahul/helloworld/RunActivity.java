@@ -7,12 +7,18 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.os.Handler;
+
+import com.google.android.gms.plus.Plus;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -22,6 +28,7 @@ import com.google.android.youtube.player.YouTubePlayer.Provider;
 
 import android.widget.Toast;
 import android.content.Intent;
+import android.widget.Toolbar;
 
 import java.util.ArrayList;
 import edu.rutgers.cs.rahul.helloworld.PlayList;
@@ -75,14 +82,80 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.run_main);
+        this_obj = this;
 
-        VIDEO_ID = playlist.get(0);
+        if(playlist.size()>0)
+            VIDEO_ID = playlist.get(0);
+        else
+            VIDEO_ID = "pY9b6jgbNyc";
+
+//        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+//        setSupportActionBar(myToolbar);
+
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_nav);
+
+
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+        spinnerArray.add("Run");
+        spinnerArray.add("Challenge");
+        spinnerArray.add("Statistics");
+        spinnerArray.add("Personal Details");
+        spinnerArray.add("Logout");
+        spinnerArray.add("Contact Us");
+
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_dropdown_item, spinnerArray);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+
+//        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = null;
+                switch (position)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        intent =new Intent(this_obj.getApplicationContext(), ChallengeNewSend.class);
+                        break;
+                    case 2:
+                        intent =new Intent(this_obj.getApplicationContext(), StatActivity.class);
+                        break;
+                    case 3:
+                        intent =new Intent(this_obj.getApplicationContext(), PersonalInfoActivity.class);
+                        break;
+                    case 4:
+                        if (LoginActivity.mGoogleApiClient.isConnected()) {
+                            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                            LoginActivity.mGoogleApiClient.disconnect();
+                            System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
+                        }
+                        intent = new Intent(this_obj.getApplicationContext(), LoginActivity.class);
+                    case 5:
+                        break;
+                    default:
+                        break;
+                }
+                if(intent != null)
+                    startActivity(intent);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         myYouTubePlayerFragment = (YouTubePlayerFragment)getFragmentManager()
                 .findFragmentById(R.id.youtubeplayerfragment);
         myYouTubePlayerFragment.initialize(DEVELOPER_KEY, this);
-        this_obj = this;
+
 
         fab = (TextView) findViewById(R.id.fab);
         bpm_label = (TextView) findViewById(R.id.BPM);
@@ -132,7 +205,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                timer_handler.removeCallbacks(update_timer);
                 reset_counters();
                 start_run();
-               Intent intent =new Intent(getApplicationContext(), ChallengeActivity.class);
+               Intent intent =new Intent(getApplicationContext(), ChallengeNewSend.class);
                 startActivity(intent);
 
             }

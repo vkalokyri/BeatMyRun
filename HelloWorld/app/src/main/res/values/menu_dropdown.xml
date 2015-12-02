@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="menu_dropdown">
+        <item>Beat My Run</item>
+        <!--<item>Personal Info</item>-->
+        <!--<item>Challenge</item>-->
+        <!--<item>Statistics</item>-->
+        <!--<item>Run</item>-->
+        <!--<item>Logout</item>-->
+        <!--<item>Contact Us</item>-->
+    </string-array>
+</resources>
