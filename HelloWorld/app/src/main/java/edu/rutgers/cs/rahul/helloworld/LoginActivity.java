@@ -136,7 +136,7 @@ public class LoginActivity extends Activity implements
         findViewById(R.id.sign_in_button).setEnabled(true);
 
         // Set up view instances
-       // mStatus = (TextView) findViewById(R.id.status);
+        // mStatus = (TextView) findViewById(R.id.status);
 
         // [START create_google_api_client]
         // Build GoogleApiClient with access to basic profile
@@ -197,7 +197,7 @@ public class LoginActivity extends Activity implements
             // Set button visibility
             //findViewById(R.id.sign_in_button).setVisibility(View.GONE);
 
-           // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
             System.out.println("user is not signed In");
 
@@ -208,7 +208,7 @@ public class LoginActivity extends Activity implements
             // Set button visibility
             findViewById(R.id.sign_in_button).setEnabled(true);
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-           // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+            // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
     }
 
@@ -424,7 +424,7 @@ public class LoginActivity extends Activity implements
         mGoogleApiClient.connect();
 
         // Show a message to the user that we are signing in.
-       // mStatus.setText(R.string.signing_in);
+        // mStatus.setText(R.string.signing_in);
     }
     // [END on_sign_in_clicked]
 
@@ -437,7 +437,7 @@ public class LoginActivity extends Activity implements
             mGoogleApiClient.disconnect();
         }
 
-       // showSignedOutUI();
+        // showSignedOutUI();
     }
     // [END on_sign_out_clicked]
 
@@ -459,7 +459,7 @@ public class LoginActivity extends Activity implements
 
         protected void onPostExecute(ArrayList<SongInfo> SongsFromEchonestList) {
            System.out.println("I finished with getting the liked videos");
-           for (SongInfo resultSong: SongsFromEchonestList){
+           for (SongInfo resultSong: SongsFromEchonestList) {
                String youtube_id = resultSong.getYoutube_id();
                String song_title = resultSong.getTitle();
                String artist = resultSong.getArtist();
@@ -478,10 +478,8 @@ public class LoginActivity extends Activity implements
                System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
                new insertSong().execute(youtube_id, song_title, artist, Double.toString(tempo), Double.toString(duration), Double.toString(liveness), Double.toString(energy), Double.toString(danceability));
-
            }
         }
-
 
         @Override
         protected ArrayList<SongInfo> doInBackground(Void... params) {

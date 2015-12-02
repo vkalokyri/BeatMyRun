@@ -50,7 +50,6 @@ public class HttpConnector {
 
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
-
             System.out.println("LINK"+link);
             request.setURI(new URI(link));
 
