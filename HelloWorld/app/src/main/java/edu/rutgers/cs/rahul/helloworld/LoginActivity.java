@@ -62,8 +62,8 @@ public class LoginActivity extends Activity implements
 
     private static final String TAG = "LoginActivity";
 
-    public static final String API_KEY = "AIzaSyC7SaYqdlQByqT88EaRe56N2QBitVmuVV4";//"AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
-    public static final String browser_API_KEY = "AIzaSyD83STu6GVhh6HvmwUcUmowADd2EoQHQ24";//"AIzaSyAKt7_kz7pK42CQs74WUD5dmpCSiVE94cQ";
+    public static final String API_KEY = "AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
+    public static final String browser_API_KEY = "AIzaSyAKt7_kz7pK42CQs74WUD5dmpCSiVE94cQ";
     public static final String oauth_key = "661591512723-bm18diefo4qeltgsbp1j84qubvv17glt.apps.googleusercontent.com";
     public static String oauth_token;
     public static final String echonest_API_key = "TBFADK1MYMBWRRNHV";
@@ -646,7 +646,7 @@ public class LoginActivity extends Activity implements
             System.out.println("NAMEEEEEEEEEEEEE="+name);
             System.out.println("EMAILLLLL="+email);
             System.out.println("ID"+id);
-            String link = "http://172.16.62.135/insertUser.php?name=%27"+name+"%27&email=%27"+email+"%27&id=%27"+id+"%27";
+            String link = "http://10.0.2.2/insertUser.php?name=%27"+name+"%27&email=%27"+email+"%27&id=%27"+id+"%27";
             return connector.request(link);
         }
     }
