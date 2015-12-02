@@ -44,10 +44,6 @@ import com.google.api.services.youtube.model.ChannelListResponse;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemListResponse;
 
-import org.apache.http.HttpResponse;
-
-import edu.rutgers.cs.rahul.helloworld.HttpConnector;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -66,8 +62,8 @@ public class LoginActivity extends Activity implements
 
     private static final String TAG = "LoginActivity";
 
-    public static final String API_KEY = "AIzaSyC7SaYqdlQByqT88EaRe56N2QBitVmuVV4";//"AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
-    public static final String browser_API_KEY = "AIzaSyD83STu6GVhh6HvmwUcUmowADd2EoQHQ24";//"AIzaSyAKt7_kz7pK42CQs74WUD5dmpCSiVE94cQ";
+    public static final String API_KEY = "AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
+    public static final String browser_API_KEY = "AIzaSyAKt7_kz7pK42CQs74WUD5dmpCSiVE94cQ";
     public static final String oauth_key = "661591512723-bm18diefo4qeltgsbp1j84qubvv17glt.apps.googleusercontent.com";
     public static String oauth_token;
     public static final String echonest_API_key = "TBFADK1MYMBWRRNHV";
@@ -94,7 +90,6 @@ public class LoginActivity extends Activity implements
     private static HttpConnector connector=new HttpConnector();
 
     private static YouTube youtube;
-    private static HttpConnector connector;
 
 
     /* View to display current status (signed-in, signed-out, disconnected, etc) */
@@ -136,7 +131,7 @@ public class LoginActivity extends Activity implements
         findViewById(R.id.sign_in_button).setEnabled(true);
 
         // Set up view instances
-       // mStatus = (TextView) findViewById(R.id.status);
+        // mStatus = (TextView) findViewById(R.id.status);
 
         // [START create_google_api_client]
         // Build GoogleApiClient with access to basic profile
@@ -162,25 +157,6 @@ public class LoginActivity extends Activity implements
         // [END create_google_api_client]
     }
 
-
-    private class insertUser extends AsyncTask<String, Void, HttpResponse> {
-
-        @Override
-        protected void onPostExecute(HttpResponse response) {
-
-        }
-
-
-        @Override
-        protected HttpResponse doInBackground(String... args) {
-
-            String link = "";//http://localhost/insertUser.php?name=%27"+args[0]+"%27&email=%27"+args[1]+"%27&id=%27"+args[2]+"%27";
-            return connector.request(link);
-        }
-
-
-    }
-
     private void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
             System.out.println("user is signed In");
@@ -191,7 +167,6 @@ public class LoginActivity extends Activity implements
             if (currentPerson != null) {
                 // Show signed-in user's name
                 String name = currentPerson.getDisplayName();
-                nextScreen.putExtra("id", currentPerson.getId());
                 System.out.println("USERNAME = " + name);
                 nextScreen.putExtra("username", name);
                 //mStatus.setText(getString(R.string.signed_in_fmt, name));
@@ -201,10 +176,6 @@ public class LoginActivity extends Activity implements
                     String currentAccount = Plus.AccountApi.getAccountName(mGoogleApiClient);
                     System.out.println("email = " + currentAccount);
                     this.mEmail = currentAccount;
-
-                    String params[] = {name, currentAccount, currentPerson.getId()};
-                    new insertUser().doInBackground();
-
                     //Sending data to another Activity
 
                     new insertUser().execute(name, currentAccount, currentPerson.getId());
@@ -227,7 +198,7 @@ public class LoginActivity extends Activity implements
             // Set button visibility
             //findViewById(R.id.sign_in_button).setVisibility(View.GONE);
 
-           // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
             System.out.println("user is not signed In");
 
@@ -238,7 +209,7 @@ public class LoginActivity extends Activity implements
             // Set button visibility
             findViewById(R.id.sign_in_button).setEnabled(true);
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-           // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+            // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
     }
 
@@ -454,7 +425,7 @@ public class LoginActivity extends Activity implements
         mGoogleApiClient.connect();
 
         // Show a message to the user that we are signing in.
-       // mStatus.setText(R.string.signing_in);
+        // mStatus.setText(R.string.signing_in);
     }
     // [END on_sign_in_clicked]
 
@@ -467,7 +438,7 @@ public class LoginActivity extends Activity implements
             mGoogleApiClient.disconnect();
         }
 
-       // showSignedOutUI();
+        // showSignedOutUI();
     }
     // [END on_sign_out_clicked]
 
@@ -488,7 +459,7 @@ public class LoginActivity extends Activity implements
     private class GetYoutubeList extends AsyncTask {
 
         private void onPostExecute(List<PlaylistItem> playlistItemList) {
-           System.out.println("I finished with getting the liked videos");
+            System.out.println("I finished with getting the liked videos");
         }
 
 
