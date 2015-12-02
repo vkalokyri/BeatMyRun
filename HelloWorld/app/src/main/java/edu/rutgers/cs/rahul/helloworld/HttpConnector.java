@@ -50,7 +50,7 @@ public class HttpConnector {
 
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
-
+            System.out.println("LINK"+link);
             request.setURI(new URI(link));
 
             HttpResponse response = null;
@@ -59,6 +59,7 @@ public class HttpConnector {
             return response;
         }catch(Exception e)
         {
+            e.printStackTrace();
             return null;
         }
 
