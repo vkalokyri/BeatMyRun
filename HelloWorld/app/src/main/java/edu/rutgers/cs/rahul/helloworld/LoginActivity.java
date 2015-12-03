@@ -51,7 +51,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -478,6 +480,7 @@ public class LoginActivity extends Activity implements
                System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
                new insertSong().execute(youtube_id, song_title, artist, Double.toString(tempo), Double.toString(duration), Double.toString(liveness), Double.toString(energy), Double.toString(danceability));
+               new insertPreference().execute(youtube_id, currentPerson.getId());
            }
         }
 
@@ -668,6 +671,34 @@ public class LoginActivity extends Activity implements
                 e.printStackTrace();
             }
             String link = "http://10.0.2.2/insertSong.php?id=%27"+youtube_id+"%27&title=%27"+title+"%27&artist=%27"+artist+"%27&tempo=%27"+Double.toString(tempo)+"%27&duration=%27"+Double.toString(duration)+"%27&liveness=%27"+Double.toString(liveness)+"%27&energy=%27"+Double.toString(energy)+"%27&danceability=%27"+Double.toString(danceability)+"%27";
+            return connector.request(link);
+        }
+
+    }
+
+    private class insertPreference extends AsyncTask<String, Void, HttpResponse> {
+
+        @Override
+        protected void onPostExecute(HttpResponse response) {
+
+        }
+
+
+        @Override
+        protected HttpResponse doInBackground(String... args) {
+            String youtube_id = null;
+            String user_id=null;
+            Timestamp timestamp = new Timestamp(new Date().getTime());
+            String time=null;
+
+            try {
+                youtube_id = URLEncoder.encode(args[0], "UTF-8");
+                user_id = URLEncoder.encode(args[1],"UTF-8");
+                time = URLEncoder.encode(timestamp.toString(),"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            String link = "http://10.0.2.2/insertPreference.php?youtube_id=%27"+youtube_id+"%27&user_id=%27"+user_id+"%27&timestamp=%27"+time+"%27";
             return connector.request(link);
         }
 

@@ -105,7 +105,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_dropdown_item, spinnerArray);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.dropdown_list);
         spinner.setAdapter(spinnerArrayAdapter);
 
 

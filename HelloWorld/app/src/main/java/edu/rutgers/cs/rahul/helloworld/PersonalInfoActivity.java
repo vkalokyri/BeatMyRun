@@ -22,8 +22,12 @@ import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -40,10 +44,11 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
     private EditText ageField;
     private Button submitBtnField;
     private ImageButton logoutId ;
-    private String name;
-    private String email;
+    private String name=null;
+    private String email=null;
 
     GoogleApiClient mGoogleApiClient;
+    Person currentPerson =null;
     boolean mSignInClicked;
     private static HttpConnector connector=new HttpConnector();
 
@@ -72,6 +77,12 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
         // Displaying Received data
         usernameField.setText(name);
         emailField.setText(email);
+
+
+        currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+        if (name==null){
+            new getUser().execute();
+        }
 
 
         // Binding Click event to Button
@@ -144,6 +155,63 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
 
     }
 
+
+    private class getUser extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPostExecute(String response) {
+            if (response!=null) {
+
+                String [] personalInfo = response.split(";");
+
+                emailField.setText(personalInfo[2]);
+                email=personalInfo[2];
+                usernameField.setText(personalInfo[1]);
+                name=personalInfo[1];
+                if(!personalInfo[3].equals("0")){
+                    heightField.setText(personalInfo[3]);
+                }
+                if(!personalInfo[4].equals("0")) {
+                    weightField.setText(personalInfo[4]);
+                }
+                if(!personalInfo[5].equals("0")){
+                    ageField.setText(personalInfo[5]);
+                }
+            }
+        }
+
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            String link = "http://10.0.2.2/getUser.php?id=%27"+currentPerson.getId()+"%27";
+            HttpEntity entity = connector.request(link).getEntity();
+
+            StringBuilder sb = new StringBuilder();
+            try {
+                BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(entity.getContent()), 65728);
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+            }
+            catch (IOException e) { e.printStackTrace(); }
+            catch (Exception e) { e.printStackTrace(); }
+
+            String response=sb.toString();
+            if (response.equalsIgnoreCase("0_Results")){
+                System.err.println("The user doesn't exist in the database");
+                return null;
+            }else{
+                System.err.println("The user exists in the db!");
+                return response;
+            }
+        }
+    }
+
+
     @Override
     public void onConnected(Bundle arg0) {
         // TODO Auto-generated method stub
@@ -166,17 +234,6 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
 
     }
 
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    protected void onStop() {
-        super.onStop();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
-    }
 
     @Override
     public void onResult(People.LoadPeopleResult loadPeopleResult) {
