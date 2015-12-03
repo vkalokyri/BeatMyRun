@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,10 @@ import android.widget.Toast;
 import android.content.Intent;
 import android.widget.Toolbar;
 
+import org.apache.http.HttpResponse;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import edu.rutgers.cs.rahul.helloworld.PlayList;
 
@@ -60,6 +65,8 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
     private PlayList playlist = new PlayList();
     YouTubePlayerFragment myYouTubePlayerFragment;
     RunActivity this_obj;
+
+    private static HttpConnector connector=new HttpConnector();
 
 
     public static void start_run()
@@ -120,7 +127,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                     case 0:
                         break;
                     case 1:
-                        intent =new Intent(this_obj.getApplicationContext(), ChallengeNewSend.class);
+                        intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
                         break;
                     case 2:
                         intent =new Intent(this_obj.getApplicationContext(), StatActivity.class);
@@ -203,9 +210,24 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
             @Override
             public void onClick(View view) {
                timer_handler.removeCallbacks(update_timer);
+                String duration = ""+((SystemClock.uptimeMillis() - start_time)/1000);
+                java.util.Date dt = new java.util.Date();
+                java.text.SimpleDateFormat sdf =  new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String currentTime = sdf.format(dt);
+                String user_id = Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId();
+                String steps = ""+(number_of_steps - number_of_steps_offset);
+
                 reset_counters();
                 start_run();
+
+
+                new insertRunInfo().execute(user_id, currentTime, duration, steps);
+
                Intent intent =new Intent(getApplicationContext(), ChallengeNewSend.class);
+                intent.putExtra("user_id", user_id );
+                intent.putExtra("datetime", currentTime);
+                intent.putExtra("distance", steps);
+                intent.putExtra("duration", duration);
                 startActivity(intent);
 
             }
@@ -231,6 +253,37 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
     }
 
+    private class insertRunInfo extends AsyncTask<String, Void, HttpResponse> {
+
+        @Override
+        protected void onPostExecute(HttpResponse response) {
+
+        }
+
+
+        @Override
+        protected HttpResponse doInBackground(String... args) {
+
+
+
+            String user_id = args[0];
+            String currentTime = args[1];
+            String duration = args[2];
+            String steps = args[3];
+
+            try {
+                user_id = URLEncoder.encode(user_id, "UTF-8");
+                currentTime = URLEncoder.encode(currentTime,"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            String link = "http://beatmyrun.net16.net/insertRuninfo.php?user_id="+user_id+"&datetime="+currentTime+"&steps="+steps+"&duration="+duration;
+
+            return connector.request(link);
+
+        }
+
+    }
 
     public void loadNextSong()
     {
