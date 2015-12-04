@@ -68,8 +68,8 @@ public class LoginActivity extends Activity implements
 
     private static final String TAG = "LoginActivity";
 
-    public static final String API_KEY = "AIzaSyC7SaYqdlQByqT88EaRe56N2QBitVmuVV4";//"AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
-    public static final String browser_API_KEY = "AIzaSyD83STu6GVhh6HvmwUcUmowADd2EoQHQ24";//"AIzaSyAKt7_kz7pK42CQs74WUD5dmpCSiVE94cQ";
+    public static final String API_KEY = "AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
+    public static final String browser_API_KEY = "AIzaSyAKt7_kz7pK42CQs74WUD5dmpCSiVE94cQ";
     public static final String oauth_key = "661591512723-bm18diefo4qeltgsbp1j84qubvv17glt.apps.googleusercontent.com";
     public static String oauth_token;
     public static final String echonest_API_key = "TBFADK1MYMBWRRNHV";
@@ -670,7 +670,7 @@ public class LoginActivity extends Activity implements
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            String link = "http://beatmyrun.net16.net/insertSong.php?id="+youtube_id+"&title="+title+"&artist="+artist+"&tempo="+Double.toString(tempo)+"&duration=%2"+youtube_id+"&title="+title+"&artist="+artist+"&tempo="+Double.toString(tempo)+"&duration="+Double.toString(duration)+"&liveness="+Double.toString(liveness)+"&energy="+Double.toString(energy)+"&danceability="+Double.toString(danceability)+"";
+            String link = "http://beatmyrun.net16.net/insertSong.php?id="+youtube_id+"&title="+title+"&artist="+artist+"&tempo="+Double.toString(tempo)+"&duration="+youtube_id+"&title="+title+"&artist="+artist+"&tempo="+Double.toString(tempo)+"&duration="+Double.toString(duration)+"&liveness="+Double.toString(liveness)+"&energy="+Double.toString(energy)+"&danceability="+Double.toString(danceability)+"";
             return connector.request(link);
         }
 

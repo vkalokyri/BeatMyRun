@@ -80,7 +80,7 @@ public class Leaderboards extends AppCompatActivity {
             JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
             JSONObject c = result.getJSONObject(0);
             challengeTotal  = c.getString(Config.TAG_ID);
-            challengeWon  = c.getString(Config.TAG_NAME);
+            challengeWon  = c.getString(Config.TAG_RECEIVER_ID);
 
 
             //Toast.makeText(Leaderboards.this,challengeWon , Toast.LENGTH_LONG).show();

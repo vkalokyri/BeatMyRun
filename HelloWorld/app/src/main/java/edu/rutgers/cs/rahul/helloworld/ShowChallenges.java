@@ -8,8 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -35,16 +38,25 @@ public class ShowChallenges extends Activity {
     HashMap<String, List<String>> listDataChild;
     private String JSON_STRING;
     List<String> receivedList = new ArrayList<String>();
-    public String distance,duration;
+    List<String> sentList = new ArrayList<String>();
+
+    List<Challenge_Bean> receivedAllList;
+    List<Challenge_Bean> sentAllList;
+
+    public String distance, duration;
     String receiverName;
     String datetime;
-
+    String id;
+    String receiver_id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.challenges);
+
+        receivedAllList = new ArrayList<Challenge_Bean>();
+        sentAllList = new ArrayList<Challenge_Bean>();
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -58,14 +70,15 @@ public class ShowChallenges extends Activity {
         expListView.setAdapter(listAdapter);
 
 
-
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 //Nothing here ever fires
-                System.err.println("child clicked "+childPosition);
-                Toast.makeText(getApplicationContext(), "child clicked", Toast.LENGTH_SHORT).show();
+                if (groupPosition==1) {
+                    System.err.println("child clicked " + childPosition);
+                    confirmDeleteChallenge(childPosition + 1);
+                }
                 return true;
             }
         });
@@ -82,154 +95,190 @@ public class ShowChallenges extends Activity {
         listDataHeader.add("Received Challenges");
         listDataHeader.add("Sent Challenges");
 
-        getJSON();
+        //getJSON();
+        GetReceived gj = new GetReceived();
+        gj.execute();
 
+
+        GetSent gs = new GetSent();
+        gs.execute();
         // Adding child data
-
-        receivedList.add("The Shawshank Redemption");
-        receivedList.add("The Godfather");
-        receivedList.add("The Godfather: Part II");
-        receivedList.add("Pulp Fiction");
-        receivedList.add("The Good, the Bad and the Ugly");
-        receivedList.add("The Dark Knight");
-        receivedList.add("12 Angry Men");
-
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
-
-
-       // listDataChild.put(listDataHeader.get(1), nowShowing);
-    }
-
-
-    private void showChallenges(){
-        JSONObject jsonObject = null;
-        ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
-        try {
-            jsonObject = new JSONObject(JSON_STRING);
-            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
-
-            for(int i = 0; i<result.length(); i++){
-                JSONObject jo = result.getJSONObject(i);
-                String id = jo.getString(Config.TAG_ID);
-                String name = jo.getString(Config.TAG_NAME);
-                datetime = jo.getString(Config.TAG_DESG);
-                receiverName = jo.getString(Config.TAG_USER_NAME);
-
-
-                HashMap<String,String> employees = new HashMap<>();
-                employees.put(Config.TAG_ID,id);
-                employees.put(Config.TAG_NAME,name);
-                employees.put(Config.TAG_DESG,datetime);
-                employees.put(Config.TAG_USER_NAME, receiverName);//changed
-                list.add(employees);
-
-                getSenderInfo();
-
-
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
 
     }
 
     //get the json objects with all received challenges
-    private void getJSON(){
-        class GetJSON extends AsyncTask<Void,Void,String> {
 
+    class GetReceived extends AsyncTask<Void, Void, String> {
+
+        ProgressDialog loading;
+
+        @Override
+        protected String doInBackground(Void... params) {
+            RequestHandler rh = new RequestHandler();
+            String s = rh.sendGetRequestParam(Config.URL_GET_RECEIVED_CHALLENGES, Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId());
+            System.out.println("CHALLENGE=" + s);
+            JSON_STRING = s;
+
+            JSONObject jsonObject = null;
+            ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+            try {
+                jsonObject = new JSONObject(JSON_STRING);
+                JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
+
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject jo = result.getJSONObject(i);
+                    id = jo.getString(Config.TAG_ID);
+                    receiver_id = jo.getString(Config.TAG_RECEIVER_ID);
+                    datetime = jo.getString(Config.TAG_DESG);
+                    String status = jo.getString(Config.TAG_STATUS);
+                    receiverName = jo.getString(Config.TAG_USER_NAME);
+                    distance = jo.getString(Config.TAG_DISTANCE2);
+                    duration = jo.getString(Config.TAG_DURATION2);
+                    receivedList.add(receiverName.split(" ")[0] + "   " + distance + "miles/" + duration + "mins");
+                    receivedAllList.add(new Challenge_Bean(id, receiver_id, datetime, distance, duration, status));
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = ProgressDialog.show(ShowChallenges.this, "Fetching Data", "Wait...", false, false);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            loading.dismiss();
+            listDataChild.put(listDataHeader.get(0), receivedList); // Header, Child data
+
+
+        }
+
+
+    }
+
+
+    class GetSent extends AsyncTask<Void, Void, String> {
+
+        ProgressDialog loading;
+
+        @Override
+        protected String doInBackground(Void... params) {
+            RequestHandler rh = new RequestHandler();
+            String s = rh.sendGetRequestParam(Config.URL_GET_SENT_CHALLENGES, Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId());
+            System.out.println("CHALLENGE=" + s);
+            JSON_STRING = s;
+
+            JSONObject jsonObject = null;
+            ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+            try {
+                jsonObject = new JSONObject(JSON_STRING);
+                JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
+
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject jo = result.getJSONObject(i);
+                    id = jo.getString(Config.TAG_ID);
+                    receiver_id = jo.getString(Config.TAG_RECEIVER_ID);
+                    datetime = jo.getString(Config.TAG_DESG);
+                    String status = jo.getString(Config.TAG_STATUS);
+                    receiverName = jo.getString(Config.TAG_USER_NAME);
+                    distance = jo.getString(Config.TAG_DISTANCE2);
+                    duration = jo.getString(Config.TAG_DURATION2);
+                    sentList.add(receiverName.split(" ")[0] + "   " + distance + "miles/" + duration + "mins");
+                    sentAllList.add(new Challenge_Bean(id, receiver_id, datetime, distance, duration, status));
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = ProgressDialog.show(ShowChallenges.this, "Fetching Data", "Wait...", false, false);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            loading.dismiss();
+            listDataChild.put(listDataHeader.get(1), sentList); // Header, Child data
+
+
+        }
+
+
+    }
+
+
+
+    private void confirmDeleteChallenge(final int index){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Do you wanna accept the challenge?");
+
+        alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        if(index>=receivedAllList.size())
+                            return;
+                        Intent intent =new Intent(ShowChallenges.this,RunActivity.class);
+                        RunActivity.start_run();
+                        intent.putExtra("distance",receivedAllList.get(index).getDistance());
+                        intent.putExtra("duration",receivedAllList.get(index).getDuration());
+                        intent.putExtra("sender_id",receivedAllList.get(index).getSender_id());
+                        intent.putExtra("receiver_id",receivedAllList.get(index).getReceiver_id());
+                        intent.putExtra("datetime",receivedAllList.get(index).getDatetime());
+                        startActivity(new Intent(ShowChallenges.this,RunActivity.class));
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        deleteChallenge();
+
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void deleteChallenge(){
+        class DeleteChallenge extends AsyncTask<Void,Void,String> {
             ProgressDialog loading;
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(ShowChallenges.this,"Fetching Data","Wait...",false,false);
+                loading = ProgressDialog.show(ShowChallenges.this, "Updating...", "Wait...", false, false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 loading.dismiss();
-                JSON_STRING = s;
-                showChallenges();
-                listDataChild.put(listDataHeader.get(0), receivedList); // Header, Child data
-
+                Toast.makeText(ShowChallenges.this, s, Toast.LENGTH_LONG).show();
             }
 
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequestParam(Config.URL_GET_ALL_SENT, Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId());
-                // String s = rh.sendGetRequest(Config.URL_GET_ALL);
+                String s = rh.sendGetRequestThreeParamDatetime(Config.URL_DELETE_EMP, id, receiver_id, datetime);
                 return s;
             }
         }
-        GetJSON gj = new GetJSON();
-        gj.execute();
-    }
 
-
-    private void getSenderInfo() {
-
-
-//        java.util.Date dt = new java.util.Date();
-//
-//        java.text.SimpleDateFormat sdf =
-//                new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//
-//         final  String currentTime = sdf.format(dt);
-
-
-        class GetSenderInfo extends AsyncTask<Void, Void, String> {
-            ProgressDialog loading;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(ShowChallenges.this, "Fetching...", "Wait...", false, false);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                showSenderInfo(s);
-            }
-
-            // changed(try catch)
-            @Override
-            protected String doInBackground(Void... params) {
-                RequestHandler rh = new RequestHandler();
-                // String s = null;
-                String s = rh.sendGetRequestTwoParamDatetime(Config.URL_GET_RUN_INFO, Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId(), datetime);
-                return s;
-            }
-        }
-        GetSenderInfo gsi = new GetSenderInfo();
-        gsi.execute();
-    }
-
-    private void showSenderInfo(String json){
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY_RUN2);
-            JSONObject c = result.getJSONObject(0);
-            distance = c.getString(Config.TAG_DISTANCE2);
-            duration = c.getString(Config.TAG_DURATION2);
-
-            receivedList.add(receiverName+"\t"+distance+"/"+duration);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        DeleteChallenge de = new DeleteChallenge();
+        de.execute();
     }
 
 

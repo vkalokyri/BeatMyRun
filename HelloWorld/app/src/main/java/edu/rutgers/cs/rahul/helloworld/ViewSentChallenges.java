@@ -74,14 +74,14 @@ public class ViewSentChallenges extends AppCompatActivity implements ListView.On
             for(int i = 0; i<result.length(); i++){
                 JSONObject jo = result.getJSONObject(i);
                 String id = jo.getString(Config.TAG_ID);
-                String name = jo.getString(Config.TAG_NAME);
+                String name = jo.getString(Config.TAG_RECEIVER_ID);
                 String  datetime = jo.getString(Config.TAG_DESG);
                 String receiverName = jo.getString(Config.TAG_USER_NAME);
 
 
                 HashMap<String,String> employees = new HashMap<>();
                 employees.put(Config.TAG_ID,id);
-                employees.put(Config.TAG_NAME,name);
+                employees.put(Config.TAG_RECEIVER_ID,name);
                 employees.put(Config.TAG_DESG,datetime);
                 employees.put(Config.TAG_USER_NAME, receiverName);//changed
                 list.add(employees);
@@ -134,7 +134,7 @@ public class ViewSentChallenges extends AppCompatActivity implements ListView.On
         Intent intent = new Intent(this, ViewSingleSentChallenge.class);
         HashMap<String,String> map =(HashMap)parent.getItemAtPosition(position);
         String empId = map.get(Config.TAG_ID).toString();
-        String recId = map.get(Config.TAG_NAME).toString();
+        String recId = map.get(Config.TAG_RECEIVER_ID).toString();
         String datetime = map.get(Config.TAG_DESG).toString();
         String receiver_name = map.get(Config.TAG_USER_NAME).toString();
 

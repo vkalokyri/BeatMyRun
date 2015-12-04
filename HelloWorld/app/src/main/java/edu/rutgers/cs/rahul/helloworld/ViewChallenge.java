@@ -154,7 +154,7 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
             JSONObject jsonObject = new JSONObject(json);
             JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
             JSONObject c = result.getJSONObject(0);
-            name = c.getString(Config.TAG_NAME);
+            name = c.getString(Config.TAG_RECEIVER_ID);
             String desg = c.getString(Config.TAG_DESG);
             globalSender = c.getString(Config.TAG_SAL);
 

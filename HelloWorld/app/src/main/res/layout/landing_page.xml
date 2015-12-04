@@ -68,7 +68,7 @@
         android:textColor="#BB2222"
         android:layout_gravity="center_vertical"
         android:layout_alignParentStart="true"
-        android:color="red"
+        android:color="#ffbb0c0c"
         android:textStyle="bold"
         android:background="#CCC"/>
 

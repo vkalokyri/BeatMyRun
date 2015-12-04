@@ -118,6 +118,32 @@ public class RequestHandler {
 
              id2 = URLEncoder.encode(id2, "UTF-8");
             URL url = new URL(requestURL+id+"&datetime="+id2+"");
+            System.out.println(url);
+            //localhost:8888/getEmpDatetimeTwoParams.php?receiver_id=Nirali&datetime=2015-12-22%00:00:00
+
+
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+            String s;
+            while((s=bufferedReader.readLine())!=null){
+                sb.append(s+"\n");
+            }
+        }catch(Exception e){
+        }
+        return sb.toString();
+    }
+
+
+    public String sendGetRequestThreeParamDatetime(String requestURL, String sender_id, String receiver_id, String datetime){
+        StringBuilder sb =new StringBuilder();
+        try {
+
+            sender_id = URLEncoder.encode(sender_id, "UTF-8");
+            receiver_id = URLEncoder.encode(receiver_id, "UTF-8");
+            datetime = URLEncoder.encode(datetime, "UTF-8");
+            URL url = new URL(requestURL+sender_id+"&receiver_id="+receiver_id+"&datetime="+datetime+"");
+            System.out.println(url);
             //localhost:8888/getEmpDatetimeTwoParams.php?receiver_id=Nirali&datetime=2015-12-22%00:00:00
 
 
@@ -136,7 +162,7 @@ public class RequestHandler {
 
 
     //getChallenge based on receiver_id/sender_id and datetime
-    public String sendGetRequestThreeParamDatetime(String requestURL, String id, String id2, String id3){
+   /* public String sendGetRequestThreeParamDatetime(String requestURL, String id, String id2, String id3){
         StringBuilder sb =new StringBuilder();
         try {
 
@@ -155,7 +181,7 @@ public class RequestHandler {
         }catch(Exception e){
         }
         return sb.toString();
-    }
+    }*/
 
 
 

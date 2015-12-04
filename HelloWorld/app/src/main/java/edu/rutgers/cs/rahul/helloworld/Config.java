@@ -37,6 +37,9 @@ public class Config {
 
 
     public static final String URL_GET_TOTAL_CHALLENGES = "http://beatmyrun.net16.net/countChallenge.php?sender_id=";
+    public static final String URL_GET_RECEIVED_CHALLENGES = "http://beatmyrun.net16.net/getReceivedChallenges.php?id=";
+    public static final String URL_GET_SENT_CHALLENGES = "http://beatmyrun.net16.net/getSentChallenges.php?id=";
+
 
 
 
@@ -55,8 +58,9 @@ public class Config {
     //JSON Tags
     public static final String TAG_JSON_ARRAY="result";
     public static final String TAG_ID = "sender_id";
-    public static final String TAG_NAME = "receiver_id";
+    public static final String TAG_RECEIVER_ID = "receiver_id";
     public static final String TAG_DESG = "datetime";
+    public static final String TAG_STATUS = "status";
 
     public static final String TAG_SAL = "sender_id";
 
