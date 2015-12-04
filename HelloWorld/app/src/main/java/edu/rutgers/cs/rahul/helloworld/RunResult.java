@@ -78,11 +78,54 @@ public class RunResult extends Activity implements View.OnClickListener{
             if(getIntent().getStringExtra("status").equals("win"))
             {
                 findViewById(R.id.RunResultStatus).setVisibility(View.VISIBLE);
+                
             }
         }
 
 
     }
+
+
+    private void updateChallenge(final String... args){
+
+
+        class UpdateChallenge extends AsyncTask<Void,Void,String>{
+            ProgressDialog loading;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                HashMap<String,String> hashMap = new HashMap<>();
+                hashMap.put(Config.KEY_EMP_ID,args[0]);
+                hashMap.put(Config.KEY_EMP_NAME,args[1]);
+                hashMap.put(Config.KEY_EMP_DESG,args[2]);
+                hashMap.put(Config.KEY_EMP_STATUS,args[3]);
+
+
+
+                RequestHandler rh = new RequestHandler();
+
+                String s = rh.sendPostRequest(Config.URL_UPDATE_EMP, hashMap);
+
+                return s;
+            }
+        }
+
+        UpdateChallenge ue = new UpdateChallenge();
+        ue.execute();
+    }
+
+
 
     private void getUser(String json) {
         JSONObject jsonObject = null;
