@@ -29,7 +29,6 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,18 +37,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ViewAllChallenges extends AppCompatActivity implements ListView.OnItemClickListener {
+public class ViewSentChallenges extends AppCompatActivity implements ListView.OnItemClickListener {
 
     private ListView listView;
 
     private String JSON_STRING;
 
     //String datetime;
-    
-  //  String sender_id = "carid";
 
-
-    String currentUserName, currentUserId="carid", receiverName;
+    String currentUserId = "carid";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,63 +60,9 @@ public class ViewAllChallenges extends AppCompatActivity implements ListView.OnI
 
     }
 
-////   //get uname
-//    private void getUserName(){
-//
-//      //  String testName = editTextName.getText().toString().trim();
-//
-//        class CheckUserExits extends AsyncTask<Void,Void,String> {
-//            ProgressDialog loading;
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-//                loading = ProgressDialog.show(ViewAllChallenges.this,"Fetching...","Wait...",false,false);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String s) {
-//                super.onPostExecute(s);
-//                loading.dismiss();
-//                showUserName(s);
-//            }
-//
-//            @Override
-//            protected String doInBackground(Void... params) {
-//                RequestHandler rh = new RequestHandler();
-//
-//                String s = rh.sendGetRequestParam(Config.URL_GET_USER_NAME, currentUserId);
-//                return s;
-//            }
-//        }
-//        CheckUserExits ge = new CheckUserExits();
-//        ge.execute();
-//    }
-//
-//
-//    private void showUserName(String json){
-//        try {
-//            JSONObject jsonObject = new JSONObject(json);
-//            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY3);
-//            JSONObject c = result.getJSONObject(0);
-//            currentUserName = c.getString(Config.TAG_USER_NAME);
-////            String desg = c.getString(Config.TAG_DESG);
-////            String sal = c.getString(Config.TAG_SAL);
-//
-//            Toast.makeText(ViewAllChallenges.this, currentUserName, Toast.LENGTH_LONG).show();
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        //getSenderInfo();
-//
-//
-//    }
-//
 
 
-
-
-    public void showEmployee(){
+    private void showEmployee(){
         JSONObject jsonObject = null;
         ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
         try {
@@ -130,17 +72,16 @@ public class ViewAllChallenges extends AppCompatActivity implements ListView.OnI
             for(int i = 0; i<result.length(); i++){
                 JSONObject jo = result.getJSONObject(i);
                 String id = jo.getString(Config.TAG_ID);
-              String name = jo.getString(Config.TAG_NAME);
-               String  datetime = jo.getString(Config.TAG_DESG);
-                 receiverName = jo.getString(Config.TAG_USER_NAME);
-
+                String name = jo.getString(Config.TAG_NAME);
+                String  datetime = jo.getString(Config.TAG_DESG);
+                String receiverName = jo.getString(Config.TAG_USER_NAME);
 
 
                 HashMap<String,String> employees = new HashMap<>();
                 employees.put(Config.TAG_ID,id);
                 employees.put(Config.TAG_NAME,name);
                 employees.put(Config.TAG_DESG,datetime);
-                  employees.put(Config.TAG_USER_NAME, receiverName); //changed
+                employees.put(Config.TAG_USER_NAME, receiverName);//changed
                 list.add(employees);
             }
 
@@ -148,15 +89,12 @@ public class ViewAllChallenges extends AppCompatActivity implements ListView.OnI
             e.printStackTrace();
         }
 
-
         ListAdapter adapter = new SimpleAdapter(
-                ViewAllChallenges.this, list, R.layout.list_item,
+                ViewSentChallenges.this, list, R.layout.list_item,
                 new String[]{Config.TAG_ID,Config.TAG_USER_NAME},
                 new int[]{R.id.id, R.id.name});
 
         listView.setAdapter(adapter);
-
-
     }
 
     private void getJSON(){
@@ -166,7 +104,7 @@ public class ViewAllChallenges extends AppCompatActivity implements ListView.OnI
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(ViewAllChallenges.this,"Fetching Data","Wait...",false,false);
+                loading = ProgressDialog.show(ViewSentChallenges.this,"Fetching Data","Wait...",false,false);
             }
 
             @Override
@@ -180,7 +118,7 @@ public class ViewAllChallenges extends AppCompatActivity implements ListView.OnI
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequestParam(Config.URL_GET_ALL,currentUserId);
+                String s = rh.sendGetRequestParam(Config.URL_GET_ALL_SENT,currentUserId);
                 // String s = rh.sendGetRequest(Config.URL_GET_ALL);
                 return s;
             }
@@ -191,17 +129,16 @@ public class ViewAllChallenges extends AppCompatActivity implements ListView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, ViewChallenge.class);
+        Intent intent = new Intent(this, ViewSingleSentChallenge.class);
         HashMap<String,String> map =(HashMap)parent.getItemAtPosition(position);
         String empId = map.get(Config.TAG_ID).toString();
         String recId = map.get(Config.TAG_NAME).toString();
         String datetime = map.get(Config.TAG_DESG).toString();
         String receiver_name = map.get(Config.TAG_USER_NAME).toString();
 
-
-        intent.putExtra(Config.EMP_ID,empId);       //sender
+        intent.putExtra(Config.EMP_ID, empId);       //sender
         intent.putExtra(Config.REC_ID, recId);      //receiver
-         intent.putExtra(Config.DATETIME_ID,datetime);
+        intent.putExtra(Config.DATETIME_ID, datetime);
         intent.putExtra(Config.RECEIVER_NAME, receiver_name);
 
         startActivity(intent);

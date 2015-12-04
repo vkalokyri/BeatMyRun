@@ -1,0 +1,187 @@
+<!--&lt;!&ndash;<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"&ndash;&gt;-->
+    <!--&lt;!&ndash;xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:orientation="vertical"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:paddingRight="@dimen/activity_horizontal_margin"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:paddingTop="@dimen/activity_vertical_margin"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:paddingBottom="@dimen/activity_vertical_margin"&ndash;&gt;-->
+    <!--&lt;!&ndash;tools:context="net.simplifiedcoding.mysqlcrud.ViewChallenge">&ndash;&gt;-->
+
+
+
+    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="You have challenged"&ndash;&gt;-->
+        <!--&lt;!&ndash;/>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:enabled="false"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/editTextReceiverId" />&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="Receiver" />&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/editTextName" />&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="0dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="Datetime" />&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/editTextDesg" />&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="0dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="Sender"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:visibility="invisible"/>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="0dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/editTextSalary"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:visibility="invisible"/>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="Receiver Distance" />&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/editTextDistance" />&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="Duration" />&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/editTextDuration" />&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<?xml version="1.0" encoding="utf-8"?>&ndash;&gt;-->
+
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:orientation="vertical" android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
+<!--android:paddingRight="@dimen/activity_horizontal_margin"-->
+<!--android:paddingTop="@dimen/activity_vertical_margin"-->
+<!--android:paddingBottom="0dp"-->
+<!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+<!--tools:showIn="@layout/activity_main" tools:context=".RunActivity">-->
+
+
+
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/tophalf"-->
+    <!--android:layout_row="0"-->
+    <!--android:layout_column="0"-->
+    <!--android:paddingBottom="10dp"-->
+    <!--android:paddingTop="10dp"-->
+    <!--android:paddingLeft="20dp"-->
+    <!--android:paddingRight="20dp">-->
+
+
+
+<!--</RelativeLayout>-->
+
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/midhalf"
+    android:layout_row="1"
+    android:layout_column="0"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You have challenged"
+        android:textSize="30dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFBB0C0C"
+        android:textStyle="bold"
+        android:id="@+id/textView" />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:id="@+id/editTextReceiverId"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="49dp" />
+
+
+    <EditText
+        android:id="@+id/editTextDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:textAlignment="center"
+        android:textSize="40dp"
+        android:textColor="#FFFFFF"
+        android:editable="false"
+        android:cursorVisible="false"
+        android:background="@drawable/round_button"
+        android:paddingTop="50dp"
+        android:layout_alignTop="@+id/editTextDistance"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/editTextDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:typeface="sans"
+        android:textAlignment="center"
+        android:textSize="40dp"
+        android:textColor="#FFFFFF"
+        android:editable="false"
+        android:cursorVisible="false"
+        android:background="@drawable/round_button"
+        android:paddingTop="40dp"
+        android:layout_below="@+id/editTextReceiverId"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="108dp" />
+
+
+</RelativeLayout>
+
+
+

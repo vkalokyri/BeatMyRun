@@ -9,43 +9,58 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Opponent" />
+        android:text="Select Opponent"
+        android:textColor="#050000"
+        android:textSize="20dp"
+        android:textIsSelectable="false" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editTextName" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Datetime" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Datetime" />-->
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextDesg" />
+        android:id="@+id/editTextDesg"
+        android:visibility="invisible"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sender" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Sender" />-->
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextSalary" />
+        android:id="@+id/editTextSalary"
+        android:visibility="invisible"
+        />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Send Challenge"
-        android:id="@+id/buttonAdd" />
+        android:id="@+id/buttonAdd"
+        android:background="#bb0c0c" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Challenges"
-        android:id="@+id/buttonView" />
+        android:text="View Received Challenges"
+        android:id="@+id/buttonView"
+        android:background="#bb0c0c"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Sent Challenges"
+        android:id="@+id/buttonViewSent"
+        android:background="#bb0c0c"/>
 
 </LinearLayout>

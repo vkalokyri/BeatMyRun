@@ -5,4 +5,7 @@
     <string name="title_activity_challenge_new_send">ChallengeNewSend</string>
     <string name="title_activity_view_all_challenges">ViewAllChallenges</string>
     <string name="title_activity_view_challenge">ViewChallenge</string>
+    <string name="title_activity_view_sent_challenges">ViewSentChallenges</string>
+    <string name="title_activity_view_single_sent_challenge">ViewSingleSentChallenge</string>
+    <string name="title_activity_leaderboards">Leaderboards</string>
 </resources>

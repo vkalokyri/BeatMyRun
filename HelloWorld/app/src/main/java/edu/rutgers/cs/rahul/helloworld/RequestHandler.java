@@ -1,5 +1,7 @@
 package edu.rutgers.cs.rahul.helloworld;
 
+import android.widget.Toast;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -93,6 +95,7 @@ public class RequestHandler {
 
     public String sendGetRequestParam(String requestURL, String id){
         StringBuilder sb =new StringBuilder();
+
         try {
             URL url = new URL(requestURL+id+"%27");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -106,6 +109,102 @@ public class RequestHandler {
         }
         return sb.toString();
     }
+
+
+//getChallenge based on receiver_id/sender_id and datetime
+    public String sendGetRequestTwoParamDatetime(String requestURL, String id, String id2){
+        StringBuilder sb =new StringBuilder();
+        try {
+
+             id2 = URLEncoder.encode(id2, "UTF-8");
+            URL url = new URL(requestURL+id+"%27&datetime=%27"+id2+"%27");
+            //localhost:8888/getEmpDatetimeTwoParams.php?receiver_id=%27Nirali%27&datetime=%272015-12-22%00:00:00%27
+
+
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+            String s;
+            while((s=bufferedReader.readLine())!=null){
+                sb.append(s+"\n");
+            }
+        }catch(Exception e){
+        }
+        return sb.toString();
+    }
+
+
+
+    //getChallenge based on receiver_id/sender_id and datetime
+    public String sendGetRequestThreeParamDatetime(String requestURL, String id, String id2, String id3){
+        StringBuilder sb =new StringBuilder();
+        try {
+
+            id3 = URLEncoder.encode(id3, "UTF-8");
+            URL url = new URL(requestURL+id+"%27&receiver_id=%27"+id2+"%27&datetime=%27"+id3+"%27");
+            //localhost:8888/getEmpDatetimeThreeParams.php?sender_id=%27careena%27&receiver_id=%27Nirali%27&datetime=%272015-12-15%2023:08:33%27
+
+
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+            String s;
+            while((s=bufferedReader.readLine())!=null){
+                sb.append(s+"\n");
+            }
+        }catch(Exception e){
+        }
+        return sb.toString();
+    }
+
+
+
+
+
+
+    //added for datetime
+    public String sendGetRequestParamDatetime(String requestURL, String id) throws UnsupportedEncodingException {
+        StringBuilder sb =new StringBuilder();
+
+        id = URLEncoder.encode(id, "UTF-8");
+
+        try {
+            URL url = new URL(requestURL+id+"%27");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+            String s;
+            while((s=bufferedReader.readLine())!=null){
+                sb.append(s+"\n");
+            }
+        }catch(Exception e){
+        }
+        return sb.toString();
+    }
+
+
+
+    public String sendGetRequestTwoParam(String requestURL, String id, String id2){
+        StringBuilder sb =new StringBuilder();
+        try {
+
+           // id2 = URLEncoder.encode(id, "UTF-8");
+            URL url = new URL(requestURL+id+"%27&receiver_id=%27"+id2+"%27");
+
+          //  http://localhost/addStatusNew.php?sender_id=%27Careena%27&receiver_id=%27Thara%27
+
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+            String s;
+            while((s=bufferedReader.readLine())!=null){
+                sb.append(s+"\n");
+            }
+        }catch(Exception e){
+        }
+        return sb.toString();
+    }
+
 
     private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
