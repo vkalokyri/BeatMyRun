@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent" android:layout_marginLeft="0dp"
+    android:weightSum="1"><android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
+    android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+
+    <android.support.v7.widget.Toolbar android:id="@+id/RunResultToolbar"
+        android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+        android:background="#BB2222"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <ImageView
+            android:id="@+id/RunResultToplogo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/logo" />
+
+        <Spinner
+            android:id="@+id/RunResultSpinner_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:popupBackground="#fff"
+            />
+
+    </android.support.v7.widget.Toolbar>
+</android.support.design.widget.AppBarLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="wrap_content" android:layout_marginLeft="0dp"
+        android:layout_marginTop="30dp"
+        android:weightSum="1" android:visibility="gone">
+        <ImageView
+            android:id="@+id/WinChallenge"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/cup"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/totalmiles"
+            />
+
+        <TextView android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Challenge Won!"
+            android:id="@+id/ChallengeView"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_toStartOf="@+id/calories">
+        </TextView>
+    </LinearLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:gravity="center"
+            android:text="Totalmiles"
+            android:id="@+id/totalmiles"
+            android:textColor="#BB2222"
+            android:layout_gravity="center_vertical"
+            android:layout_alignTop="@+id/calories"
+            android:layout_alignStart="@+id/time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:gravity="center"
+            android:text="Calories"
+            android:id="@+id/calories"
+            android:textColor="#BB2222"
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="55dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="65dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:gravity="center"
+            android:text="Time"
+            android:id="@+id/time"
+            android:textColor="#BB2222"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="62dp"
+            android:layout_below="@+id/totalmiles"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="75dp" />
+
+        <TextView android:text="Challenge" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/challenge"
+            android:textStyle="bold"
+            android:typeface="sans"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="#FFFFFF"
+            android:editable="false"
+            android:cursorVisible="false"
+            android:background="@drawable/round_button"
+            android:paddingTop="40dp"
+            android:layout_alignTop="@+id/time"
+            android:layout_alignStart="@+id/calories" />
+
+        <TextView android:text="Challenge your friend" android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:typeface="sans"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="#bbb"
+            android:editable="false"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="80dp" />
+
+
+        <AutoCompleteTextView android:id="@+id/myautocomplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="2"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="33dp" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
