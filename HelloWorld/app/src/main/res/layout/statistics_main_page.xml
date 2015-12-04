@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:weightSum="1">
+
+    <!--<View android:layout_width="100dp"-->
+    <!--android:layout_height="100dp"-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:background="@drawable/circle"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:layout_weight="0.12" />-->
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="Statistics"
+
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#070000"
+        android:layout_x="360px"
+        android:layout_y="0px"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:gravity="center"
+        android:text="totalmiles"
+        android:id="@+id/totalmiles"
+        android:textColor="#ff0000"
+        android:layout_x="10px"
+        android:layout_y="110px"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:gravity="center"
+        android:text="totalmiles"
+        android:id="@+id/totaltime"
+        android:textColor="#ff0000"
+        android:layout_x="350px"
+        android:layout_y="110px"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:gravity="center"
+        android:text="totalmiles"
+        android:id="@+id/totalcalories"
+        android:textColor="#ff0000"
+        android:layout_x="700px"
+        android:layout_y="110px"/>
+
+    <Button
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_x="180px"
+        android:layout_y="500px"
+        android:text="Days Summary"
+        android:background="#FF0000"
+        android:id="@+id/summaryday"
+        android:textStyle="normal" />
+    <Button
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_x="180px"
+        android:layout_y="680px"
+        android:text="Month Summary"
+        android:background="#FF0000"
+        android:id="@+id/summarymonth"
+        android:textStyle="normal" />
+    <!--<Button-->
+        <!--android:layout_width="180dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_x="180px"-->
+        <!--android:layout_y="850px"-->
+        <!--android:text="Summary For a Month"-->
+        <!--android:background="#FF0000"-->
+        <!--android:id="@+id/summarymonth"-->
+        <!--android:textStyle="normal" />-->
+
+
+
+
+
+</AbsoluteLayout>
