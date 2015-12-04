@@ -153,7 +153,7 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
                         intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
                         break;
                     case 3:
-                        intent =new Intent(this_obj.getApplicationContext(), StatActivity.class);
+                        intent =new Intent(this_obj.getApplicationContext(), StatisticsActivity.class);
                         break;
                     case 4:
                         if (LoginActivity.mGoogleApiClient.isConnected()) {
