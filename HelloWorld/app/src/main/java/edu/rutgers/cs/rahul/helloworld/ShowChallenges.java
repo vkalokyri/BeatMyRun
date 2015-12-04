@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.plus.People;
@@ -38,6 +39,7 @@ public class ShowChallenges extends Activity {
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
+    TextView wonView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     private String JSON_STRING;
@@ -52,6 +54,8 @@ public class ShowChallenges extends Activity {
     String datetime;
     String id;
     String receiver_id;
+    String challengeWon;
+    String challengeTotal;
 
 
     @Override
@@ -64,6 +68,8 @@ public class ShowChallenges extends Activity {
 
         Spinner spinner = (Spinner) findViewById(R.id.ChallengesSpinner_nav);
 
+        wonView = (TextView) findViewById(R.id.totalmiles);
+        getTotal();
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
         spinnerArray.add("Challenge");
@@ -148,12 +154,83 @@ public class ShowChallenges extends Activity {
                 //Nothing here ever fires
                 if (groupPosition==0) {
                     System.err.println("child clicked " + childPosition);
-                    confirmDeleteChallenge(childPosition + 1);
+                    System.out.println(receivedAllList.get(childPosition + 1).getStatus());
+                    if(receivedAllList.get(childPosition + 1).getStatus().equalsIgnoreCase("pending")) {
+                        confirmDeleteChallenge(childPosition + 1);
+                    }else if (receivedAllList.get(childPosition + 1).getStatus().equals( Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId())){
+                        Toast.makeText(ShowChallenges.this, "You have won this challenge!! Yiay!!", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(ShowChallenges.this, "Oops.. You have lost this challenge!!", Toast.LENGTH_LONG).show();
+                    }
+                }else if (groupPosition==1) {
+                    System.err.println("child clicked " + childPosition);
+                    System.out.println(sentAllList.get(childPosition + 1).getStatus());
+                    if(sentAllList.get(childPosition + 1).getStatus().equalsIgnoreCase("pending")) {
+                        Toast.makeText(ShowChallenges.this, "This challenge is still pending...", Toast.LENGTH_LONG).show();
+                    }else if (sentAllList.get(childPosition + 1).getStatus().equals( Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId())){
+                        Toast.makeText(ShowChallenges.this, "You have won this challenge!! Yiay!!", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(ShowChallenges.this, "Oops.. You have lost this challenge!!", Toast.LENGTH_LONG).show();
+                    }
                 }
                 return true;
             }
         });
     }
+
+
+    private void getTotal(){
+        class GetTotal extends AsyncTask<Void,Void,String> {
+            ProgressDialog loading;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(ShowChallenges.this,"Fetching...","Wait...",false,false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                showTotal(s);
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendGetRequestParam(Config.URL_GET_TOTAL_CHALLENGES,  Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId());
+                return s;
+            }
+        }
+        GetTotal ge = new GetTotal();
+        ge.execute();
+    }
+
+    private void showTotal(String json){
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
+            JSONObject c = result.getJSONObject(0);
+            challengeTotal  = c.getString(Config.TAG_ID);
+            challengeWon  = c.getString(Config.TAG_RECEIVER_ID);
+
+
+            //Toast.makeText(Leaderboards.this,challengeWon , Toast.LENGTH_LONG).show();
+            //Toast.makeText(Leaderboards.this,"Test" , Toast.LENGTH_LONG).show();
+//            String desg = c.getString(Config.TAG_DESG);
+//            String sal = c.getString(Config.TAG_SAL);
+//
+            wonView.setText(challengeWon+"/"+challengeTotal+"\n won");
+
+
+//            editTextDesg.setText(desg);
+//            editTextSalary.setText(sal);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /*
      * Preparing the list data
@@ -205,7 +282,19 @@ public class ShowChallenges extends Activity {
                     receiverName = jo.getString(Config.TAG_USER_NAME);
                     distance = jo.getString(Config.TAG_DISTANCE2);
                     duration = jo.getString(Config.TAG_DURATION2);
-                    receivedList.add(receiverName.split(" ")[0] + "   " + distance + "miles/" + duration + "mins");
+                    String Latestdistance="";
+                    String Latesttime="";
+
+                    try{
+                        Latestdistance = String.format("%.02f",Double.parseDouble(distance));
+                        Latesttime = String.format("%.02f",Double.parseDouble(duration));
+                    }catch(Exception e)
+                    {
+
+                    }
+
+
+                    receivedList.add(receiverName.split(" ")[0] + "   " + Latestdistance + "miles/" + Latesttime + "mins");
                     receivedAllList.add(new Challenge_Bean(id, receiver_id, datetime, distance, duration, status));
 
                 }
@@ -260,7 +349,21 @@ public class ShowChallenges extends Activity {
                     receiverName = jo.getString(Config.TAG_USER_NAME);
                     distance = jo.getString(Config.TAG_DISTANCE2);
                     duration = jo.getString(Config.TAG_DURATION2);
-                    sentList.add(receiverName.split(" ")[0] + "   " + distance + "miles/" + duration + "mins");
+
+
+                    String Latestdistance="";
+                    String Latesttime="";
+
+                    try{
+                        Latestdistance = String.format("%.02f",Double.parseDouble(distance));
+                        Latesttime = String.format("%.02f",Double.parseDouble(duration));
+                    }catch(Exception e)
+                    {
+
+                    }
+
+
+                    sentList.add(receiverName.split(" ")[0] + "   " + Latestdistance + "miles/" + Latesttime + "mins");
                     sentAllList.add(new Challenge_Bean(id, receiver_id, datetime, distance, duration, status));
                 }
 

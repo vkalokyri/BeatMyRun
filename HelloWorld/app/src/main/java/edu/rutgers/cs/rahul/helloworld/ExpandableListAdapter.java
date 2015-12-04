@@ -12,6 +12,7 @@ package edu.rutgers.cs.rahul.helloworld;
     import android.view.View;
     import android.view.ViewGroup;
     import android.widget.BaseExpandableListAdapter;
+    import android.widget.ImageView;
     import android.widget.TextView;
 
     public class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -50,6 +51,8 @@ package edu.rutgers.cs.rahul.helloworld;
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = infalInflater.inflate(R.layout.exp_list_item, null);
             }
+
+            ImageView image = (ImageView) convertView.findViewById(R.id.face);
 
             TextView txtListChild = (TextView) convertView
                     .findViewById(R.id.lblListItem);
