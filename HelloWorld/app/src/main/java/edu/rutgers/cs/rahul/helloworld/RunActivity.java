@@ -58,6 +58,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
     YouTubePlayer g_player;
     long last_stopped_time = 0;
     TextView fab;
+    double weight = 0;
 
     //###################################################
 
@@ -289,13 +290,26 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
             @Override
             public void onClick(View view) {
                timer_handler.removeCallbacks(update_timer);
-                String duration = ""+((SystemClock.uptimeMillis() - start_time)/1000);
                 java.util.Date dt = new java.util.Date();
                 java.text.SimpleDateFormat sdf =  new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String currentTime = sdf.format(dt);
                 String user_id = Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId();
-                String steps = ""+(number_of_steps - number_of_steps_offset);
-                String distance = ""+((number_of_steps - number_of_steps_offset)*0.000621371);
+
+                double duration_ = (double)((SystemClock.uptimeMillis() - start_time) / (double)(1000 * 60));
+                double steps_ = (double)(number_of_steps - number_of_steps_offset);
+                double distance_ = (double)((number_of_steps - number_of_steps_offset)*0.000621371);
+                double calories_ = (double)(0.75*((number_of_steps - number_of_steps_offset)*0.000621371)*weight);
+
+                String duration = String.format("%.03f",duration_);
+                String steps = String.format("%.03f",steps_);
+                String distance = String.format("%.03f",distance_);
+                String calories = String.format("%.03f",calories_);
+
+
+//                String duration = ""+((SystemClock.uptimeMillis() - start_time) / (double)(1000 * 60));//String.format("%.02f", ((SystemClock.uptimeMillis() - start_time) / (1000 * 60)));
+//                String steps = ""+(number_of_steps - number_of_steps_offset);
+//                String distance = ""+((number_of_steps - number_of_steps_offset)*0.000621371);//String.format( "%.02f",((number_of_steps - number_of_steps_offset)*0.000621371));
+//                String calories = ""+(0.75*((number_of_steps - number_of_steps_offset)*0.000621371)*weight);//String.format( "%.02f",(0.75*((number_of_steps - number_of_steps_offset)*0.000621371)*weight));
 
                 reset_counters();
                 start_run();
@@ -303,11 +317,14 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
                 new insertRunInfo().execute(user_id, currentTime, duration, steps);
 
-               Intent intent =new Intent(getApplicationContext(), ChallengeNewSend.class);
+               Intent intent =new Intent(getApplicationContext(), RunResult.class);
                 intent.putExtra("user_id", user_id );
                 intent.putExtra("datetime", currentTime);
                 intent.putExtra("distance", distance);
                 intent.putExtra("duration", duration);
+                intent.putExtra("calories", calories);
+
+
                 startActivity(intent);
 
             }
@@ -329,9 +346,68 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
         step_detector = sensor_manager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
 
+        new getUser().execute();
 
 
     }
+
+
+    private class getUser extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPostExecute(String response) {
+            if (response!=null) {
+
+                String [] personalInfo = response.split(";");
+                try {
+                    weight = Double.parseDouble(personalInfo[4]);
+                }catch(Exception e)
+                {}
+
+                if(weight == 0)
+                    weight = 133;
+                else
+                    weight*=2.2;
+            }
+        }
+
+
+        @Override
+        protected String doInBackground(String... args) {
+
+            String link = "http://beatmyrun.net16.net/getUser.php?id="+Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId()+"";
+            HttpEntity entity = connector.request(link).getEntity();
+
+            StringBuilder sb = new StringBuilder();
+            try {
+                BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(entity.getContent()), 65728);
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+            }
+            catch (IOException e) { e.printStackTrace(); }
+            catch (Exception e) { e.printStackTrace(); }
+
+            String response=sb.toString();
+            if (response.equalsIgnoreCase("0_Results")){
+                System.err.println("The user doesn't exist in the database");
+                return null;
+            }else{
+                System.err.println("The user exists in the db!");
+                return response;
+            }
+        }
+    }
+
+
+
+
+
+
+
 
 
     private class GetSongPrefs extends AsyncTask<String, Void, String> {
@@ -425,6 +501,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
     public void loadNextSong()
     {
+        Log.e("LoadNextSong", "invoked");
 //        int index = (playlist.indexOf(VIDEO_ID)+1)%playlist.size();
 //        VIDEO_ID = playlist.get(index);
         if(played_songs.size() == playlist.size())
@@ -652,6 +729,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
         }
         last_stopped_time = current_time;
         System.out.println("Stopped");
+        Log.e("Stopped video", "Why?");
         if(is_running) {
             loadNextSong();
         }

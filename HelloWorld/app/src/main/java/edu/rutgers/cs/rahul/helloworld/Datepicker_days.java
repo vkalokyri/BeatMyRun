@@ -60,7 +60,7 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
     private static final String TAG_DISTANCE_RUN = "distance";
     private static final String TAG_DURATION_RUN = "duration";
     private static final String TAG_CALORIES_RUN = "calories";
-
+    private static final String TAG_DATETIME_RUN = "datetime";
     JSONArray products = null;
     ArrayList<HashMap<String, String>> productsList;
     String[] hashmapvalues;
@@ -69,6 +69,7 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
     double[] valuelist_distance = new double[30];
     double[] valuelist_duration = new double[30];
     double[] valuelist_calories = new double[30];
+    String[] valuelist_datetime = new String[30];
 
     private Button SubmitButton_date;
 
@@ -233,6 +234,7 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
                         String distance = c.getString(TAG_DISTANCE_RUN);
                         String duration = c.getString(TAG_DURATION_RUN);
                         String calories = c.getString(TAG_CALORIES_RUN);
+                        String date_datepicker=c.getString(TAG_DATETIME_RUN);
                         System.out.println(distance);
 
                         double distance_double = Double.parseDouble(distance);//creating runinfo_distance double array
@@ -244,6 +246,7 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
                         valuelist_distance[i] = distance_double;//runinfo_distance
                         valuelist_duration[i] = duration_double;//runinfo_distance
                         valuelist_calories[i] = calories_double;//runinfo_distance
+                        valuelist_datetime[i]=  date_datepicker;
 
 
                         //-------------------------------------------
@@ -292,6 +295,7 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
             new_screen.putExtra("valuelist_distance_i", valuelist_distance);
             new_screen.putExtra("valuelist_duration_i",valuelist_duration);
             new_screen.putExtra("valuelist_calories_i",valuelist_calories);
+            new_screen.putExtra("valuelist_datetime_i",valuelist_datetime);
             startActivity(new_screen);
         }
 

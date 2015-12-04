@@ -30,6 +30,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.google.android.gms.plus.Plus;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,7 +47,7 @@ public class ViewSentChallenges extends AppCompatActivity implements ListView.On
 
     //String datetime;
 
-    String currentUserId = "carid";
+    String currentUserId = Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

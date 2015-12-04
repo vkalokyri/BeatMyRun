@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.plus.Plus;
+
 import org.achartengine.ChartFactory;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
@@ -26,7 +28,7 @@ public class Leaderboards extends AppCompatActivity {
 
     String challengeTotal, challengeWon, challengeLost;
     private EditText editTextCount, editTextWon;
-
+    String currentUserId = Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId();
     double total, won, lost;
 
     @Override
@@ -64,7 +66,7 @@ public class Leaderboards extends AppCompatActivity {
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequestParam(Config.URL_GET_TOTAL_CHALLENGES, "Careena");
+                String s = rh.sendGetRequestParam(Config.URL_GET_TOTAL_CHALLENGES, currentUserId);
                 return s;
             }
         }

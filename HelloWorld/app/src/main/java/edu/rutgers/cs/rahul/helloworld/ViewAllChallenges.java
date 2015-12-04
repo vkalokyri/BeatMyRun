@@ -31,6 +31,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.google.android.gms.plus.Plus;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +51,9 @@ public class ViewAllChallenges extends AppCompatActivity implements ListView.OnI
   //  String sender_id = "carid";
 
 
-    String currentUserName, currentUserId="carid", receiverName;
+    String currentUserName;
+    String currentUserId = Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId();
+    String receiverName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
