@@ -178,6 +178,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
         spinnerArray.add("Run");
+        spinnerArray.add("Run Result");
         spinnerArray.add("Challenge");
         spinnerArray.add("Statistics");
         spinnerArray.add("Personal Details");
@@ -201,22 +202,25 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                     case 0:
                         break;
                     case 1:
-                        intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
+                        intent =new Intent(this_obj.getApplicationContext(), ShowChallenges.class);
                         break;
                     case 2:
-                        intent =new Intent(this_obj.getApplicationContext(), StatisticsActivity.class);
+                        intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
                         break;
                     case 3:
-                        intent =new Intent(this_obj.getApplicationContext(), PersonalInfoActivity.class);
+                        intent =new Intent(this_obj.getApplicationContext(), StatisticsActivity.class);
                         break;
                     case 4:
+                        intent =new Intent(this_obj.getApplicationContext(), PersonalInfoActivity.class);
+                        break;
+                    case 5:
                         if (LoginActivity.mGoogleApiClient.isConnected()) {
                             Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
                             LoginActivity.mGoogleApiClient.disconnect();
                             System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
                         }
                         intent = new Intent(this_obj.getApplicationContext(), LoginActivity.class);
-                    case 5:
+                    case 6:
                         break;
                     default:
                         break;
