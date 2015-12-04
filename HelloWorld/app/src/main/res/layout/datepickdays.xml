@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:weightSum="1"
-    tools:context=".MainActivity">
+
+    android:layout_height="match_parent">
+
+<android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
+    android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay"
+    android:id="@+id/view2">
+
+    <android.support.v7.widget.Toolbar android:id="@+id/DatePickerToolbar"
+        android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+        android:background="#BB2222"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <ImageView
+            android:id="@+id/DatePickerToplogo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/logo" />
+
+        <Spinner
+            android:id="@+id/DatePickerSpinner_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:popupBackground="#fff"
+            />
+
+    </android.support.v7.widget.Toolbar>
+</android.support.design.widget.AppBarLayout>
+
+
 
     <EditText
         android:id="@+id/etxt_fromdate"
@@ -17,22 +41,33 @@
         android:layout_height="wrap_content"
         android:layout_weight=".5"
         android:hint="@string/from_date"
-        android:onClick="FromDate" />
+        android:onClick="FromDate"
+        android:layout_above="@+id/submit_date"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="57dp" />
 
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:text="Submit"
         android:id="@+id/submit_date"
-        android:onClick="onClick" />
+        android:onClick="onClick"
+        android:textColor="#fff"
+        android:background="#ffbb0c0c"
+        android:layout_marginTop="92dp"
+        android:layout_below="@+id/etxt_todate"
+        android:layout_toStartOf="@+id/etxt_todate" />
 
     <EditText
         android:id="@+id/etxt_todate"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_weight=".5"
         android:hint="@string/to_date"
-        android:onClick="ToDate" />
+        android:onClick="ToDate"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="62dp"
+        android:layout_below="@+id/view2"
+        android:layout_alignParentEnd="true" />
 
-</LinearLayout>
+</RelativeLayout>

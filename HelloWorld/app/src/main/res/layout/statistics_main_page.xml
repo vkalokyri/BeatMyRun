@@ -45,6 +45,7 @@
             android:textColor="#BB2222"
             android:layout_gravity="center_vertical"
             android:layout_alignParentStart="true"
+            android:layout_marginTop="40dp"
             android:layout_marginLeft="10dp" />
 
         <TextView
@@ -56,6 +57,7 @@
             android:id="@+id/totaltime"
             android:textColor="#BB2222"
             android:layout_gravity="bottom"
+            android:layout_marginTop="40dp"
             android:layout_centerHorizontal="true" />
         <TextView
             android:layout_width="wrap_content"
@@ -66,6 +68,7 @@
             android:id="@+id/totalcalories"
             android:textColor="#BB2222"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="40dp"
             android:layout_marginRight="10dp" />
 
         <Button
@@ -77,7 +80,8 @@
             android:background="#BB2222"
             android:id="@+id/summaryday"
             android:textStyle="normal"
-            android:layout_marginTop="112dp"
+            android:textColor="#fff"
+            android:layout_marginTop="80dp"
             android:layout_below="@+id/totalmiles"
             android:layout_centerHorizontal="true" />
         <Button
@@ -89,6 +93,7 @@
             android:background="#BB2222"
             android:id="@+id/summarymonth"
             android:textStyle="normal"
+            android:textColor="#fff"
             android:layout_marginTop="43dp"
             android:layout_below="@+id/summaryday"
             android:layout_alignStart="@+id/summaryday" />

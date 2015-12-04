@@ -1,6 +1,7 @@
 package edu.rutgers.cs.rahul.helloworld;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,9 +10,14 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+
+import com.google.android.gms.plus.Plus;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -24,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -46,6 +53,7 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
     private SimpleDateFormat dateFormatter;
 
     private DatePicker dobPicker;
+    private Datepicker_days this_obj;
 
 
 
@@ -78,6 +86,7 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.datepickdays);
+        this_obj=this;
 
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
@@ -88,6 +97,69 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
         SubmitButton_date =(Button)findViewById(R.id.submit_date);
         SubmitButton_date.setOnClickListener(this);
 
+
+        Spinner spinner = (Spinner) findViewById(R.id.DatePickerSpinner_nav);
+
+
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+        spinnerArray.add("Pick day");
+        spinnerArray.add("Run");
+        spinnerArray.add("Challenge");
+        spinnerArray.add("Statistics");
+        spinnerArray.add("Personal Details");
+        spinnerArray.add("Logout");
+
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_dropdown_item, spinnerArray);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.dropdown_list);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+
+//        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = null;
+                switch (position)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        intent =new Intent(this_obj.getApplicationContext(), RunActivity.class);
+                        RunActivity.start_run();
+                        break;
+                    case 2:
+                        intent =new Intent(this_obj.getApplicationContext(), ShowChallenges.class);
+                        break;
+                    case 3:
+                        intent =new Intent(this_obj.getApplicationContext(), StatisticsActivity.class);
+                        break;
+                    case 4:
+                        intent =new Intent(this_obj.getApplicationContext(), PersonalInfoActivity.class);
+                        break;
+                    case 5:
+                        if (LoginActivity.mGoogleApiClient.isConnected()) {
+                            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                            LoginActivity.mGoogleApiClient.disconnect();
+                            System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCCESS");
+                        }
+                        intent = new Intent(this_obj.getApplicationContext(), LoginActivity.class);
+                    case 6:
+                        break;
+                    default:
+                        break;
+                }
+                if(intent != null)
+                    startActivity(intent);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
     }
@@ -177,9 +249,14 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
 
     public class Selectingdays extends AsyncTask<String,String,Void> {
 
+        ProgressDialog loading;
+
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            loading = ProgressDialog.show(Datepicker_days.this, "Fetching Data", "Wait...", false, false);
+
         }
 
         @Override
@@ -290,6 +367,7 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            loading.dismiss();
             super.onPostExecute(aVoid);
             Intent new_screen=new Intent(Datepicker_days.this,Chart.class);//sendingggggggggggggggggggggggg
             new_screen.putExtra("valuelist_distance_i", valuelist_distance);

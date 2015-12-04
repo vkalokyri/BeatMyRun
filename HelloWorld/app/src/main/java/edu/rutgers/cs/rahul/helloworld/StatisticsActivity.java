@@ -1,5 +1,6 @@
 package edu.rutgers.cs.rahul.helloworld;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -405,9 +406,12 @@ public class StatisticsActivity extends Activity{
     //private void Latestvalue() {
     public class Totalvalue extends AsyncTask<Void, Void, Void> {
 
+        ProgressDialog loading;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            loading = ProgressDialog.show(StatisticsActivity.this, "Fetching Data", "Wait...", false, false);
         }
 
         @Override
@@ -501,6 +505,7 @@ public class StatisticsActivity extends Activity{
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            loading.dismiss();
             super.onPostExecute(aVoid);
 
             System.out.println("Do stuff to the updated arrays ... " + Latestdistance);

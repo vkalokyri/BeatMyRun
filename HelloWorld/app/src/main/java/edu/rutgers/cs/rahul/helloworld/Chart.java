@@ -7,7 +7,12 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+
+import com.google.android.gms.plus.Plus;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.BarChart;
@@ -30,6 +35,7 @@ public class Chart extends Activity{
     int count2;
     int count3;
     private View mChart;
+    Chart this_obj;
     //int[] mile=new int[7];
 
     //double max_miles;
@@ -45,6 +51,7 @@ public class Chart extends Activity{
         //Button bbutton = (Button) findViewById(R.id.button3);
         System.out.println("On the graph screen");
         setContentView(R.layout.chart_week);
+        this_obj=this;
         //------Receiving values from Datepicker_days------------------------
         Intent i=getIntent();
         Bundle extras = this.getIntent().getExtras();
@@ -96,6 +103,70 @@ public class Chart extends Activity{
         openChart(miles,max_miles,datetime);
         openChart1(time,max_time,datetime);
         openChart2(calories, max_calories,datetime);
+
+
+        Spinner spinner = (Spinner) findViewById(R.id.chartWeekSpinner_nav);
+
+
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+        spinnerArray.add("Day Statistics");
+        spinnerArray.add("Run");
+        spinnerArray.add("Challenge");
+        spinnerArray.add("Statistics");
+        spinnerArray.add("Personal Details");
+        spinnerArray.add("Logout");
+
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_dropdown_item, spinnerArray);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.dropdown_list);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+
+//        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = null;
+                switch (position)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        intent =new Intent(this_obj.getApplicationContext(), RunActivity.class);
+                        RunActivity.start_run();
+                        break;
+                    case 2:
+                        intent =new Intent(this_obj.getApplicationContext(), ShowChallenges.class);
+                        break;
+                    case 3:
+                        intent =new Intent(this_obj.getApplicationContext(), StatisticsActivity.class);
+                        break;
+                    case 4:
+                        intent =new Intent(this_obj.getApplicationContext(), PersonalInfoActivity.class);
+                        break;
+                    case 5:
+                        if (LoginActivity.mGoogleApiClient.isConnected()) {
+                            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                            LoginActivity.mGoogleApiClient.disconnect();
+                            System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCCESS");
+                        }
+                        intent = new Intent(this_obj.getApplicationContext(), LoginActivity.class);
+                    case 6:
+                        break;
+                    default:
+                        break;
+                }
+                if(intent != null)
+                    startActivity(intent);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
 

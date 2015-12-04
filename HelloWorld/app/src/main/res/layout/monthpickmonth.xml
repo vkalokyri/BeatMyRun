@@ -3,29 +3,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
 
     tools:context=".MainActivitySpinner">
 
+    <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar android:id="@+id/MonthPickerToolbar"
+            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+            android:background="#BB2222"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <ImageView
+                android:id="@+id/MonthPickerToplogo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/logo" />
+
+            <Spinner
+                android:id="@+id/MonthPickerSpinner_nav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:popupBackground="#fff"
+                />
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+
+
     <TextView
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:text="Select Month"
+        android:layout_marginTop="150dip"
+        android:text="Select Month:"
+        android:textStyle="bold"
         android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
         android:id="@+id/TextViewMonth"
         android:textColor="#070707" />
     <TextView
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Select Year"
+        android:text="Select Year:"
+        android:textStyle="bold"
         android:id="@+id/TextViewYear"
-        android:layout_alignTop="@+id/TextViewMonth"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="51dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginTop="150dip"
         android:textColor="#070707" />
     <Spinner
         android:id="@+id/DropdownSpinner"
@@ -34,6 +65,7 @@
         android:spinnerMode="dropdown"
         android:layout_below="@+id/TextViewMonth"
         android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
 
         />
 
@@ -42,6 +74,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:spinnerMode="dropdown"
+        android:layout_marginRight="20dp"
         android:layout_alignTop="@+id/DropdownSpinner"
         android:layout_alignStart="@+id/TextViewYear" />
 
@@ -50,7 +83,9 @@
         android:layout_height="50dp"
         android:id="@+id/submit_month"
         android:text="Submit"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="300dip"
+        android:textColor="#fff"
+        android:background="#ffbb0c0c"
         android:layout_centerHorizontal="true"
         android:onClick="onClick" />
 
