@@ -670,7 +670,7 @@ public class LoginActivity extends Activity implements
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            String link = "http://beatmyrun.net16.net/insertSong.php?id="+youtube_id+"&title="+title+"&artist="+artist+"&tempo="+Double.toString(tempo)+"&duration=%2"+youtube_id+"&title="+title+"&artist="+artist+"&tempo="+Double.toString(tempo)+"&duration="+Double.toString(duration)+"&liveness="+Double.toString(liveness)+"&energy="+Double.toString(energy)+"&danceability="+Double.toString(danceability)+"";
+            String link = "http://beatmyrun.net16.net/insertSong.php?id="+youtube_id+"&title="+title+"&artist="+artist+"&tempo="+Double.toString(tempo)+"&duration="+youtube_id+"&title="+title+"&artist="+artist+"&tempo="+Double.toString(tempo)+"&duration="+Double.toString(duration)+"&liveness="+Double.toString(liveness)+"&energy="+Double.toString(energy)+"&danceability="+Double.toString(danceability)+"";
             return connector.request(link);
         }
 
@@ -735,15 +735,15 @@ public class LoginActivity extends Activity implements
                     nextScreen.putExtra("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
                     startActivity(nextScreen);
                 } else if (res.startsWith("Error:")) {
-                    Intent nextScreen = new Intent(getApplicationContext(), RunActivity.class);
-                    RunActivity.start_run();
+                    Intent nextScreen = new Intent(getApplicationContext(), LandingPage.class);
+//                    RunActivity.start_run();
                     //Sending data to another Activity
                     startActivity(nextScreen);
                 }
             }else{
                 //user exists in the db
-                Intent nextScreen = new Intent(getApplicationContext(), RunActivity.class);
-                RunActivity.start_run();
+                Intent nextScreen = new Intent(getApplicationContext(), LandingPage.class);
+//                RunActivity.start_run();
                 //Sending data to another Activity
                 startActivity(nextScreen);
             }

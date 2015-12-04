@@ -115,7 +115,7 @@
             android:editable="false"
             android:cursorVisible="false"
             android:background="@drawable/round_button"
-            android:paddingTop="35dp"
+            android:paddingTop="30dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"/>
     </RelativeLayout>

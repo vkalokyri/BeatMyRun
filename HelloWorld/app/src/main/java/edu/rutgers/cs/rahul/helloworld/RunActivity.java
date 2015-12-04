@@ -183,7 +183,6 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
         spinnerArray.add("Statistics");
         spinnerArray.add("Personal Details");
         spinnerArray.add("Logout");
-        spinnerArray.add("Contact Us");
 
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_dropdown_item, spinnerArray);
