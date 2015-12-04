@@ -34,6 +34,7 @@
             android:name=".PlayerActivity"
             android:screenOrientation="portrait" >
         </activity>
+
         <activity
             android:name=".PersonalInfoActivity"
             android:screenOrientation="portrait" >
@@ -88,6 +89,28 @@
             android:label="@string/title_activity_view_challenge"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+
+        <activity
+            android:name=".StatisticsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Datepicker_days"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Chart"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Monthpicker_month"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Chart_month"
+            android:screenOrientation="portrait" >
+        </activity>
+
     </application>
 
 </manifest>

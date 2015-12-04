@@ -64,7 +64,7 @@ public class PlayList {
 
     public String get(int index)
     {
-        return "GKkr29EGc-Y"; //list.get(index).VIDEO_ID;
+        return list.get(index).VIDEO_ID;
     }
 
     public PlayListElement get_element(int index)
