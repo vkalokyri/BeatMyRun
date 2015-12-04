@@ -97,7 +97,7 @@ public class RequestHandler {
         StringBuilder sb =new StringBuilder();
 
         try {
-            URL url = new URL(requestURL+id+"%27");
+            URL url = new URL(requestURL+id+"");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
@@ -117,8 +117,8 @@ public class RequestHandler {
         try {
 
              id2 = URLEncoder.encode(id2, "UTF-8");
-            URL url = new URL(requestURL+id+"%27&datetime=%27"+id2+"%27");
-            //localhost:8888/getEmpDatetimeTwoParams.php?receiver_id=%27Nirali%27&datetime=%272015-12-22%00:00:00%27
+            URL url = new URL(requestURL+id+"&datetime="+id2+"");
+            //localhost:8888/getEmpDatetimeTwoParams.php?receiver_id=Nirali&datetime=2015-12-22%00:00:00
 
 
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -141,8 +141,8 @@ public class RequestHandler {
         try {
 
             id3 = URLEncoder.encode(id3, "UTF-8");
-            URL url = new URL(requestURL+id+"%27&receiver_id=%27"+id2+"%27&datetime=%27"+id3+"%27");
-            //localhost:8888/getEmpDatetimeThreeParams.php?sender_id=%27careena%27&receiver_id=%27Nirali%27&datetime=%272015-12-15%2023:08:33%27
+            URL url = new URL(requestURL+id+"&receiver_id="+id2+"&datetime="+id3+"");
+            //localhost:8888/getEmpDatetimeThreeParams.php?sender_id=careena&receiver_id=Nirali&datetime=2015-12-15%2023:08:33
 
 
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -169,7 +169,7 @@ public class RequestHandler {
         id = URLEncoder.encode(id, "UTF-8");
 
         try {
-            URL url = new URL(requestURL+id+"%27");
+            URL url = new URL(requestURL+id+"");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
@@ -189,9 +189,9 @@ public class RequestHandler {
         try {
 
            // id2 = URLEncoder.encode(id, "UTF-8");
-            URL url = new URL(requestURL+id+"%27&receiver_id=%27"+id2+"%27");
+            URL url = new URL(requestURL+id+"&receiver_id="+id2+"");
 
-          //  http://localhost/addStatusNew.php?sender_id=%27Careena%27&receiver_id=%27Thara%27
+          //  http://localhost/addStatusNew.php?sender_id=Careena&receiver_id=Thara
 
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -221,5 +221,22 @@ public class RequestHandler {
         }
 
         return result.toString();
+    }
+
+
+    public String getAllUsers(String requestURL){
+        StringBuilder sb =new StringBuilder();
+        try {
+            URL url = new URL(requestURL);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+            String s;
+            while((s=bufferedReader.readLine())!=null){
+                sb.append(s+"\n");
+            }
+        }catch(Exception e){
+        }
+        return sb.toString();
     }
 }

@@ -5,6 +5,7 @@ package edu.rutgers.cs.rahul.helloworld;
  */
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -50,7 +51,7 @@ public class HttpConnector {
 
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
-            System.out.println("LINK: "+link);
+            Log.e("LINK: ", link);
             request.setURI(new URI(link));
 
             HttpResponse response = null;

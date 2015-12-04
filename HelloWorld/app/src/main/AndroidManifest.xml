@@ -6,13 +6,14 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature
         android:name="android.hardware.Camera"
-        android:required="true"></uses-feature>
+        android:required="true" />
 
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -34,7 +35,6 @@
             android:name=".PlayerActivity"
             android:screenOrientation="portrait" >
         </activity>
-
         <activity
             android:name=".PersonalInfoActivity"
             android:screenOrientation="portrait" >
@@ -93,7 +93,6 @@
             android:label="@string/title_activity_view_challenge"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-
         <activity
             android:name=".ViewSentChallenges"
             android:label="@string/title_activity_view_sent_challenges"
@@ -108,10 +107,7 @@
             android:name=".Leaderboards"
             android:label="@string/title_activity_leaderboards" >
         </activity>
-
         <activity android:name="org.achartengine.GraphicalActivity" />
-
-
         <activity
             android:name=".StatisticsActivity"
             android:screenOrientation="portrait" >
@@ -132,8 +128,11 @@
             android:name=".Chart_month"
             android:screenOrientation="portrait" >
         </activity>
-
-
+        <activity
+            android:name=".LandingPage"
+            android:label="@string/title_activity_landing_page"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>
