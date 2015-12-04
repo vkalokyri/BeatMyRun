@@ -63,6 +63,9 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
     boolean from_challenge = false;
     double challenge_distance = 0;
     double challenge_time = 1;
+    String challenge_rec = "";
+    String challenge_send = "";
+    String challenge_dt = "";
 
     //###################################################
 
@@ -183,6 +186,10 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
             try {
                 challenge_distance = Double.parseDouble(getIntent().getStringExtra("distance"));
                 challenge_time = Double.parseDouble(getIntent().getStringExtra("duration"));
+                challenge_rec = getIntent().getStringExtra("receiver_id");
+                challenge_send = getIntent().getStringExtra("sender_id");
+                challenge_dt = getIntent().getStringExtra("datetime");
+
             }catch(Exception e){}
         }
         else
@@ -195,6 +202,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
         spinnerArray.add("Run");
+        spinnerArray.add("Run Result");
         spinnerArray.add("Challenge");
         spinnerArray.add("Statistics");
         spinnerArray.add("Personal Details");
@@ -217,22 +225,25 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                     case 0:
                         break;
                     case 1:
-                        intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
+                        intent =new Intent(this_obj.getApplicationContext(), ShowChallenges.class);
                         break;
                     case 2:
-                        intent =new Intent(this_obj.getApplicationContext(), StatisticsActivity.class);
+                        intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
                         break;
                     case 3:
-                        intent =new Intent(this_obj.getApplicationContext(), PersonalInfoActivity.class);
+                        intent =new Intent(this_obj.getApplicationContext(), StatisticsActivity.class);
                         break;
                     case 4:
+                        intent =new Intent(this_obj.getApplicationContext(), PersonalInfoActivity.class);
+                        break;
+                    case 5:
                         if (LoginActivity.mGoogleApiClient.isConnected()) {
                             Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
                             LoginActivity.mGoogleApiClient.disconnect();
                             System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
                         }
                         intent = new Intent(this_obj.getApplicationContext(), LoginActivity.class);
-                    case 5:
+                    case 6:
                         break;
                     default:
                         break;
@@ -334,6 +345,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                 intent.putExtra("distance", distance);
                 intent.putExtra("duration", duration);
                 intent.putExtra("calories", calories);
+
                 if(from_challenge)
                 {
                     if((challenge_distance/challenge_time)<(distance_/duration_))
@@ -344,6 +356,10 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                     {
                         intent.putExtra("status","lose");
                     }
+
+                    intent.putExtra("sender_id", challenge_send);
+                    intent.putExtra("receiver_id", challenge_rec);
+                    intent.putExtra("datetime", challenge_dt);
                 }
 
 
