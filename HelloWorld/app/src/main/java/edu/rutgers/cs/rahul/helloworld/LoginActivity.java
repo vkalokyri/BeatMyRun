@@ -68,8 +68,8 @@ public class LoginActivity extends Activity implements
 
     private static final String TAG = "LoginActivity";
 
-    public static final String API_KEY = "AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
-    public static final String browser_API_KEY = "AIzaSyAKt7_kz7pK42CQs74WUD5dmpCSiVE94cQ";
+    public static final String API_KEY = "AIzaSyC7SaYqdlQByqT88EaRe56N2QBitVmuVV4";//"AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
+    public static final String browser_API_KEY = "AIzaSyD83STu6GVhh6HvmwUcUmowADd2EoQHQ24";//"AIzaSyAKt7_kz7pK42CQs74WUD5dmpCSiVE94cQ";
     public static final String oauth_key = "661591512723-bm18diefo4qeltgsbp1j84qubvv17glt.apps.googleusercontent.com";
     public static String oauth_token;
     public static final String echonest_API_key = "TBFADK1MYMBWRRNHV";
@@ -670,7 +670,7 @@ public class LoginActivity extends Activity implements
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            String link = "http://10.0.2.2/insertSong.php?id=%27"+youtube_id+"%27&title=%27"+title+"%27&artist=%27"+artist+"%27&tempo=%27"+Double.toString(tempo)+"%27&duration=%27"+Double.toString(duration)+"%27&liveness=%27"+Double.toString(liveness)+"%27&energy=%27"+Double.toString(energy)+"%27&danceability=%27"+Double.toString(danceability)+"%27";
+            String link = "http://beatmyrun.net16.net/insertSong.php?id="+youtube_id+"&title="+title+"&artist="+artist+"&tempo="+Double.toString(tempo)+"&duration=%2"+youtube_id+"&title="+title+"&artist="+artist+"&tempo="+Double.toString(tempo)+"&duration="+Double.toString(duration)+"&liveness="+Double.toString(liveness)+"&energy="+Double.toString(energy)+"&danceability="+Double.toString(danceability)+"";
             return connector.request(link);
         }
 
@@ -698,7 +698,8 @@ public class LoginActivity extends Activity implements
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            String link = "http://10.0.2.2/insertPreference.php?youtube_id=%27"+youtube_id+"%27&user_id=%27"+user_id+"%27&timestamp=%27"+time+"%27";
+            String link = "http://beatmyrun.net16.net/insertPreference.php?youtube_id="+youtube_id+"&user_id="+user_id+"&timestamp="+time+"";
+            Log.e("Insert Preference", link);
             return connector.request(link);
         }
 
@@ -766,7 +767,7 @@ public class LoginActivity extends Activity implements
             System.out.println("ID"+id);
 
             //check if the userAlreadyExists
-            String link = "http://10.0.2.2/getUser.php?id=%27"+id+"%27";
+            String link = "http://beatmyrun.net16.net/getUser.php?id="+id+"";
             HttpEntity entity = connector.request(link).getEntity();
 
             StringBuilder sb = new StringBuilder();
@@ -785,10 +786,7 @@ public class LoginActivity extends Activity implements
             String response=sb.toString();
             if (response.equalsIgnoreCase("0_Results")){
                 System.err.println("The user doesn't exist in the database");
-                link = "http://10.0.2.2/insertUser.php?name=%27"+name+"%27&email=%27"+email+"%27&id=%27"+id+"%27";
-                return connector.request(link);
-            }else{
-                System.err.println("The user exists in the db!");
+                link = "http://beatmyrun.net16.net/insertUser.php?name="+name+"&email="+email+"&id="+id+"The user exists in the db!";
             }
             return null;
         }

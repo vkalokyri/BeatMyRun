@@ -49,8 +49,10 @@ import org.apache.http.protocol.HttpContext;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -227,7 +229,43 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
             }
         });
 
+
+
+
+
+
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+            Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            if (person.hasImage()) {
+
+                Person.Image image = person.getImage();
+
+
+                new AsyncTask<String, Void, Bitmap>() {
+
+                    @Override
+                    protected Bitmap doInBackground(String... params) {
+
+                        try {
+                            URL url = new URL(params[0]);
+                            InputStream in = url.openStream();
+                            return BitmapFactory.decodeStream(in);
+                        } catch (Exception e) {
+                        /* TODO log error */
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Bitmap bitmap) {
+                        ((ImageView)findViewById(R.id.personId)).setImageBitmap(bitmap);
+                    }
+                }.execute(image.getUrl());
+            }
+        }
+
     }
+
 
 
     private class updateUser extends AsyncTask<String, Void, HttpResponse> {
@@ -254,7 +292,7 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            String link = "http://10.0.2.2/updateUser.php?id=%27"+id+"%27&name=%27"+name+"%27&email=%27"+email+"%27&height="+height+"&weight="+weight+"&age="+age+"";
+            String link = "http://beatmyrun.net16.net/updateUser.php?id="+id+"&name="+name+"&email="+email+"&height="+height+"&weight="+weight+"&age="+age+"";
             return connector.request(link);
         }
 
@@ -289,7 +327,7 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
         @Override
         protected String doInBackground(String... args) {
 
-            String link = "http://10.0.2.2/getUser.php?id=%27"+currentPerson.getId()+"%27";
+            String link = "http://beatmyrun.net16.net/getUser.php?id="+currentPerson.getId()+"";
             HttpEntity entity = connector.request(link).getEntity();
 
             StringBuilder sb = new StringBuilder();

@@ -203,10 +203,10 @@ public class Datepicker_days extends Activity implements View.OnClickListener {
             params.add(new BasicNameValuePair("mindate", mindate));
             params.add(new BasicNameValuePair("maxdate", maxdate));
 
-            //String link = "http://10.0.2.2:8888/fetchdata.php";
-            // String link = "http://10.0.2.2:8888/fetchdata_runinfo.php";
+            //String link = "http://beatmyrun.net16.net/fetchdata.php";
+            // String link = "http://beatmyrun.net16.net/fetchdata_runinfo.php";
 
-            String link = "http://10.0.2.2:8888/Search.php"; //+ mindate + "maxdate="+ maxdate;
+            String link = "http://beatmyrun.net16.net/Search.php"; //+ mindate + "maxdate="+ maxdate;
             JSONObject json = jParser.makeHttpRequest(link, "GET", params);
             Log.d("All Products: ", json.toString());//
             // --------------------------------------------------------------------

@@ -10,5 +10,6 @@
     <string name="title_activity_leaderboards">Leaderboards</string>
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
+    <string name="title_activity_landing_page">LandingPage</string>
 
 </resources>

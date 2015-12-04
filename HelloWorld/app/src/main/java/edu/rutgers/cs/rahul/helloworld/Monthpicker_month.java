@@ -205,10 +205,10 @@ public class Monthpicker_month extends Activity implements AdapterView.OnItemSel
             params.add(new BasicNameValuePair("minmonth", minmonth));
             params.add(new BasicNameValuePair("minyear", minyear));
 
-            //String link = "http://10.0.2.2:8888/fetchdata.php";
-            // String link = "http://10.0.2.2:8888/fetchdata_runinfo.php";
+            //String link = "http://beatmyrun.net16.net/fetchdata.php";
+            // String link = "http://beatmyrun.net16.net/fetchdata_runinfo.php";
 
-            String link = "http://10.0.2.2:8888/Search_month.php"; //+ mindate + "maxdate="+ maxdate;
+            String link = "http://beatmyrun.net16.net/Search_month.php"; //+ mindate + "maxdate="+ maxdate;
             JSONObject json = jParser.makeHttpRequest(link, "GET", params);
             Log.d("All Products: ", json.toString());//
             // --------------------------------------------------------------------

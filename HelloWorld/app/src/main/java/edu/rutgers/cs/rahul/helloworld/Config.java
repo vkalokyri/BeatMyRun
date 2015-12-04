@@ -9,33 +9,34 @@ import java.util.Date;
 public class Config {
 
     //Address of our scripts of the CRUD
-    public static final String URL_ADD="http://10.0.2.2:8888/addEmp.php";
-    public static final String URL_ADD_STATUS="http://10.0.2.2:8888/addStatus.php";
-    //public static final String URL_ADD="http://10.0.2.2:8888/insertID.php";
-    //public static final String URL_GET_ALL = "http://10.0.2.2:8888/getAllEmp.php";
-   // public static final String URL_GET_EMP = "http://10.0.2.2:8888/getEmp.php?sender_id=%27";
-    //public static final String URL_GET_EMP = "http://10.0.2.2:8888/getEmpTwoParams.php?sender_id=%27";
-    public static final String URL_GET_EMP = "http://10.0.2.2:8888/getEmpThreeParams.php?sender_id=%27";
+    public static final String URL_ADD="http://beatmyrun.net16.net/addEmp.php";
+    public static final String URL_ADD_STATUS="http://beatmyrun.net16.net/addStatus.php";
+    //public static final String URL_ADD="http://beatmyrun.net16.net/insertID.php";
+    //public static final String URL_GET_ALL = "http://beatmyrun.net16.net/getAllEmp.php";
+   // public static final String URL_GET_EMP = "http://beatmyrun.net16.net/getEmp.php?sender_id=";
+    //public static final String URL_GET_EMP = "http://beatmyrun.net16.net/getEmpTwoParams.php?sender_id=";
+    public static final String URL_GET_EMP = "http://beatmyrun.net16.net/getEmpThreeParams.php?sender_id=";
 
     //get received challenge based on datetime and receiver_id
-    public static final String URL_GET_CHALLENGE_RECEIVER = "http://10.0.2.2:8888/getEmpDatetimeTwoParams.php?receiver_id=%27";
+    public static final String URL_GET_CHALLENGE_RECEIVER = "http://beatmyrun.net16.net/getEmpDatetimeTwoParams.php?receiver_id=";
 
-    public static final String URL_UPDATE_EMP = "http://10.0.2.2:8888/updateEmp.php";
-    public static final String URL_DELETE_EMP = "http://10.0.2.2:8888/deleteEmp.php?sender_id=%27";
-   // public static final String URL_GET_RUN_INFO = "http://10.0.2.2:8888/getRunInfo.php?user_id=%27";
-    //public static final String URL_GET_RUN_INFO = "http://10.0.2.2:8888/getEmpDatetime.php?datetime=%27";
-    public static final String URL_GET_RUN_INFO = "http://10.0.2.2:8888/getRunInfoTwoParams.php?sender_id=%27";
+    public static final String URL_UPDATE_EMP = "http://beatmyrun.net16.net/updateEmp.php";
+    public static final String URL_DELETE_EMP = "http://beatmyrun.net16.net/deleteEmp.php?sender_id=";
+   // public static final String URL_GET_RUN_INFO = "http://beatmyrun.net16.net/getRunInfo.php?user_id=";
+    //public static final String URL_GET_RUN_INFO = "http://beatmyrun.net16.net/getEmpDatetime.php?datetime=";
+    public static final String URL_GET_RUN_INFO = "http://beatmyrun.net16.net/getRunInfoTwoParams.php?sender_id=";
     //added
-    public static final String URL_GET_ALL = "http://10.0.2.2:8888/getCurrentUserAll.php?sender_id=%27";
+    public static final String URL_GET_ALL = "http://beatmyrun.net16.net/getCurrentUserAll.php?sender_id=";
 
-    public static final String URL_GET_ALL_SENT = "http://10.0.2.2:8888/getAllSentChallenges.php?sender_id=%27";
+    public static final String URL_GET_ALL_SENT = "http://beatmyrun.net16.net/getAllSentChallenges.php?sender_id=";
     //checkuser
-    public static final String URL_GET_USER = "http://10.0.2.2:8888/selectAll.php?sender_id=%27";
+    public static final String URL_GET_USER = "http://beatmyrun.net16.net/selectAll.php?sender_id=";
+    public static final String URL_ALL_USERS="http://beatmyrun.net16.net/getAllUsers.php";
 
-    public static final String URL_GET_USER_NAME = "http://10.0.2.2:8888/getNameFromId.php?user_id=%27";
+    public static final String URL_GET_USER_NAME = "http://beatmyrun.net16.net/getNameFromId.php?user_id=";
 
 
-    public static final String URL_GET_TOTAL_CHALLENGES = "http://10.0.2.2:8888/countChallenge.php?sender_id=%27";
+    public static final String URL_GET_TOTAL_CHALLENGES = "http://beatmyrun.net16.net/countChallenge.php?sender_id=";
 
 
 
@@ -92,6 +93,7 @@ public class Config {
     public static final String SENDER_ID = "send_id";
     public static final String DATETIME_ID = "datetime";
     public static final String RECEIVER_NAME = "receiver_name";
+    public static final String GLOBAL_DATETIME = "datetime";
 
 
 

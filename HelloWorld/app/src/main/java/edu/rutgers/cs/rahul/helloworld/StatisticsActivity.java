@@ -270,7 +270,7 @@ public class StatisticsActivity extends Activity{
 //            System.out.println("ID"+id);
             String msg1 = "IN";
             Log.d("call url", msg1);
-            String link = "http://10.0.2.2:8888/write.php?name=%27" + name + "%27&email=%27" + email + "%27&id=%27" + id + "%27";
+            String link = "http://beatmyrun.net16.net/write.php?name=" + name + "&email=" + email + "&id=" + id + "";
 
             return connector.request(link);
 
@@ -303,10 +303,10 @@ public class StatisticsActivity extends Activity{
             params.add(new BasicNameValuePair("mindate", mindate));
             params.add(new BasicNameValuePair("maxdate", maxdate));
 
-            //String link = "http://10.0.2.2:8888/fetchdata.php";
-            // String link = "http://10.0.2.2:8888/fetchdata_runinfo.php";
+            //String link = "http://beatmyrun.net16.net/fetchdata.php";
+            // String link = "http://beatmyrun.net16.net/fetchdata_runinfo.php";
 
-            String link = "http://10.0.2.2:8888/Search.php"; //+ mindate + "maxdate="+ maxdate;
+            String link = "http://beatmyrun.net16.net/Search.php"; //+ mindate + "maxdate="+ maxdate;
             JSONObject json = jParser.makeHttpRequest(link, "GET", params);
             Log.d("All Products: ", json.toString());//
             // --------------------------------------------------------------------
@@ -418,7 +418,7 @@ public class StatisticsActivity extends Activity{
             //params.add(new BasicNameValuePair("maxdate", maxdate));
 
 
-            String link = "http://10.0.2.2:8888/Latest_value.php"; //php url for total values
+            String link = "http://beatmyrun.net16.net/Latest_value.php"; //php url for total values
             JSONObject json = jParser.makeHttpRequest(link, "GET", params);
             Log.d("All Products: ", json.toString());//
             // --------------------------------------------------------------------
@@ -542,10 +542,10 @@ public class StatisticsActivity extends Activity{
             params.add(new BasicNameValuePair("minmonth", minmonth));
             params.add(new BasicNameValuePair("maxmonth", maxmonth));
 
-            //String link = "http://10.0.2.2:8888/fetchdata.php";
-            // String link = "http://10.0.2.2:8888/fetchdata_runinfo.php";
+            //String link = "http://beatmyrun.net16.net/fetchdata.php";
+            // String link = "http://beatmyrun.net16.net/fetchdata_runinfo.php";
 
-            String link = "http://10.0.2.2:8888/Search_month.php"; //+ mindate + "maxdate="+ maxdate;
+            String link = "http://beatmyrun.net16.net/Search_month.php"; //+ mindate + "maxdate="+ maxdate;
             JSONObject json = jParser.makeHttpRequest(link, "GET", params);
             Log.d("All Products: ", json.toString());//
             // ------------------------------------------------------------------
@@ -642,7 +642,7 @@ public class StatisticsActivity extends Activity{
             //params.add(new BasicNameValuePair("maxdate", maxdate));
 
 
-            String link = "http://10.0.2.2:8888/Totalvalues.php"; //php url for total values
+            String link = "http://beatmyrun.net16.net/Totalvalues.php"; //php url for total values
             JSONObject json = jParser.makeHttpRequest(link, "GET", params);
             Log.d("All Products: ", json.toString());//
             // --------------------------------------------------------------------
