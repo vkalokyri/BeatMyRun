@@ -3,6 +3,9 @@ package edu.rutgers.cs.rahul.helloworld;
 /**
  * Created by valia on 12/4/15.
  */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +34,7 @@ import android.widget.Toast;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 
+import org.apache.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +44,7 @@ public class ShowChallenges extends Activity {
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     TextView wonView;
+    TextView rankView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     private String JSON_STRING;
@@ -56,7 +61,7 @@ public class ShowChallenges extends Activity {
     String receiver_id;
     String challengeWon;
     String challengeTotal;
-
+    String rank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +74,52 @@ public class ShowChallenges extends Activity {
         Spinner spinner = (Spinner) findViewById(R.id.ChallengesSpinner_nav);
 
         wonView = (TextView) findViewById(R.id.totalmiles);
+        rankView= (TextView) findViewById(R.id.calories);
+
         getTotal();
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    HttpConnector connector = new HttpConnector();
+                    String link = "http://beatmyrun.net16.net/getRank.php?id="+Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId();
+                    HttpEntity entity = connector.request(link).getEntity();
+
+                    StringBuilder sb = new StringBuilder();
+                    try {
+                        BufferedReader reader =
+                                new BufferedReader(new InputStreamReader(entity.getContent()), 65728);
+                        String line = null;
+
+                        while ((line = reader.readLine()) != null) {
+                            sb.append(line);
+                        }
+                    }
+                    catch (IOException e) { e.printStackTrace(); }
+                    catch (Exception e) { e.printStackTrace(); }
+
+                    String response=sb.toString();
+
+                    return response;
+
+                }catch(Exception e)
+                {
+
+                }
+                return "";
+            }
+            @Override
+            protected void onPostExecute(String params) {
+                if (params==null){
+                    rankView.setText("No rank");
+                }else{
+                    rankView.setText("#"+params+"\n rank");
+                }
+
+            }
+
+        }.execute();
+
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
         spinnerArray.add("Challenge");

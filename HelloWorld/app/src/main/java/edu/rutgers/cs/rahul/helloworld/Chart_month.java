@@ -136,7 +136,7 @@ public class Chart_month extends Activity {
 
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
-        spinnerArray.add("Month Statistics");
+        spinnerArray.add("Monthly Statistics");
         spinnerArray.add("Run");
         spinnerArray.add("Challenge");
         spinnerArray.add("Statistics");

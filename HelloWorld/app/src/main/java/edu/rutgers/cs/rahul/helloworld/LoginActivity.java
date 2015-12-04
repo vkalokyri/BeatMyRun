@@ -470,14 +470,14 @@ public class LoginActivity extends Activity implements
                double liveness = resultSong.getLiveness();
                double energy = resultSong.getEnergy();
                double danceability = resultSong.getDanceability();
-               System.out.println("Title=" + resultSong.getTitle());
+              /* System.out.println("Title=" + resultSong.getTitle());
                System.out.println("Artist=" + resultSong.getArtist());
                System.out.println("BPM=" + resultSong.getTempo());
                System.out.println("Duration=" + resultSong.getDuration());
                System.out.println("Liveness=" + resultSong.getLiveness());
                System.out.println("Energy=" + resultSong.getEnergy());
                System.out.println("Danceability=" + resultSong.getDanceability());
-               System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+               System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");*/
 
                new insertSong().execute(youtube_id, song_title, artist, Double.toString(tempo), Double.toString(duration), Double.toString(liveness), Double.toString(energy), Double.toString(danceability));
                new insertPreference().execute(youtube_id, currentPerson.getId());

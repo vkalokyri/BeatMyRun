@@ -210,8 +210,7 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
                 String age = ageField.getText().toString();
                 new updateUser().execute(id, name, email, height, weight, age);
 
-                Intent nextScreen = new Intent(getApplicationContext(), RunActivity.class);
-                RunActivity.start_run();
+                Intent nextScreen = new Intent(getApplicationContext(), LandingPage.class);
                 //Sending data to another Activity
                 startActivity(nextScreen);
 

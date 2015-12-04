@@ -223,14 +223,12 @@ public class Monthpicker_month extends Activity implements AdapterView.OnItemSel
             item = parent.getItemAtPosition(position).toString();
 
             // Showing selected spinner item
-            Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             System.out.println(item);
 
         }  // What spinner 1 should do
 
         else {
             item1 = parent.getItemAtPosition(position).toString();
-            Toast.makeText(parent.getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
             System.out.println(item1);
         }
     }
