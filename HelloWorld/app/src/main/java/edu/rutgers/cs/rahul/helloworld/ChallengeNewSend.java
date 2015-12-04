@@ -29,6 +29,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import  java.util.Date;
+import java.text.DateFormat;
 
 public class ChallengeNewSend extends AppCompatActivity implements View.OnClickListener{
 
@@ -39,9 +41,20 @@ public class ChallengeNewSend extends AppCompatActivity implements View.OnClickL
 
     private Button buttonAdd;
     private Button buttonView;
+    private Button buttonViewSent;
 
     // String sender_id = "careena";
-    String testName,gotName;
+    String testName,gotName, globalUser;
+
+    String currentUserName, currentUserId="carid";
+
+    String receiverID;
+    //must get datetime from Rahul
+
+
+// textView is the TextView view that should display it
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +72,16 @@ public class ChallengeNewSend extends AppCompatActivity implements View.OnClickL
         editTextSal = (EditText) findViewById(R.id.editTextSalary);
 
         buttonAdd = (Button) findViewById(R.id.buttonAdd);
+        buttonViewSent = (Button) findViewById(R.id.buttonViewSent);
         buttonView = (Button) findViewById(R.id.buttonView);
+
+       // editTextDesg.setText(datetime);
 
         //Setting listeners to button
         buttonAdd.setOnClickListener(this);
         buttonView.setOnClickListener(this);
+        buttonViewSent.setOnClickListener(this);
     }
-
 
 
     private void checkUserExists(){
@@ -105,22 +121,19 @@ public class ChallengeNewSend extends AppCompatActivity implements View.OnClickL
             JSONObject jsonObject = new JSONObject(json);
             JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY3);
             JSONObject c = result.getJSONObject(0);
-            gotName = c.getString(Config.TAG_NAME3);
-//            String desg = c.getString(Config.TAG_DESG);
+            gotName = c.getString(Config.TAG_USER_NAME);
+             receiverID = c.getString(Config.TAG_USER_ID);
 //            String sal = c.getString(Config.TAG_SAL);
 
-//            editTextName.setText(name);
-//            editTextDesg.setText(desg);
-//          //  editTextSalary.setText(sal);
 
 
             if (gotName.isEmpty()) {
 
-                Toast.makeText(ChallengeNewSend.this, "user does not exist", Toast.LENGTH_LONG).show();
+                Toast.makeText(ChallengeNewSend.this, "User does not exist", Toast.LENGTH_LONG).show();
             }
             else{
-                addChallenge();
-                Toast.makeText(ChallengeNewSend.this, "User exists", Toast.LENGTH_LONG).show();
+               addChallenge();
+                Toast.makeText(ChallengeNewSend.this, receiverID, Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -131,9 +144,8 @@ public class ChallengeNewSend extends AppCompatActivity implements View.OnClickL
     //Adding an challenge
     private void addChallenge(){
 
-        final String name = editTextName.getText().toString().trim();
-        final String desg = editTextDesg.getText().toString().trim();
-        final String sal = editTextSal.getText().toString().trim();
+
+       final String datetime = "2015-12-15 23:08:33";
 
         class AddChallenge extends AsyncTask<Void,Void,String>{
 
@@ -151,16 +163,17 @@ public class ChallengeNewSend extends AppCompatActivity implements View.OnClickL
                 loading.dismiss();
                 Toast.makeText(ChallengeNewSend.this,s,Toast.LENGTH_LONG).show();
                 editTextName.setText("");
-                editTextDesg.setText("");
+                editTextDesg.setText(datetime);
                 editTextSal.setText("");
             }
 
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-                params.put(Config.KEY_EMP_NAME,name);
-                params.put(Config.KEY_EMP_DESG,desg);
-                params.put(Config.KEY_EMP_SAL,sal);
+                params.put(Config.KEY_EMP_NAME,receiverID);
+                params.put(Config.KEY_EMP_DESG,datetime);
+                params.put(Config.KEY_EMP_SAL,currentUserId);
+                params.put(Config.KEY_EMP_STATUS,"Pending");//added
 
                 RequestHandler rh = new RequestHandler();
                 String res = rh.sendPostRequest(Config.URL_ADD, params);
@@ -180,7 +193,11 @@ public class ChallengeNewSend extends AppCompatActivity implements View.OnClickL
         }
 
         if(v == buttonView){
-            startActivity(new Intent(this,ViewAllChallenges.class));
+            startActivity(new Intent(this, ViewAllChallenges.class));
+        }
+
+        if(v == buttonViewSent){
+            startActivity(new Intent(this,ViewSentChallenges.class));
         }
     }
 }

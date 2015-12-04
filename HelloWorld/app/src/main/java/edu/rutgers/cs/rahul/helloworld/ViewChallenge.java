@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 
@@ -50,7 +51,7 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
 
 
     public String distance,duration, distance2, duration2;
-
+    String runUserId;
 
 
 
@@ -62,13 +63,17 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
     private Button buttonDelete;
     private Button buttonResult;
 
-    private String id;
+    private String id, globalDatetime, globalSender;
 
 
 
-    private String recid;
-    public String sendid="Thara";
+
+
+    private String winner, receiverName, recid;
+    public String sendid= "Thara";
     String name;
+    final String currentTimeManual = "2015-12-15%2023:08:33";
+    final String currentTime = "2015-12-15 23:08:33";
 
     //constructor
     public ViewChallenge() {
@@ -83,7 +88,8 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
 
         id = intent.getStringExtra(Config.EMP_ID);
         recid = intent.getStringExtra(Config.REC_ID);
-        //sendid = intent.getStringExtra(Config.SENDER_ID);
+        globalDatetime = intent.getStringExtra(Config.DATETIME_ID);
+        receiverName = intent.getStringExtra(Config.RECEIVER_NAME);
 
         editTextId = (EditText) findViewById(R.id.editTextId);
         editTextName = (EditText) findViewById(R.id.editTextName);
@@ -105,12 +111,13 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
         buttonDelete.setOnClickListener(this);
         buttonResult.setOnClickListener(this);
 
-        editTextId.setText(id);
-        // editTextSalary.hide();
+       // editTextId.setText(id);
+        editTextName.setText(receiverName);
+
 
         getChallenge();
-        getRunInfo();
-        getSenderInfo();
+      //  getRunInfo();
+       // getSenderInfo();
 
     }
 
@@ -133,7 +140,7 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequestParam(Config.URL_GET_EMP, id);
+                String s = rh.sendGetRequestThreeParamDatetime(Config.URL_GET_EMP, id ,recid ,currentTime );
                 return s;
             }
         }
@@ -148,15 +155,19 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
             JSONObject c = result.getJSONObject(0);
             name = c.getString(Config.TAG_NAME);
             String desg = c.getString(Config.TAG_DESG);
-            String sal = c.getString(Config.TAG_SAL);
+            globalSender = c.getString(Config.TAG_SAL);
 
+            editTextId.setText(globalSender);
             editTextName.setText(name);
             editTextDesg.setText(desg);
-            editTextSalary.setText(sal);
+         //   editTextSalary.setText(sal);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        getUser();
+     //  getSenderInfo();
     }
 
 
@@ -171,6 +182,9 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
             protected void onPreExecute() {
                 super.onPreExecute();
                 loading = ProgressDialog.show(ViewChallenge.this,"Updating...","Wait...",false,false);
+                Comparison comparison = new Comparison();
+                 winner = comparison.compare();
+                Toast.makeText(ViewChallenge.this, winner, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -184,9 +198,11 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
             protected String doInBackground(Void... params) {
                 HashMap<String,String> hashMap = new HashMap<>();
                 hashMap.put(Config.KEY_EMP_ID,id);
-                hashMap.put(Config.KEY_EMP_NAME,name);
-                hashMap.put(Config.KEY_EMP_DESG,desg);
-                hashMap.put(Config.KEY_EMP_SAL,salary);
+                hashMap.put(Config.KEY_EMP_NAME,recid);
+                hashMap.put(Config.KEY_EMP_DESG,globalDatetime);
+                hashMap.put(Config.KEY_EMP_STATUS,"datetime");
+
+
 
                 RequestHandler rh = new RequestHandler();
 
@@ -220,7 +236,7 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequestParam(Config.URL_DELETE_EMP, id);
+                String s = rh.sendGetRequestTwoParamDatetime(Config.URL_DELETE_EMP, id, globalDatetime);
                 return s;
             }
         }
@@ -254,59 +270,74 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
         alertDialog.show();
     }
 
-    //receiver run info
-    private void getRunInfo(){
-        class GetRunInfo extends AsyncTask<Void,Void,String>{
-            ProgressDialog loading;
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(ViewChallenge.this,"Fetching...","Wait...",false,false);
-            }
 
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                showRunInfo(s);
-
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-                RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequestParam(Config.URL_GET_RUN_INFO,recid);
-                return s;
-            }
-        }
-        GetRunInfo ge = new GetRunInfo();
-        ge.execute();
-    }
-
-    private void showRunInfo(String json){
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY_RUN);
-            JSONObject c = result.getJSONObject(0);
-            distance2 = c.getString(Config.TAG_DISTANCE);
-            duration2 = c.getString(Config.TAG_DURATION);
-            // String sal = c.getString(Config.TAG_SAL);
-
-            editTextDistance2.setText(distance2);
-            editTextDuration2.setText(duration2);
-            // editTextSalary.setText(sal);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-
+//
+//    //receiver run info
+//    private void getRunInfo(){
+//
+//
+//        class GetRunInfo extends AsyncTask<Void,Void,String>{
+//            ProgressDialog loading;
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//                loading = ProgressDialog.show(ViewChallenge.this,"Fetching...","Wait...",false,false);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String s) {
+//                super.onPostExecute(s);
+//                loading.dismiss();
+//                showRunInfo(s);
+//
+//            }
+//
+//            @Override
+//            protected String doInBackground(Void... params) {
+//                RequestHandler rh = new RequestHandler();
+//                String s = rh.sendGetRequestParam(Config.URL_GET_RUN_INFO,currentTimeManual);
+//                return s;
+//            }
+//        }
+//        GetRunInfo ge = new GetRunInfo();
+//        ge.execute();
+//    }
+//
+//    private void showRunInfo(String json){
+//        try {
+//            JSONObject jsonObject = new JSONObject(json);
+//            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY_RUN);
+//            JSONObject c = result.getJSONObject(0);
+//            distance2 = c.getString(Config.TAG_DISTANCE);
+//            duration2 = c.getString(Config.TAG_DURATION);
+//            // String sal = c.getString(Config.TAG_SAL);
+//
+//            editTextDistance2.setText(distance2);
+//            editTextDuration2.setText(duration2);
+//            // editTextSalary.setText(sal);
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//
 
     //change
 
     //sender run info
     private void getSenderInfo(){
+
+
+
+//        java.util.Date dt = new java.util.Date();
+//
+//        java.text.SimpleDateFormat sdf =
+//                new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//
+//         final  String currentTime = sdf.format(dt);
+
+
         class GetSenderInfo extends AsyncTask<Void,Void,String>{
             ProgressDialog loading;
             @Override
@@ -321,11 +352,12 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
                 loading.dismiss();
                 showSenderInfo(s);
             }
-
+// changed(try catch)
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequestParam(Config.URL_GET_RUN_INFO,sendid);
+               // String s = null;
+                String s = rh.sendGetRequestTwoParamDatetime(Config.URL_GET_RUN_INFO, id ,currentTime );
                 return s;
             }
         }
@@ -352,10 +384,11 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
 
     public class Comparison {
 
+
         int distance1 = Integer.parseInt(editTextDistance.getText().toString());
         int duration1 = Integer.parseInt(editTextDuration.getText().toString());
-        int distance2 = Integer.parseInt(editTextDistance2.getText().toString());
-        int duration2 = Integer.parseInt(editTextDuration2.getText().toString());
+          int distance2 = 5;
+        int duration2 = 10;
         String compare() {
             if (distance1 == distance2) {
                 if(duration1==duration2)
@@ -398,13 +431,69 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
             }
             return "fail";
         }
+
+
+    }
+
+
+
+
+
+//get uid
+    private void getUser(){
+
+       String testName = editTextName.getText().toString().trim();
+
+        class CheckUserExits extends AsyncTask<Void,Void,String> {
+            ProgressDialog loading;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(ViewChallenge.this,"Fetching...","Wait...",false,false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                showUser(s);
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+
+                String s = rh.sendGetRequestParam(Config.URL_GET_USER, id);
+                return s;
+            }
+        }
+        CheckUserExits ge = new CheckUserExits();
+        ge.execute();
+    }
+
+
+    private void showUser(String json){
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY3);
+            JSONObject c = result.getJSONObject(0);
+             runUserId = c.getString(Config.TAG_USER_ID);
+//            String desg = c.getString(Config.TAG_DESG);
+//            String sal = c.getString(Config.TAG_SAL);
+
+            Toast.makeText(ViewChallenge.this, runUserId, Toast.LENGTH_LONG).show();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        getSenderInfo();
     }
 
 
     @Override
     public void onClick(View v) {
         if(v == buttonUpdate){
-            updateChallenge();
+           getUser();
         }
 
         if(v == buttonDelete){
@@ -413,9 +502,7 @@ public class ViewChallenge extends AppCompatActivity implements View.OnClickList
 
         if(v == buttonResult){
 
-            Comparison comparison = new Comparison();
-            String winner = comparison.compare();
-            Toast.makeText(ViewChallenge.this, winner, Toast.LENGTH_LONG).show();
+            updateChallenge();
 
             //  distance = editTextDistance2.getText().toString().trim();
             //  Intent intent = new Intent(this, ChallengeResult.class);

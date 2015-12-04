@@ -291,6 +291,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                 String currentTime = sdf.format(dt);
                 String user_id = Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId();
                 String steps = ""+(number_of_steps - number_of_steps_offset);
+                String distance = ""+((number_of_steps - number_of_steps_offset)*0.000621371);
 
                 reset_counters();
                 start_run();
@@ -301,7 +302,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                Intent intent =new Intent(getApplicationContext(), ChallengeNewSend.class);
                 intent.putExtra("user_id", user_id );
                 intent.putExtra("datetime", currentTime);
-                intent.putExtra("distance", steps);
+                intent.putExtra("distance", distance);
                 intent.putExtra("duration", duration);
                 startActivity(intent);
 

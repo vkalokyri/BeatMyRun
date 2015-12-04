@@ -91,6 +91,24 @@
         </activity>
 
         <activity
+            android:name=".ViewSentChallenges"
+            android:label="@string/title_activity_view_sent_challenges"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".ViewSingleSentChallenge"
+            android:label="@string/title_activity_view_single_sent_challenge"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".Leaderboards"
+            android:label="@string/title_activity_leaderboards" >
+        </activity>
+
+        <activity android:name="org.achartengine.GraphicalActivity" />
+
+
+        <activity
             android:name=".StatisticsActivity"
             android:screenOrientation="portrait" >
         </activity>
@@ -110,6 +128,7 @@
             android:name=".Chart_month"
             android:screenOrientation="portrait" >
         </activity>
+
 
     </application>
 
