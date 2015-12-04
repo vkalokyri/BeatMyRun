@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.os.Handler;
@@ -180,6 +181,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
         //////////////////////////////////////////////////////////////////////////////////////
 
+
         if(getIntent().hasExtra("distance"))
         {
             from_challenge = true;
@@ -202,7 +204,6 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
         ArrayList<String> spinnerArray = new ArrayList<String>();
         spinnerArray.add("Run");
-        spinnerArray.add("Run Result");
         spinnerArray.add("Challenge");
         spinnerArray.add("Statistics");
         spinnerArray.add("Personal Details");
@@ -228,23 +229,18 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                         intent =new Intent(this_obj.getApplicationContext(), ShowChallenges.class);
                         break;
                     case 2:
-                        intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
-                        break;
-                    case 3:
                         intent =new Intent(this_obj.getApplicationContext(), StatisticsActivity.class);
                         break;
-                    case 4:
+                    case 3:
                         intent =new Intent(this_obj.getApplicationContext(), PersonalInfoActivity.class);
                         break;
-                    case 5:
+                    case 4:
                         if (LoginActivity.mGoogleApiClient.isConnected()) {
                             Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
                             LoginActivity.mGoogleApiClient.disconnect();
                             System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
                         }
                         intent = new Intent(this_obj.getApplicationContext(), LoginActivity.class);
-                    case 6:
-                        break;
                     default:
                         break;
                 }
@@ -259,6 +255,12 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
             }
         });
 
+        ((ImageView)findViewById(R.id.toplogo)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RunActivity.this, LandingPage.class));
+            }
+        });
         //////////////////////////////////////////////////////////////////////////////////////
 
         myYouTubePlayerFragment = (YouTubePlayerFragment)getFragmentManager()
@@ -348,18 +350,21 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
                 if(from_challenge)
                 {
+                    Log.e("RunActivity", "from challenge");
                     if((challenge_distance/challenge_time)<(distance_/duration_))
                     {
-                        intent.putExtra("status","win");
+                        intent.putExtra("result", "win");
+                        intent.putExtra("status", challenge_rec);
                     }
                     else
                     {
-                        intent.putExtra("status","lose");
+                        intent.putExtra("result", "lose");
+                        intent.putExtra("status",challenge_send);
                     }
 
                     intent.putExtra("sender_id", challenge_send);
                     intent.putExtra("receiver_id", challenge_rec);
-                    intent.putExtra("datetime", challenge_dt);
+                    intent.putExtra("ch_datetime", challenge_dt);
                 }
 
 

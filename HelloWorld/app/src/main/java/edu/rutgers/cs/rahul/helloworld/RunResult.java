@@ -4,6 +4,7 @@ package edu.rutgers.cs.rahul.helloworld;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import com.google.android.gms.plus.Plus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -39,6 +42,8 @@ public class RunResult extends Activity implements View.OnClickListener{
     private AutoCompleteTextView auto;
     ArrayList<String> allUserNames=new ArrayList<String>();
 
+
+    private String challenge_sender, challenge_recv, challenge_datetime, challenge_status;
 
     String receiverID;
 
@@ -61,6 +66,84 @@ public class RunResult extends Activity implements View.OnClickListener{
 
         globalDatetime = getIntent().getStringExtra(Config.GLOBAL_DATETIME);
 
+
+
+        Spinner spinner = (Spinner) findViewById(R.id.RunResultSpinner_nav);
+
+
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+        spinnerArray.add("Run");
+        spinnerArray.add("Challenge");
+        spinnerArray.add("Statistics");
+        spinnerArray.add("Personal Details");
+        spinnerArray.add("Logout");
+
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_dropdown_item, spinnerArray);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.dropdown_list);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+
+//        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = null;
+                switch (position)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        intent =new Intent(RunResult.this, ShowChallenges.class);
+                        break;
+                    case 2:
+                        intent =new Intent(RunResult.this, StatisticsActivity.class);
+                        break;
+                    case 3:
+                        intent =new Intent(RunResult.this, PersonalInfoActivity.class);
+                        break;
+                    case 4:
+                        if (LoginActivity.mGoogleApiClient.isConnected()) {
+                            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                            LoginActivity.mGoogleApiClient.disconnect();
+                            System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
+                        }
+                        intent = new Intent(RunResult.this, LoginActivity.class);
+                    default:
+                        break;
+                }
+                if(intent != null)
+                    startActivity(intent);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ((ImageView)findViewById(R.id.RunResultToplogo)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RunResult.this, LandingPage.class));
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         auto = (AutoCompleteTextView) findViewById(R.id.myautocomplete);
         autocomplete();
 
@@ -73,14 +156,30 @@ public class RunResult extends Activity implements View.OnClickListener{
         auto.setAdapter(adapter);
 
         findViewById(R.id.RunResultStatus).setVisibility(View.GONE);
-        if(getIntent().hasExtra("status"))
+        if(getIntent().hasExtra("result"))
         {
-            if(getIntent().getStringExtra("status").equals("win"))
+            Log.e("RunResult", "from challenge");
+            if(getIntent().getStringExtra("result").equals("win"))
             {
                 findViewById(R.id.RunResultStatus).setVisibility(View.VISIBLE);
-                
+                ((TextView)findViewById(R.id.ChallengeView)).setText("Challenge Won");
+                ((ImageView)findViewById(R.id.WinChallenge)).setImageResource(R.drawable.cup);
+                Log.e("RunResult", "WON");
             }
+            {
+                findViewById(R.id.RunResultStatus).setVisibility(View.VISIBLE);
+                ((TextView)findViewById(R.id.ChallengeView)).setText("Challenge Lost");
+                ((ImageView)findViewById(R.id.WinChallenge)).setImageResource(R.drawable.sad);
+                Log.e("RunResult","lost");
+            }
+            challenge_sender = getIntent().getStringExtra("sender_id");
+            challenge_recv = getIntent().getStringExtra("receiver_id");
+            challenge_datetime = getIntent().getStringExtra("ch_datetime");
+            challenge_status = getIntent().getStringExtra("status");
+            updateChallenge();
         }
+
+
 
 
     }
@@ -106,10 +205,10 @@ public class RunResult extends Activity implements View.OnClickListener{
             @Override
             protected String doInBackground(Void... params) {
                 HashMap<String,String> hashMap = new HashMap<>();
-                hashMap.put(Config.KEY_EMP_ID,args[0]);
-                hashMap.put(Config.KEY_EMP_NAME,args[1]);
-                hashMap.put(Config.KEY_EMP_DESG,args[2]);
-                hashMap.put(Config.KEY_EMP_STATUS,args[3]);
+                hashMap.put(Config.KEY_EMP_ID,challenge_sender);
+                hashMap.put(Config.KEY_EMP_NAME,challenge_recv);
+                hashMap.put(Config.KEY_EMP_DESG,challenge_datetime);
+                hashMap.put(Config.KEY_EMP_STATUS,challenge_status);
 
 
 

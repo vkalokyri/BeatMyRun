@@ -152,7 +152,7 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
                         RunActivity.start_run();
                         break;
                     case 2:
-                        intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
+                        intent =new Intent(this_obj.getApplicationContext(), ShowChallenges.class);
                         break;
                     case 3:
                         intent =new Intent(this_obj.getApplicationContext(), StatisticsActivity.class);
@@ -179,6 +179,14 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
 
             }
         });
+
+        ((ImageView)findViewById(R.id.PerInfoToplogo)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PersonalInfoActivity.this, LandingPage.class));
+            }
+        });
+
 
 
         picture.setOnClickListener(new View.OnClickListener() {

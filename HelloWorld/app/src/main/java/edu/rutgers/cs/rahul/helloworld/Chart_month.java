@@ -86,13 +86,27 @@ public class Chart_month extends Activity {
 
 
         } else {
+
+            try{
+                double ld = Double.parseDouble(miles_mn);
+                double lt = Double.parseDouble(duration_mn);
+                double lc = Double.parseDouble(calories_mn);
+
+                miles_mn = String.format("%.02f",ld);
+                duration_mn = String.format("%.02f",lt);
+                calories_mn = String.format("%.02f",lc);
+            }catch(Exception e)
+            {
+
+            }
+
             String totalmilesString = miles_mn + "miles";
             TextViewdistance.setText(totalmilesString);
 
-            String totaltimeString=duration_mn+"hours";
+            String totaltimeString=duration_mn+"mins";
             text1.setText(totaltimeString);
 
-            String totalcaloriesString=calories_mn+"calories";
+            String totalcaloriesString=calories_mn+"cals";
             text2.setText(totalcaloriesString);
 
         }

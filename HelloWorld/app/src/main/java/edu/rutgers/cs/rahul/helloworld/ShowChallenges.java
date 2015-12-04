@@ -14,13 +14,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.plus.People;
@@ -57,6 +61,73 @@ public class ShowChallenges extends Activity {
 
         receivedAllList = new ArrayList<Challenge_Bean>();
         sentAllList = new ArrayList<Challenge_Bean>();
+
+        Spinner spinner = (Spinner) findViewById(R.id.ChallengesSpinner_nav);
+
+
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+        spinnerArray.add("Challenge");
+        spinnerArray.add("Run");
+        spinnerArray.add("Statistics");
+        spinnerArray.add("Personal Details");
+        spinnerArray.add("Logout");
+
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_dropdown_item, spinnerArray);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.dropdown_list);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+
+//        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = null;
+                switch (position)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        RunActivity.start_run();
+                        intent =new Intent(ShowChallenges.this, RunActivity.class);
+                        break;
+                    case 2:
+                        intent =new Intent(ShowChallenges.this, StatisticsActivity.class);
+                        break;
+                    case 3:
+                        intent =new Intent(ShowChallenges.this, PersonalInfoActivity.class);
+                        break;
+                    case 4:
+                        if (LoginActivity.mGoogleApiClient.isConnected()) {
+                            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                            LoginActivity.mGoogleApiClient.disconnect();
+                            System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCESS");
+                        }
+                        intent = new Intent(ShowChallenges.this, LoginActivity.class);
+                    default:
+                        break;
+                }
+                if(intent != null)
+                    startActivity(intent);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ((ImageView)findViewById(R.id.ChallengesToplogo)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ShowChallenges.this, LandingPage.class));
+            }
+        });
+
+
+
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -230,12 +301,12 @@ public class ShowChallenges extends Activity {
                             return;
                         Intent intent =new Intent(ShowChallenges.this,RunActivity.class);
                         RunActivity.start_run();
-                        intent.putExtra("distance",receivedAllList.get(index).getDistance());
+                        intent.putExtra("distance", receivedAllList.get(index).getDistance());
                         intent.putExtra("duration",receivedAllList.get(index).getDuration());
                         intent.putExtra("sender_id",receivedAllList.get(index).getSender_id());
                         intent.putExtra("receiver_id",receivedAllList.get(index).getReceiver_id());
                         intent.putExtra("datetime",receivedAllList.get(index).getDatetime());
-                        startActivity(new Intent(ShowChallenges.this,RunActivity.class));
+                        startActivity(intent);
                     }
                 });
 

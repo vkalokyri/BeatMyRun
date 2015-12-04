@@ -130,6 +130,7 @@ public class Monthpicker_month extends Activity implements AdapterView.OnItemSel
 
             @Override
             public void onClick(View v) {
+                Log.e("Month Picker","Trying to get stuff");
                 if(v.getId() == R.id.submit_month) {
 
                     new Selectingmonth().execute(item,item1);

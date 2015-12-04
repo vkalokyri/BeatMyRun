@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
@@ -208,7 +209,7 @@ public class StatisticsActivity extends Activity{
                         RunActivity.start_run();
                         break;
                     case 2:
-                        intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
+                        intent =new Intent(this_obj.getApplicationContext(), ShowChallenges.class);
                         break;
                     case 3:
                         intent =new Intent(this_obj.getApplicationContext(), PersonalInfoActivity.class);
@@ -233,6 +234,13 @@ public class StatisticsActivity extends Activity{
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        ((ImageView)findViewById(R.id.StatsToplogo)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StatisticsActivity.this, LandingPage.class));
             }
         });
 
@@ -496,16 +504,29 @@ public class StatisticsActivity extends Activity{
             super.onPostExecute(aVoid);
 
             System.out.println("Do stuff to the updated arrays ... " + Latestdistance);
+            try{
+                double ld = Double.parseDouble(Latestdistance);
+                double lt = Double.parseDouble(Latesttime);
+                double lc = Double.parseDouble(Latestcalories);
+
+                Latestdistance = String.format("%.02f",ld);
+                Latesttime = String.format("%.02f",lt);
+                Latestcalories = String.format("%.02f",lc);
+            }catch(Exception e)
+            {
+
+            }
+
             TextViewdistance =(TextView) findViewById(R.id.totalmiles);
-            String totalmilesString = Latestdistance + "miles";
+            String totalmilesString = Latestdistance + "\nmiles";
             TextViewdistance.setText(totalmilesString);
 
             text1 =(TextView) findViewById(R.id.totaltime);
-            String totaltimeString=Latesttime+"hours";
+            String totaltimeString=Latesttime+"\nmins";
             text1.setText(totaltimeString);
 
             text2 =(TextView) findViewById(R.id.totalcalories);
-            String totalcaloriesString=Latestcalories+"calories";
+            String totalcaloriesString=Latestcalories+"\ncals";
             text2.setText(totalcaloriesString);
 
 
