@@ -60,6 +60,10 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
     TextView fab;
     double weight = 0;
 
+    boolean from_challenge = false;
+    double challenge_distance = 0;
+    double challenge_time = 1;
+
     //###################################################
 
     public static final String DEVELOPER_KEY = "AIzaSyDV8a8kz2I1lf1FwbaO7CFcdOfEScChYZ8";
@@ -173,6 +177,18 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 
         //////////////////////////////////////////////////////////////////////////////////////
 
+        if(getIntent().hasExtra("distance"))
+        {
+            from_challenge = true;
+            try {
+                challenge_distance = Double.parseDouble(getIntent().getStringExtra("distance"));
+                challenge_time = Double.parseDouble(getIntent().getStringExtra("duration"));
+            }catch(Exception e){}
+        }
+        else
+        {
+            from_challenge = false;
+        }
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner_nav);
 
@@ -318,6 +334,17 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
                 intent.putExtra("distance", distance);
                 intent.putExtra("duration", duration);
                 intent.putExtra("calories", calories);
+                if(from_challenge)
+                {
+                    if((challenge_distance/challenge_time)<(distance_/duration_))
+                    {
+                        intent.putExtra("status","win");
+                    }
+                    else
+                    {
+                        intent.putExtra("status","lose");
+                    }
+                }
 
 
                 startActivity(intent);
