@@ -99,6 +99,9 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
 //        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
 //        setSupportActionBar(myToolbar);
 
+        //////////////////////////////////////////////////////////////////////////////////////
+
+
         Spinner spinner = (Spinner) findViewById(R.id.spinner_nav);
 
 
@@ -158,6 +161,7 @@ public class RunActivity extends YouTubeBaseActivity implements SensorEventListe
             }
         });
 
+        //////////////////////////////////////////////////////////////////////////////////////
 
         myYouTubePlayerFragment = (YouTubePlayerFragment)getFragmentManager()
                 .findFragmentById(R.id.youtubeplayerfragment);

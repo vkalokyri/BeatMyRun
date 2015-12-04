@@ -1,19 +1,31 @@
 package edu.rutgers.cs.rahul.helloworld;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -21,15 +33,26 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.google.api.client.util.Base64;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  * Created by valia on 10/30/15.
@@ -44,6 +67,7 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
     private EditText ageField;
     private Button submitBtnField;
     private ImageButton logoutId ;
+    private ImageView picture;
     private String name=null;
     private String email=null;
 
@@ -51,13 +75,22 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
     Person currentPerson =null;
     boolean mSignInClicked;
     private static HttpConnector connector=new HttpConnector();
+    PersonalInfoActivity this_obj;
 
 
+    private ImageView image;
+    private Button uploadButton;
+    private Bitmap bitmap;
+    private Button selectImageButton;
+
+    // number of images to select
+    private static final int PICK_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_info);
+        this_obj=this;
 
         mGoogleApiClient=LoginActivity.mGoogleApiClient;
         emailField = (EditText) findViewById(R.id.emailField);
@@ -67,6 +100,7 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
         ageField = (EditText) findViewById(R.id.ageField);
         submitBtnField = (Button) findViewById(R.id.submit);
         logoutId = (ImageButton) findViewById(R.id.logoutId);
+        picture = (ImageView) findViewById(R.id.personId);
 
         Intent i = getIntent();
         // Receiving the Data
@@ -83,6 +117,77 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
         if (name==null){
             new getUser().execute();
         }
+
+
+        Spinner spinner = (Spinner) findViewById(R.id.PerInfoSpinner_nav);
+
+
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+        spinnerArray.add("Personal Details");
+        spinnerArray.add("Run");
+        spinnerArray.add("Challenge");
+        spinnerArray.add("Statistics");
+        spinnerArray.add("Logout");
+        spinnerArray.add("Contact Us");
+
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_dropdown_item, spinnerArray);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.dropdown_list);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+
+//        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = null;
+                switch (position)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        intent =new Intent(this_obj.getApplicationContext(), RunActivity.class);
+                        break;
+                    case 2:
+                        intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
+                        break;
+                    case 3:
+                        intent =new Intent(this_obj.getApplicationContext(), StatActivity.class);
+                        break;
+                    case 4:
+                        if (LoginActivity.mGoogleApiClient.isConnected()) {
+                            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                            LoginActivity.mGoogleApiClient.disconnect();
+                            System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCCESS");
+                        }
+                        intent = new Intent(this_obj.getApplicationContext(), LoginActivity.class);
+                    case 5:
+                        break;
+                    default:
+                        break;
+                }
+                if(intent != null)
+                    startActivity(intent);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        picture.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                selectImageFromGallery();
+                new ImageUploadTask().execute();
+            }
+
+        });
 
 
         // Binding Click event to Button
@@ -235,8 +340,129 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
     }
 
 
+    public void selectImageFromGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),PICK_IMAGE);
+    }
+
+
+    /**
+     * Retrives the result returned from selecting image, by invoking the method
+     * <code>selectImageFromGallery()</code>
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            decodeFile(picturePath);
+
+        }
+    }
+
+
+    /** The method decodes the image file to avoid out of memory issues. Sets the
+     * selected image in to the ImageView.
+     *
+     * @param filePath
+     */
+    public void decodeFile(String filePath) {
+
+        // Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, o);
+
+        // The new size we want to scale to
+        final int REQUIRED_SIZE = 1024;
+
+        // Find the correct scale value. It should be the power of 2.
+        int width_tmp = o.outWidth, height_tmp = o.outHeight;
+        int scale = 1;
+        while (true) {
+            if (width_tmp < REQUIRED_SIZE && height_tmp < REQUIRED_SIZE)
+                break;
+            width_tmp /= 2;
+            height_tmp /= 2;
+            scale *= 2;
+        }
+
+        // Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        bitmap = BitmapFactory.decodeFile(filePath, o2);
+
+        image.setImageBitmap(bitmap);
+    }
+
     @Override
     public void onResult(People.LoadPeopleResult loadPeopleResult) {
 
     }
+
+
+    class ImageUploadTask extends AsyncTask<Void, Void, String> {
+        private String webAddressToPost = "http://your-website-here.com";
+
+        // private ProgressDialog dialog;
+        private ProgressDialog dialog = new ProgressDialog(PersonalInfoActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("Uploading...");
+            dialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpContext localContext = new BasicHttpContext();
+                HttpPost httpPost = new HttpPost(webAddressToPost);
+
+                MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                byte[] data = bos.toByteArray();
+                String file = Base64.encodeBase64String(data);
+
+                entity.addPart("uploaded", new StringBody(file));
+                //entity.addPart("someOtherStringToSend", new StringBody("your string here"));
+
+                httpPost.setEntity(entity);
+                HttpResponse response = httpClient.execute(httpPost,localContext);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(
+                        response.getEntity().getContent(), "UTF-8"));
+
+                String sResponse = reader.readLine();
+                return sResponse;
+            } catch (Exception e) {
+                // something went wrong. connection with the server error
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            dialog.dismiss();
+            Toast.makeText(getApplicationContext(), "file uploaded",Toast.LENGTH_LONG).show();
+        }
+    }
+
+
 }
+
