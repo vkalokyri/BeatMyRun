@@ -26,7 +26,9 @@ import java.util.Arrays;
 public class Chart extends Activity{
 
 
-
+    int count1;
+    int count2;
+    int count3;
     private View mChart;
     //int[] mile=new int[7];
 
@@ -51,7 +53,8 @@ public class Chart extends Activity{
         double[] time = i.getDoubleArrayExtra("valuelist_duration_i");
         System.out.println("abc"+Arrays.toString(time));
         double[] calories = i.getDoubleArrayExtra("valuelist_calories_i");
-
+        String[] datetime=i.getStringArrayExtra("valuelist_datetime_i");
+        System.out.println("datetime"+Arrays.toString(datetime));
 
         double result[] = extras.getDoubleArray("key");
         System.out.println("result"+Arrays.toString(result));
@@ -90,20 +93,19 @@ public class Chart extends Activity{
         System .out.println(max_calories);
 
 //---------------------------------------------------------------------------
-        openChart(miles,max_miles);
-        openChart1(time,max_time);
-        openChart2(calories, max_calories);
+        openChart(miles,max_miles,datetime);
+        openChart1(time,max_time,datetime);
+        openChart2(calories, max_calories,datetime);
 
 
 
     }
 
 
-    public void openChart(double mile[],double max_miles){//int mile[]
+    public void openChart(double mile[],double max_miles,String mday[]){//int mile[]
         //  setContentView(R.layout.chart_week);
 
-        String[] mday=new String[]{"", "", "", "", "", "",
-                ""};
+        //String[] mday=new String[]{"", "", "", "", "", "",""};
         int[] x = { 0,1,2,3,4,5,6 };
 
         //int[] mile = { 2000,2500,2700,3000,2800,3500,3700};
@@ -235,9 +237,27 @@ public class Chart extends Activity{
         //setting used to move the graph on xaxiz to .5 to the right
         multiRenderer.setXAxisMin(-0.5);
 //setting max values to be display in x axis
-        multiRenderer.setXAxisMax(20);
+        //----------------------------------------------------------------------
+
+        for(int jj=0;jj<mile.length;jj++)
+        {
+            if(mile[jj]!=0) {
+                count1++;
+            }
+        }
+
+        System .out.println("count values miles" + count1);
+
+
+        multiRenderer.setXAxisMax(count1 + 1);
+
+
+
+
+        multiRenderer.setXAxisMax(count1);
         //setting bar size or space between two bars
         multiRenderer.setBarSpacing(1);
+        multiRenderer.setBarWidth(30);
         //Setting background color of the graph to transparent
         multiRenderer.setBackgroundColor(Color.TRANSPARENT);
         //Setting margin color of the graph to transparent
@@ -273,11 +293,10 @@ public class Chart extends Activity{
 
 
     }
-    public void openChart1(double time[],double max_time){//int mile[]
+    public void openChart1(double time[],double max_time,String mday[]){//int mile[]
         //  setContentView(R.layout.chart_week);
 
-        String[] mday=new String[]{"", "", "", "", "", "",
-                ""};
+        //String[] mday=new String[]{"", "", "", "", "", "",""};
         int[] x = { 0,1,2,3,4,5,6 };
 
         //int[] mile = { 2000,2500,2700,3000,2800,3500,3700};
@@ -322,7 +341,7 @@ public class Chart extends Activity{
 
         multiRenderer.setXTitle("Period");
 
-        multiRenderer.setYTitle("Duration");
+        multiRenderer.setYTitle("Time(mins)");
 
         /***
 
@@ -408,9 +427,22 @@ public class Chart extends Activity{
         //setting used to move the graph on xaxiz to .5 to the right
         multiRenderer.setXAxisMin(-0.5);
 //setting max values to be display in x axis
-        multiRenderer.setXAxisMax(20);
+        for(int jj=0;jj<time.length;jj++)
+        {
+            if(time[jj]!=0) {
+                count2++;
+            }
+        }
+
+        System .out.println("count values miles" + count2);
+
+
+
+
+        multiRenderer.setXAxisMax(count2);
         //setting bar size or space between two bars
         multiRenderer.setBarSpacing(1);
+        multiRenderer.setBarWidth(30);
         //Setting background color of the graph to transparent
         multiRenderer.setBackgroundColor(Color.TRANSPARENT);
         //Setting margin color of the graph to transparent
@@ -444,11 +476,10 @@ public class Chart extends Activity{
 
 
     }
-    public void openChart2(double calories[],double max_calories){//int mile[]
+    public void openChart2(double calories[],double max_calories,String mday[]){//int mile[]
         //  setContentView(R.layout.chart_week);
 
-        String[] mday=new String[]{"", "", "", "", "", "",
-                ""};
+       // String[] mday=new String[]{"", "", "", "", "", "",""};
         int[] x = { 0,1,2,3,4,5,6 };
 
         //int[] mile = { 2000,2500,2700,3000,2800,3500,3700};
@@ -578,9 +609,22 @@ public class Chart extends Activity{
         //setting used to move the graph on xaxiz to .5 to the right
         multiRenderer.setXAxisMin(-0.5);
 //setting max values to be display in x axis
-        multiRenderer.setXAxisMax(20);
+        //---------------------------------------------------------------------------
+        for(int jj=0;jj<calories.length;jj++)
+        {
+            if(calories[jj]!=0) {
+                count3++;
+            }
+        }
+
+        System .out.println("count values calories" + count3);
+        //---------------------------------------------------------------------------
+
+
+        multiRenderer.setXAxisMax(count3);
         //setting bar size or space between two bars
         multiRenderer.setBarSpacing(1);
+        multiRenderer.setBarWidth(30);
         //Setting background color of the graph to transparent
         multiRenderer.setBackgroundColor(Color.TRANSPARENT);
         //Setting margin color of the graph to transparent
@@ -589,7 +633,7 @@ public class Chart extends Activity{
         multiRenderer.setApplyBackgroundColor(true);
 
         multiRenderer.setYLabelsColor(0, Color.BLACK);
-        multiRenderer.setXLabelsColor(Color.BLACK);
+        //multiRenderer.setXLabelsColor(Color.BLACK);
         multiRenderer.setLabelsColor(Color.BLACK);
 
         multiRenderer.setYAxisAlign(Paint.Align.LEFT, 0);
