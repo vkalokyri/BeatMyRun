@@ -11,10 +11,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.gms.plus.Plus;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -93,7 +98,7 @@ public class StatisticsActivity extends Activity{
     double Totalcalories_double;
     String[] valuelist_string = new String[7];
     String exampletara = "Thara";
-
+    StatisticsActivity this_obj;
 
     //private static Chart chartvalues = new Chart();
     //private static openChartActivity openchartobj = new openChartActivity();
@@ -106,6 +111,7 @@ public class StatisticsActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statistics_main_page);
+        this_obj=this;
         TextViewdistance =(TextView) findViewById(R.id.totalmiles);
         //  new insertUser().execute();
         // new testing().execute();
@@ -169,6 +175,67 @@ public class StatisticsActivity extends Activity{
 
         weekbutton.setOnClickListener(clickListener);
         monthbutton.setOnClickListener(clickListener);
+
+
+        Spinner spinner = (Spinner) findViewById(R.id.StatsSpinner_nav);
+
+
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+        spinnerArray.add("Statistics");
+        spinnerArray.add("Run");
+        spinnerArray.add("Challenge");
+        spinnerArray.add("Personal Details");
+        spinnerArray.add("Logout");
+        spinnerArray.add("Contact Us");
+
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_dropdown_item, spinnerArray);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.dropdown_list);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+
+//        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = null;
+                switch (position)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        intent =new Intent(this_obj.getApplicationContext(), RunActivity.class);
+                        break;
+                    case 2:
+                        intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);
+                        break;
+                    case 3:
+                        intent =new Intent(this_obj.getApplicationContext(), PersonalInfoActivity.class);
+                        break;
+                    case 4:
+                        if (LoginActivity.mGoogleApiClient.isConnected()) {
+                            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+                            LoginActivity.mGoogleApiClient.disconnect();
+                            System.err.println("LOG OUT ^^^^^^^^^^^^^^^^^^^^ SUCCESS");
+                        }
+                        intent = new Intent(this_obj.getApplicationContext(), LoginActivity.class);
+                    case 5:
+                        break;
+                    default:
+                        break;
+                }
+                if(intent != null)
+                    startActivity(intent);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
 
 

@@ -42,4 +42,5 @@ dependencies {
     compile files('libs/json_simple-1.1.jar')
     compile files('libs/org.apache.commons.httpclient.jar')
     compile files('libs/org.apache.http.legacy.jar')
+    compile files('libs/httpmime-4.3.jar')
 }

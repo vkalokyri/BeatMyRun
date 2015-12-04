@@ -9,4 +9,4 @@
     android:ellipsize="marquee"
     android:textColor="#fff"
     android:textStyle="bold"
-    android:textSize="30dp"/>
+    android:textSize="20dp"/>
