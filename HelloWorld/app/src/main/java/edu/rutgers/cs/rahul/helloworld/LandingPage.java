@@ -69,7 +69,7 @@ public class LandingPage extends AppCompatActivity {
                     case 0:
                         break;
                     case 2:
-                        intent =new Intent(getApplicationContext(), ViewAllChallenges.class);
+                        intent =new Intent(getApplicationContext(), ShowChallenges.class);
                         break;
                     case 3:
                         intent =new Intent(getApplicationContext(), StatisticsActivity.class);
@@ -210,7 +210,7 @@ public class LandingPage extends AppCompatActivity {
         ((TextView)findViewById(R.id.challenge_landing)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ChallengeNewSend.class);
+                Intent intent = new Intent(getApplicationContext(), ShowChallenges.class);
                 startActivity(intent);
             }
         });

@@ -75,7 +75,7 @@ public class ShowChallenges extends Activity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 //Nothing here ever fires
-                if (groupPosition==1) {
+                if (groupPosition==0) {
                     System.err.println("child clicked " + childPosition);
                     confirmDeleteChallenge(childPosition + 1);
                 }
