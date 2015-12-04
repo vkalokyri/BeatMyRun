@@ -130,7 +130,6 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
         spinnerArray.add("Challenge");
         spinnerArray.add("Statistics");
         spinnerArray.add("Logout");
-        spinnerArray.add("Contact Us");
 
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_dropdown_item, spinnerArray);
@@ -150,6 +149,7 @@ public class PersonalInfoActivity extends Activity implements GoogleApiClient.Co
                         break;
                     case 1:
                         intent =new Intent(this_obj.getApplicationContext(), RunActivity.class);
+                        RunActivity.start_run();
                         break;
                     case 2:
                         intent =new Intent(this_obj.getApplicationContext(), ViewAllChallenges.class);

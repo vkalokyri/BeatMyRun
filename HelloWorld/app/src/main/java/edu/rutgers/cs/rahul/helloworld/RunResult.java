@@ -72,6 +72,15 @@ public class RunResult extends Activity implements View.OnClickListener{
         auto.setThreshold(1);
         auto.setAdapter(adapter);
 
+        findViewById(R.id.RunResultStatus).setVisibility(View.GONE);
+        if(getIntent().hasExtra("status"))
+        {
+            if(getIntent().getStringExtra("status").equals("win"))
+            {
+                findViewById(R.id.RunResultStatus).setVisibility(View.VISIBLE);
+            }
+        }
+
 
     }
 

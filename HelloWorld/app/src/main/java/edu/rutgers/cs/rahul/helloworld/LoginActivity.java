@@ -735,15 +735,15 @@ public class LoginActivity extends Activity implements
                     nextScreen.putExtra("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
                     startActivity(nextScreen);
                 } else if (res.startsWith("Error:")) {
-                    Intent nextScreen = new Intent(getApplicationContext(), RunActivity.class);
-                    RunActivity.start_run();
+                    Intent nextScreen = new Intent(getApplicationContext(), LandingPage.class);
+//                    RunActivity.start_run();
                     //Sending data to another Activity
                     startActivity(nextScreen);
                 }
             }else{
                 //user exists in the db
-                Intent nextScreen = new Intent(getApplicationContext(), RunActivity.class);
-                RunActivity.start_run();
+                Intent nextScreen = new Intent(getApplicationContext(), LandingPage.class);
+//                RunActivity.start_run();
                 //Sending data to another Activity
                 startActivity(nextScreen);
             }
