@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,12 +38,15 @@ public class RunResult extends Activity implements View.OnClickListener{
     private String JSON_STRING;
     private AutoCompleteTextView auto;
     ArrayList<String> allUserNames=new ArrayList<String>();
-    String testName,gotName, globalUser;
 
-    String currentUserName, currentUserId="carid";
 
     String receiverID;
 
+
+    String testName,gotName, globalDatetime, globalUser;
+
+    String currentUserName;
+    String currentUserId = Plus.PeopleApi.getCurrentPerson(LoginActivity.mGoogleApiClient).getId();
 
 
     @Override
@@ -50,6 +54,13 @@ public class RunResult extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.run_result);
         this_obj=this;
+
+        ((TextView)findViewById(R.id.totalmiles)).setText(getIntent().getStringExtra("distance")+"\nmiles");
+        ((TextView)findViewById(R.id.calories)).setText(getIntent().getStringExtra("calories")+"\ncal");
+        ((TextView)findViewById(R.id.time)).setText(getIntent().getStringExtra("duration")+"\nmins");
+
+        globalDatetime = getIntent().getStringExtra(Config.GLOBAL_DATETIME);
+
         auto = (AutoCompleteTextView) findViewById(R.id.myautocomplete);
         autocomplete();
 
@@ -138,6 +149,48 @@ public class RunResult extends Activity implements View.OnClickListener{
     }
 
 
+
+    private void addChallenge(){
+
+        testName = auto.getText().toString().trim();
+        class AddChallenge extends AsyncTask<Void,Void,String>{
+
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(RunResult.this,"Adding...","Wait...",false,false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                Toast.makeText(RunResult.this,s,Toast.LENGTH_LONG).show();
+                auto.setText("");
+
+            }
+
+            @Override
+            protected String doInBackground(Void... v) {
+                HashMap<String,String> params = new HashMap<>();
+                params.put(Config.KEY_EMP_NAME,testName);
+                params.put(Config.KEY_EMP_DESG,globalDatetime);
+                params.put(Config.KEY_EMP_SAL,currentUserId);
+                Log.e("Addemp", testName + "," + globalDatetime + "," + currentUserId);
+                params.put(Config.KEY_EMP_STATUS,"Pending");//added
+
+                RequestHandler rh = new RequestHandler();
+                String res = rh.sendPostRequest(Config.URL_ADD, params);
+                return res;
+            }
+        }
+
+        AddChallenge ae = new AddChallenge();
+        ae.execute();
+    }
+/*
     private void addChallenge(){
 
 
@@ -178,7 +231,7 @@ public class RunResult extends Activity implements View.OnClickListener{
         AddChallenge ae = new AddChallenge();
         ae.execute();
     }
-
+*/
 
     private void autocomplete() {
 
