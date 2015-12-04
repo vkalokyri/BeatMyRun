@@ -44,10 +44,10 @@
         android:textColor="#000000"
         android:layout_marginLeft="100px"
         android:textStyle="bold"
-        android:layout_marginStart="55dp"
-        android:layout_above="@+id/imageView2"
+        android:layout_marginStart="51dp"
+        android:layout_below="@+id/view"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="45dp" />
+        android:layout_marginTop="58dp" />
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -68,13 +68,13 @@
         android:layout_alignTop="@+id/imageView2"
         android:layout_alignStart="@+id/totalmiles_month" />
     <ImageView
-        android:layout_width="140dp"
-        android:layout_height="130dp"
-        android:src="@drawable/hourglass2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/time"
         android:id="@+id/imageView2"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/imageView"
         android:layout_alignStart="@+id/imageView3"
-        android:layout_marginBottom="184dp" />
+        android:layout_marginTop="55dp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
