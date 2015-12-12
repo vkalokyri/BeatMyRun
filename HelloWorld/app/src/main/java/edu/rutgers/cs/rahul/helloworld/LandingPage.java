@@ -30,6 +30,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
+/*
+* Created by Rahul Shome
+* Tested by Rahul Shome
+* Debugged by Rahul Shome
+ */
 public class LandingPage extends AppCompatActivity {
 
 

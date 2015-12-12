@@ -13,7 +13,7 @@ import edu.rutgers.cs.rahul.helloworld.Monthpicker_month;
 import edu.rutgers.cs.rahul.helloworld.R;
 
 /**
- * Created by nivethamahalakshmibalasamy on 12/12/15.
+ * Created by nivethamahalakshmibalasamy
  */
 public class MonthPickerTest extends ActivityInstrumentationTestCase2<Monthpicker_month> {
 

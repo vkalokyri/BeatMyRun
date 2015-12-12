@@ -14,7 +14,7 @@ import edu.rutgers.cs.rahul.helloworld.R;
 import edu.rutgers.cs.rahul.helloworld.StatisticsActivity;
 
 /**
- * Created by nivethamahalakshmibalasamy on 12/11/15.
+ * Created by nivethamahalakshmibalasamy
  */
 public class StatisticsTest extends ActivityInstrumentationTestCase2<StatisticsActivity> {
 

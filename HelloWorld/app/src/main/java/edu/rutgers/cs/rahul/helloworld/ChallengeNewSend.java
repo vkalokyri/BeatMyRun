@@ -34,7 +34,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import  java.util.Date;
 import java.text.DateFormat;
-
+/*
+* Created by Careena Btaganza
+* Tested by Nirali Shah
+* Debugged by Careena Braganza
+ */
 public class ChallengeNewSend extends AppCompatActivity implements View.OnClickListener{
 
     //Defining views

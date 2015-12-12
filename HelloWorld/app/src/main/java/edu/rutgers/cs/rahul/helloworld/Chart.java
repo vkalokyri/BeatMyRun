@@ -25,8 +25,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-/**
- * Created by Thara Philips on 12/3/2015.
+/*
+* Created by Thara Philipson
+* Tested by Nivetha Balasamy
+* Debugged by Thara Philipson
  */
 public class Chart extends Activity{
 

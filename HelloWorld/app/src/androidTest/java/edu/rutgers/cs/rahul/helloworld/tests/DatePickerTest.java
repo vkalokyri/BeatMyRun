@@ -13,7 +13,7 @@ import edu.rutgers.cs.rahul.helloworld.Datepicker_days;
 import edu.rutgers.cs.rahul.helloworld.R;
 
 /**
- * Created by nivethamahalakshmibalasamy on 12/11/15.
+ * Created by nivethamahalakshmibalasamy
  */
 public class DatePickerTest extends ActivityInstrumentationTestCase2<Datepicker_days> {
 

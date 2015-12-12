@@ -56,8 +56,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-/**
- * Created by valia on 10/30/15.
+/*
+* Created by Valia Kalokyri
+* Tested by Valia Kalokyri
+* Debugged by Valia Kalokyri
  */
 public class PersonalInfoActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {

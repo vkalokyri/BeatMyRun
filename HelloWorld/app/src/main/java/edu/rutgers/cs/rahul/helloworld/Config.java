@@ -3,8 +3,10 @@ package edu.rutgers.cs.rahul.helloworld;
 import java.text.DateFormat;
 import java.util.Date;
 
-/**
- * Created by Careena on 11/28/15.
+/*
+* Created by Careena Braganza
+* Tested by Careena Braganza
+* Debugged by Careena Braganza
  */
 public class Config {
 

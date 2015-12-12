@@ -41,7 +41,11 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-
+/*
+* Created by Rahul Shome
+* Tested by Rahul Shome
+* Debugged by Rahul Shome
+ */
 public class RunActivity extends YouTubeBaseActivity implements SensorEventListener,YouTubePlayer.OnInitializedListener, YouTubePlayer.PlaybackEventListener{
 
     private TextView timer_label, bpm_label, num_steps_label;

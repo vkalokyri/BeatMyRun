@@ -24,7 +24,7 @@ import edu.rutgers.cs.rahul.helloworld.R;
 import edu.rutgers.cs.rahul.helloworld.RunResult;
 
 /**
- * Created by valia on 12/11/15.
+ * Created by valia
  */
 public class RunActivityTest extends ActivityInstrumentationTestCase2<RunActivity> {
 

@@ -23,6 +23,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/*
+* Created by Nirali Shah
+* Tested by Nirali Shah
+* Debugged by Valia Kalokyri
+ */
 public class Leaderboards extends AppCompatActivity {
 
 

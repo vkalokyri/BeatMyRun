@@ -39,7 +39,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+/*
+* Created by Careena Btaganza
+* Tested by Nirali Shah
+* Debugged by Careena Braganza
+ */
 public class ViewAllChallenges extends AppCompatActivity implements ListView.OnItemClickListener {
 
     private ListView listView;

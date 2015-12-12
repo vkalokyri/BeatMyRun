@@ -22,7 +22,7 @@ import edu.rutgers.cs.rahul.helloworld.ShowChallenges;
 import edu.rutgers.cs.rahul.helloworld.StatisticsActivity;
 
 /**
- * Created by valia on 12/11/15.
+ * Created by Rahul
  */
 public class IntegrationTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 

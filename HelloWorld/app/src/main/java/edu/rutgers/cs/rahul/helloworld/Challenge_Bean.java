@@ -1,7 +1,9 @@
 package edu.rutgers.cs.rahul.helloworld;
 
-/**
- * Created by valia on 12/4/15.
+/*
+* Created by Valia Kalokyri
+* Tested by Valia Kalokyri
+* Debugged by Valia Kalokyri
  */
 public class Challenge_Bean {
 

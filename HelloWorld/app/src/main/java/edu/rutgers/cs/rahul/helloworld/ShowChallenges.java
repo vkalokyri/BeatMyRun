@@ -1,7 +1,9 @@
 package edu.rutgers.cs.rahul.helloworld;
 
-/**
- * Created by valia on 12/4/15.
+/*
+* Created by Valia Kalokyri
+* Tested by Careena Braganza
+* Debugged by Valia Kalokyri
  */
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,6 +40,7 @@ import org.apache.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 public class ShowChallenges extends Activity {
 

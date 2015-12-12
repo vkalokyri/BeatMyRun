@@ -7,8 +7,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 /**
- * Created by Rahul on 11-12-2015.
- */
+ * Created by Rahul
+ * */
 public class GoogleConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     @Override
     public void onConnected(Bundle bundle) {

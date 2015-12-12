@@ -1,7 +1,9 @@
 package edu.rutgers.cs.rahul.helloworld;
 
-/**
- * Created by Thara Philips on 11/6/2015.
+/*
+* Created by Thara Philipson
+* Tested by Nivetha Balasamy
+* Debugged by Thara Philipson
  */
 
 import android.app.Activity;

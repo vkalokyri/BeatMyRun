@@ -38,6 +38,13 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+
+/*
+* Created by Careena Btaganza
+* Tested by Nirali Shah
+* Debugged by Careena Braganza
+ */
+
 public class ViewSingleSentChallenge extends AppCompatActivity {
 
     private EditText editTextId;

@@ -30,8 +30,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by valia on 12/4/15.
+/*
+* Created by Valia Kalokyri
+* Tested by Rahul Shome
+* Debugged by Rahul Shome
  */
 public class RunResult extends Activity implements View.OnClickListener{
 

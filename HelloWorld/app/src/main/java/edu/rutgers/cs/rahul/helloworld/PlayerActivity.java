@@ -12,8 +12,10 @@ import com.google.android.youtube.player.YouTubePlayer.PlayerStateChangeListener
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-/**
- * Created by suitcase on 10/28/15.
+/*
+* Created by Valia Kalokyri
+* Tested by Valia Kalokyri
+* Debugged by Valia Kalokyri
  */
 public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 

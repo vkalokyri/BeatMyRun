@@ -38,6 +38,12 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+
+/*
+* Created by Careena Btaganza
+* Tested by Nirali Shah
+* Debugged by Careena Braganza
+ */
 public class ViewChallenge extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextId;

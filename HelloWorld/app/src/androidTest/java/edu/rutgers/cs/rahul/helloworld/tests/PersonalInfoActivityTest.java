@@ -23,7 +23,7 @@ import edu.rutgers.cs.rahul.helloworld.PersonalInfoActivity;
 import edu.rutgers.cs.rahul.helloworld.R;
 
 /**
- * Created by valia on 12/11/15.
+ * Created by valia
  */
 public class PersonalInfoActivityTest extends ActivityInstrumentationTestCase2<PersonalInfoActivity> {
 
