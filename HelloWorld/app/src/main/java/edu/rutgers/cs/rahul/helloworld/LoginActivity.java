@@ -95,8 +95,8 @@ public class LoginActivity extends Activity implements
 
     private static HttpConnector connector=new HttpConnector();
 
-    private static YouTube youtube;
-    Person currentPerson=null;
+    public static YouTube youtube;
+    public Person currentPerson=null;
 
 
     /* View to display current status (signed-in, signed-out, disconnected, etc) */
