@@ -50,22 +50,21 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         assertNotNull("Google Api key not set", googleAPIkey);
 
         String echonestAPIkey = activity.echonest_API_key;
-        assertNotNull("Echonest Api key not set", googleAPIkey);
+        assertNotNull("Echonest Api key not set", echonestAPIkey);
 
 
         Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(LandingPage.class.getName(), null, false);
 
-        com.google.android.gms.common.SignInButton greetButton =
-                (com.google.android.gms.common.SignInButton) activity.findViewById(R.id.sign_in_button);
+        com.google.android.gms.common.SignInButton signInButton = (com.google.android.gms.common.SignInButton) activity.findViewById(R.id.sign_in_button);
 
-        TouchUtils.clickView(this, greetButton);
+        TouchUtils.clickView(this, signInButton);
 
         GoogleApiClient gClient = activity.mGoogleApiClient;
+
         assertNotNull("Google Client is null", gClient);
 
         Person person = activity.currentPerson;
         assertNotNull("Google person is null", person);
-
 
         Activity nextActivity =  getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 10000);
         assertNotNull("Landing page activity is null", nextActivity);
