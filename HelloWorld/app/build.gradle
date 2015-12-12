@@ -12,6 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
     buildTypes {
         release {
@@ -43,4 +44,5 @@ dependencies {
     compile files('libs/org.apache.commons.httpclient.jar')
     compile files('libs/org.apache.http.legacy.jar')
     compile files('libs/httpmime-4.3.jar')
+
 }
