@@ -1,8 +1,16 @@
 # BeatMyRun
 
-## INTRODUCTION
+## ABOUT
 
-This directory contains the full implementation of the Beat My Run application for the Android platform, demonstrating the basic facilities that application will use.
+## SCREENSHOTS
+
+## Screenshots
+![](UI/ui1.png)
+![](UI/ui5.png)
+![](UI/ui7.png)
+![](UI/ui11.png)
+![](UI/ui17.png)
+![](UI/ui19.png)
 
 
 ## CONFIGURE
