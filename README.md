@@ -21,7 +21,7 @@ https://developers.google.com/youtube/v3/getting-started
 Include your Android and Browser API keys in the file LoginActivity.java
 
 ## LIBRARIES INCLUDED
-———————————
+
 In order to build/run our application the following softwares should be downloaded and are included in the HelloWorld->app->libs
 
 achartengine-1.1.0.jar
