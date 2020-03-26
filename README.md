@@ -4,41 +4,17 @@
 
 ## SCREENSHOTS
 
-<div style="content:"";clear:both;display: table;">
-  <div class="float: left;
-  width: 33.33%;
-  padding: 5px;">
-    <img src="UI/ui1.png" width="200px"  />
-  </div>
-  <div class="float: left;
-  width: 33.33%;
-  padding: 5px;">
-    <img src="UI/ui5.png" width="200px"  />
-  </div>
-  <div class="float: left;
-  width: 33.33%;
-  padding: 5px;">
-    <img src="UI/ui7.png" width="200px"  />
-  </div>
-</div>
+<p float="left">
+  <img src="UI/ui1.png" width="200px"  />
+  <img src="UI/ui5.png" width="200px"  />
+  <img src="UI/ui7.png" width="200px"  />
+</p>
+<p float="left">
+  <img src="UI/ui11.png" width="200px"  />
+  <img src="UI/ui17.png" width="200px"  />
+  <img src="UI/ui19.png" width="200px"  />
+</p>
 
-<div style="content:"";clear:both;display: table;">
-  <div class="float: left;
-  width: 33.33%;
-  padding: 5px;">
-    <img src="UI/ui11.png" width="200px"  />
-  </div>
-  <div class="float: left;
-  width: 33.33%;
-  padding: 5px;">
-    <img src="UI/ui17.png" width="200px"  />
-  </div>
-  <div class="float: left;
-  width: 33.33%;
-  padding: 5px;">
-    <img src="UI/ui19.png" width="200px"  />
-  </div>
-</div>
 
 
 ## CONFIGURE
