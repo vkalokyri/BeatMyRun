@@ -4,13 +4,12 @@
 
 ## SCREENSHOTS
 
-## Screenshots
-![](UI/ui1.png)
-![](UI/ui5.png)
-![](UI/ui7.png)
-![](UI/ui11.png)
-![](UI/ui17.png)
-![](UI/ui19.png)
+<img src="UI/ui1.png" style="width:20px;height:20px" />
+![](UI/ui5.png | width=100)
+![](UI/ui7.png | width=100)
+![](UI/ui11.png | width=100)
+![](UI/ui17.png | width=100)
+![](UI/ui19.png | width=100)
 
 
 ## CONFIGURE
