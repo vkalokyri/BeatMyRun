@@ -2,6 +2,8 @@
 
 ## ABOUT
 
+BeatMyRun is a personalized and user-friendly exercise application, supporting music playback that adapts to the intensity of the workout while running. Users can also get contextual information about weather and location, keep track of their workout attributes, compete with their friends and track high scores through leaderboards. The aim of the project is to promote physical well-being by enhancing the running experience and encouraging users to exercise.
+
 ## SCREENSHOTS
 
 <p float="left">
@@ -19,39 +21,39 @@
 
 ## CONFIGURE
 
-The project directory is ready for use from Android Studio. 
-You can download the Android Studio from https ://developer.android.com/sdk/ and follow instructions on the setup wizard 
-Install the Android SDK and Android 5.0(API 23) SDK platform (Minimum SDK version 19 and Target SDK version 23)
-To build the application go to ‘Open an existing Android Studio project and browse through the directory.
-Select the downloaded source-> BeatMyRun-master and choose HelloWorld
-The Android project should then be created, and you can browse the source to find all the java files.
-Project->HelloWorld->app->src->main->java or
-Android->app->ja
-Get key from Google API and YouTube API for the Login and streaming music from 
-https://developers.google.com/api-client-library/php/guide/aaa_apikeys#acquiring-an-api-key and
-https://developers.google.com/youtube/v3/getting-started
-Include your Android and Browser API keys in the file LoginActivity.java
+- The project directory is ready for use from Android Studio. 
+- You can download the Android Studio from https ://developer.android.com/sdk/ and follow instructions on the setup wizard 
+- Install the Android SDK and Android 5.0(API 23) SDK platform (Minimum SDK version 19 and Target SDK version 23)
+- To build the application go to ‘Open an existing Android Studio project and browse through the directory.
+- Select the downloaded source-> BeatMyRun-master and choose HelloWorld
+- The Android project should then be created, and you can browse the source to find all the java files.
+- Project->HelloWorld->app->src->main->java or
+- Android->app->ja
+- Get key from Google API and YouTube API for the Login and streaming music from 
+- https://developers.google.com/api-client-library/php/guide/aaa_apikeys#acquiring-an-api-key and
+- https://developers.google.com/youtube/v3/getting-started
+- Include your Android and Browser API keys in the file LoginActivity.java
 
 ## LIBRARIES INCLUDED
 
 In order to build/run our application the following softwares should be downloaded and are included in the HelloWorld->app->libs
 
-achartengine-1.1.0.jar
-google-api-client-1.20.0.jar
-google-api-client-android-1.20.0.jar
-google-api-services-youtube-v3-rev151-1.20.0.jar
-google-http-client-1.20.0.jar
-google-http-client-android-1.20.0.jar
-google-http-client-jackson2-1.20.0.jar
-google-oauth-client-1.20.0.jar
-httpmime-4.3.jar
-jackson-core-2.1.3.jar
-jEN.jar
-json_simple-1.1.jar
-jsr305-1.3.9.jar
-org.apache.commons.httpclient.jar
-org.apache.http.legacy.jar
-YouTubeAndroidPlayerApi.jar
+- achartengine-1.1.0.jar
+- google-api-client-1.20.0.jar
+- google-api-client-android-1.20.0.jar
+- google-api-services-youtube-v3-rev151-1.20.0.jar
+- google-http-client-1.20.0.jar
+- google-http-client-android-1.20.0.jar
+- google-http-client-jackson2-1.20.0.jar
+- google-oauth-client-1.20.0.jar
+- httpmime-4.3.jar
+- jackson-core-2.1.3.jar
+- jEN.jar
+- json_simple-1.1.jar
+- jsr305-1.3.9.jar
+- org.apache.commons.httpclient.jar
+- org.apache.http.legacy.jar
+- YouTubeAndroidPlayerApi.jar
 
 ## PROJECT STRUCTURE
 
